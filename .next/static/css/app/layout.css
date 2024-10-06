@@ -1,29 +1,3 @@
-/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[3].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[14].oneOf[3].use[2]!./node_modules/next/font/local/target.css?{"path":"src/app/layout.tsx","import":"","arguments":[{"src":"./fonts/GeistVF.woff","variable":"--font-geist-sans","weight":"100 900"}],"variableName":"geistSans"} ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-@font-face {
-font-family: '__geistSans_1e4310';
-src: url(/_next/static/media/4473ecc91f70f139-s.p.woff) format('woff');
-font-display: swap;
-font-weight: 100 900;
-}@font-face {font-family: '__geistSans_Fallback_1e4310';src: local("Arial");ascent-override: 85.83%;descent-override: 20.52%;line-gap-override: 9.33%;size-adjust: 107.19%
-}.__className_1e4310 {font-family: '__geistSans_1e4310', '__geistSans_Fallback_1e4310'
-}.__variable_1e4310 {--font-geist-sans: '__geistSans_1e4310', '__geistSans_Fallback_1e4310'
-}
-
-/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[3].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[14].oneOf[3].use[2]!./node_modules/next/font/local/target.css?{"path":"src/app/layout.tsx","import":"","arguments":[{"src":"./fonts/GeistMonoVF.woff","variable":"--font-geist-mono","weight":"100 900"}],"variableName":"geistMono"} ***!
-  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-@font-face {
-font-family: '__geistMono_c3aa02';
-src: url(/_next/static/media/463dafcda517f24f-s.p.woff) format('woff');
-font-display: swap;
-font-weight: 100 900;
-}@font-face {font-family: '__geistMono_Fallback_c3aa02';src: local("Arial");ascent-override: 69.97%;descent-override: 16.73%;line-gap-override: 7.61%;size-adjust: 131.49%
-}.__className_c3aa02 {font-family: '__geistMono_c3aa02', '__geistMono_Fallback_c3aa02'
-}.__variable_c3aa02 {--font-geist-mono: '__geistMono_c3aa02', '__geistMono_Fallback_c3aa02'
-}
-
 /*!*****************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[3]!./src/app/globals.css ***!
   \*****************************************************************************************************************************************************************************************************************************************************************/
@@ -527,8 +501,30 @@ video {
 .row-start-3 {
   grid-row-start: 3;
 }
+.mx-2 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
 .mb-2 {
   margin-bottom: 0.5rem;
+}
+.mb-2\.5 {
+  margin-bottom: 0.625rem;
+}
+.mb-\[38px\] {
+  margin-bottom: 38px;
+}
+.mt-\[30px\] {
+  margin-top: 30px;
+}
+.mt-6 {
+  margin-top: 1.5rem;
+}
+.me-10 {
+  margin-inline-end: 2.5rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
 }
 .flex {
   display: flex;
@@ -539,8 +535,74 @@ video {
 .h-10 {
   height: 2.5rem;
 }
+.h-\[47px\] {
+  height: 47px;
+}
+.h-\[50px\] {
+  height: 50px;
+}
+.h-\[80px\] {
+  height: 80px;
+}
+.h-screen {
+  height: 100vh;
+}
+.h-\[116px\] {
+  height: 116px;
+}
+.h-\[\] {
+  height: ;
+}
+.h-\[44px\] {
+  height: 44px;
+}
+.h-\[35px\] {
+  height: 35px;
+}
 .min-h-screen {
   min-height: 100vh;
+}
+.w-\[150px\] {
+  width: 150px;
+}
+.w-\[160px\] {
+  width: 160px;
+}
+.w-full {
+  width: 100%;
+}
+.w-\[101px\] {
+  width: 101px;
+}
+.w-\[\] {
+  width: ;
+}
+.w-\[270px\] {
+  width: 270px;
+}
+.w-\[922px\] {
+  width: 922px;
+}
+.w-\[350px\] {
+  width: 350px;
+}
+.w-\[200\] {
+  width: 200;
+}
+.w-\[200px\] {
+  width: 200px;
+}
+.w-\[340px\] {
+  width: 340px;
+}
+.w-fit {
+  width: fit-content;
+}
+.flex-1 {
+  flex: 1 1 0%;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 .list-inside {
   list-style-position: inside;
@@ -551,11 +613,23 @@ video {
 .grid-rows-\[20px_1fr_20px\] {
   grid-template-rows: 20px 1fr 20px;
 }
+.flex-row {
+  flex-direction: row;
+}
 .flex-col {
   flex-direction: column;
 }
+.flex-col-reverse {
+  flex-direction: column-reverse;
+}
 .flex-wrap {
   flex-wrap: wrap;
+}
+.items-start {
+  align-items: flex-start;
+}
+.items-end {
+  align-items: flex-end;
 }
 .items-center {
   align-items: center;
@@ -563,8 +637,14 @@ video {
 .justify-center {
   justify-content: center;
 }
+.justify-between {
+  justify-content: space-between;
+}
 .justify-items-center {
   justify-items: center;
+}
+.gap-10 {
+  gap: 2.5rem;
 }
 .gap-16 {
   gap: 4rem;
@@ -575,20 +655,62 @@ video {
 .gap-4 {
   gap: 1rem;
 }
+.gap-5 {
+  gap: 1.25rem;
+}
 .gap-6 {
   gap: 1.5rem;
 }
 .gap-8 {
   gap: 2rem;
 }
+.gap-\[100px\] {
+  gap: 100px;
+}
+.gap-\[30px\] {
+  gap: 30px;
+}
+.gap-\[43px\] {
+  gap: 43px;
+}
+.gap-\[60px\] {
+  gap: 60px;
+}
+.gap-0 {
+  gap: 0px;
+}
+.gap-3 {
+  gap: 0.75rem;
+}
 .rounded {
   border-radius: 0.25rem;
+}
+.rounded-\[10px\] {
+  border-radius: 10px;
 }
 .rounded-full {
   border-radius: 9999px;
 }
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+.rounded-\[6px\] {
+  border-radius: 6px;
+}
+.rounded-md {
+  border-radius: 0.375rem;
+}
 .border {
   border-width: 1px;
+}
+.border-\[1px\] {
+  border-width: 1px;
+}
+.border-s-\[1px\] {
+  border-inline-start-width: 1px;
+}
+.border-b-\[1px\] {
+  border-bottom-width: 1px;
 }
 .border-solid {
   border-style: solid;
@@ -599,14 +721,65 @@ video {
 .border-transparent {
   border-color: transparent;
 }
+.border-white {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity));
+}
+.bg-THEME_PRIMARY_COLOR {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 95 176 / var(--tw-bg-opacity));
+}
+.bg-\[\#F2F0EF\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(242 240 239 / var(--tw-bg-opacity));
+}
+.bg-\[\#d9d9d999\] {
+  background-color: #d9d9d999;
+}
+.bg-\[\#ffffff66\] {
+  background-color: #ffffff66;
+}
 .bg-black\/\[\.05\] {
   background-color: rgb(0 0 0 / .05);
 }
-.bg-foreground {
-  background-color: var(--foreground);
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+.bg-THEME_SECONDARY_COLOR {
+  --tw-bg-opacity: 1;
+  background-color: rgb(85 95 113 / var(--tw-bg-opacity));
+}
+.bg-\[\#A9A9A9\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(169 169 169 / var(--tw-bg-opacity));
+}
+.bg-hero-login {
+  background-image: url('/assets/cover_iamge_web.webp');
+}
+.bg-hero-login-mobile {
+  background-image: url('/assets/cover_image_mobile.webp');
+}
+.bg-cover {
+  background-size: cover;
+}
+.bg-no-repeat {
+  background-repeat: no-repeat;
+}
+.p-3 {
+  padding: 0.75rem;
 }
 .p-8 {
   padding: 2rem;
+}
+.p-\[6px\] {
+  padding: 6px;
+}
+.p-10 {
+  padding: 2.5rem;
+}
+.p-1 {
+  padding: 0.25rem;
 }
 .px-1 {
   padding-left: 0.25rem;
@@ -616,12 +789,85 @@ video {
   padding-left: 1rem;
   padding-right: 1rem;
 }
+.px-9 {
+  padding-left: 2.25rem;
+  padding-right: 2.25rem;
+}
+.px-\[80px\] {
+  padding-left: 80px;
+  padding-right: 80px;
+}
 .py-0\.5 {
   padding-top: 0.125rem;
   padding-bottom: 0.125rem;
 }
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+.pb-10 {
+  padding-bottom: 2.5rem;
+}
 .pb-20 {
   padding-bottom: 5rem;
+}
+.pb-8 {
+  padding-bottom: 2rem;
+}
+.pe-\[50px\] {
+  padding-inline-end: 50px;
+}
+.ps-10 {
+  padding-inline-start: 2.5rem;
+}
+.ps-\[50px\] {
+  padding-inline-start: 50px;
+}
+.pt-5 {
+  padding-top: 1.25rem;
+}
+.pt-\[45px\] {
+  padding-top: 45px;
+}
+.pt-\[50px\] {
+  padding-top: 50px;
+}
+.pt-\[54px\] {
+  padding-top: 54px;
+}
+.pt-\[60px\] {
+  padding-top: 60px;
+}
+.ps-3 {
+  padding-inline-start: 0.75rem;
+}
+.pe-3 {
+  padding-inline-end: 0.75rem;
+}
+.pt-4 {
+  padding-top: 1rem;
+}
+.pt-6 {
+  padding-top: 1.5rem;
+}
+.pb-3 {
+  padding-bottom: 0.75rem;
+}
+.pt-\[30px\] {
+  padding-top: 30px;
+}
+.ps-\[6px\] {
+  padding-inline-start: 6px;
+}
+.pe-4 {
+  padding-inline-end: 1rem;
+}
+.pe-10 {
+  padding-inline-end: 2.5rem;
 }
 .text-center {
   text-align: center;
@@ -632,19 +878,49 @@ video {
 .font-\[family-name\:var\(--font-geist-sans\)\] {
   font-family: var(--font-geist-sans);
 }
+.text-\[20px\] {
+  font-size: 20px;
+}
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
 .text-sm {
   font-size: 0.875rem;
   line-height: 1.25rem;
 }
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
 .font-semibold {
   font-weight: 600;
 }
-.text-background {
-  color: var(--background);
+.font-medium {
+  font-weight: 500;
 }
-.antialiased {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.text-\[\#FDFCFF\] {
+  --tw-text-opacity: 1;
+  color: rgb(253 252 255 / var(--tw-text-opacity));
+}
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.text-black {
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity));
+}
+.opacity-50 {
+  opacity: 0.5;
+}
+.outline-none {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 .transition-colors {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
@@ -729,6 +1005,151 @@ body {
   }
 }
 
+@media (min-width: 768px) {
+
+  .md\:mb-4 {
+    margin-bottom: 1rem;
+  }
+
+  .md\:mt-0 {
+    margin-top: 0px;
+  }
+
+  .md\:h-\[80px\] {
+    height: 80px;
+  }
+
+  .md\:h-\[116px\] {
+    height: 116px;
+  }
+
+  .md\:h-\[90px\] {
+    height: 90px;
+  }
+
+  .md\:w-\[150px\] {
+    width: 150px;
+  }
+
+  .md\:w-auto {
+    width: auto;
+  }
+
+  .md\:w-\[160px\] {
+    width: 160px;
+  }
+
+  .md\:w-\[140px\] {
+    width: 140px;
+  }
+
+  .md\:w-\[\] {
+    width: ;
+  }
+
+  .md\:w-\[208px\] {
+    width: 208px;
+  }
+
+  .md\:w-\[922px\] {
+    width: 922px;
+  }
+
+  .md\:w-\[500px\] {
+    width: 500px;
+  }
+
+  .md\:flex-row {
+    flex-direction: row;
+  }
+
+  .md\:gap-\[84px\] {
+    gap: 84px;
+  }
+
+  .md\:gap-\[60px\] {
+    gap: 60px;
+  }
+
+  .md\:gap-\[100px\] {
+    gap: 100px;
+  }
+
+  .md\:gap-\[30px\] {
+    gap: 30px;
+  }
+
+  .md\:gap-5 {
+    gap: 1.25rem;
+  }
+
+  .md\:gap-10 {
+    gap: 2.5rem;
+  }
+
+  .md\:border-b-\[1px\] {
+    border-bottom-width: 1px;
+  }
+
+  .md\:border-s-\[1px\] {
+    border-inline-start-width: 1px;
+  }
+
+  .md\:bg-hero-login {
+    background-image: url('/assets/cover_iamge_web.webp');
+  }
+
+  .md\:px-\[80px\] {
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+
+  .md\:pt-\[46px\] {
+    padding-top: 46px;
+  }
+
+  .md\:ps-10 {
+    padding-inline-start: 2.5rem;
+  }
+
+  .md\:pe-\[50px\] {
+    padding-inline-end: 50px;
+  }
+
+  .md\:pt-\[45px\] {
+    padding-top: 45px;
+  }
+
+  .md\:pt-\[50px\] {
+    padding-top: 50px;
+  }
+
+  .md\:ps-\[50px\] {
+    padding-inline-start: 50px;
+  }
+
+  .md\:pe-0 {
+    padding-inline-end: 0px;
+  }
+
+  .md\:pb-10 {
+    padding-bottom: 2.5rem;
+  }
+
+  .md\:pt-\[60px\] {
+    padding-top: 60px;
+  }
+
+  .md\:text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+}
+
+.rtl\:font-medium:where([dir="rtl"], [dir="rtl"] *) {
+  font-weight: 500;
+}
+
 @media (prefers-color-scheme: dark) {
 
   .dark\:border-white\/\[\.145\] {
@@ -753,5 +1174,74 @@ body {
     --tw-bg-opacity: 1;
     background-color: rgb(204 204 204 / var(--tw-bg-opacity));
   }
+}
+
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[2].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[14].oneOf[2].use[2]!./node_modules/next/font/google/target.css?{"path":"src/app/layout.tsx","import":"Inter","arguments":[{"subsets":["latin"]}],"variableName":"inter"} ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* cyrillic-ext */
+@font-face {
+  font-family: '__Inter_36bd41';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/_next/static/media/55c55f0601d81cf3-s.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: '__Inter_36bd41';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/_next/static/media/26a46d62cd723877-s.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: '__Inter_36bd41';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/_next/static/media/97e0cb1ae144a2a9-s.woff2) format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: '__Inter_36bd41';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/_next/static/media/581909926a08bbc8-s.woff2) format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: '__Inter_36bd41';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/_next/static/media/df0a9ae256c0569c-s.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: '__Inter_36bd41';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/_next/static/media/6d93bde91c0c2823-s.woff2) format('woff2');
+  unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: '__Inter_36bd41';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/_next/static/media/a34f9d1faa5f3315-s.p.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}@font-face {font-family: '__Inter_Fallback_36bd41';src: local("Arial");ascent-override: 90.49%;descent-override: 22.56%;line-gap-override: 0.00%;size-adjust: 107.06%
+}.__className_36bd41 {font-family: '__Inter_36bd41', '__Inter_Fallback_36bd41';font-style: normal
 }
 

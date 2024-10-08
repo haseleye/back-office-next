@@ -19,3 +19,17 @@ export const getSelectedUnitTypes = (unitId: string, lang: string) =>
       },
     }
   );
+
+export const getUserDetails = (mobileNumber: string) =>
+  axiosInstance.post(
+    `staff/get-user-details
+`,
+    {
+      mobile: { countryCode: "EG", number: mobileNumber?.replace("+20", "") },
+    },
+    {
+      headers: {
+        "accept-language": "ar",
+      },
+    }
+  );

@@ -9,7 +9,7 @@ export const Footer = () => {
 
   const userData = getCookie("user");
   return (
-    <div className='w-full bg-white pt-[54px] md:pt-[46px]'>
+    <div className='w-full bg-white  z-[1000]'>
       <div className='bg-THEME_PRIMARY_COLOR text-white flex flex-col w-full items-center  pt-5 pb-8 '>
         <div className='flex flex-col md:flex-row justify-between items-center w-full px-9 md:px-[80px] mb-[38px] md:mb-4'>
           <img

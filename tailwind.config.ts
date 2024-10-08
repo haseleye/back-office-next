@@ -18,6 +18,7 @@ const config: Config = {
         "hero-login": "url('/assets/cover_iamge_web.webp')",
         "hero-login-mobile": "url('/assets/cover_image_mobile.webp')",
       },
+      plugins: [require("daisyui")],
 
       screens: {
         // "max-taplet-rotate": { max: "1180px" },

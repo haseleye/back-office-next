@@ -2,7 +2,7 @@ import axiosInstance from "./axiosInstance";
 
 export const checkUser = (number: string, lang: string) =>
   axiosInstance.post(
-    `users/check-user
+    `staff/check-user
 `,
     {
       mobile: {
@@ -25,7 +25,7 @@ export const verifyOtp = (
   lang: string
 ) =>
   axiosInstance.post(
-    `users/verify-otp
+    `staff/verify-otp
 `,
     {
       ...data,
@@ -38,7 +38,7 @@ export const verifyOtp = (
   );
 export const resendOtpApi = (mobileNumber: string, lang: string) =>
   axiosInstance.post(
-    `users/resend-otp
+    `staff/resend-otp
 `,
     {
       mobileNumber: mobileNumber,
@@ -51,7 +51,7 @@ export const resendOtpApi = (mobileNumber: string, lang: string) =>
   );
 export const resendOtpApiEmail = (email: string, lang: string) =>
   axiosInstance.post(
-    `users/resend-otp
+    `staff/resend-otp
 `,
     {
       email: email,
@@ -74,7 +74,7 @@ export const createUser = (
   lang: string
 ) =>
   axiosInstance.post(
-    `users/create-user`,
+    `staff/create-user`,
     {
       ...data,
       role: "User",
@@ -90,23 +90,22 @@ export const Login = (
   data: {
     mobileNumber: string;
     password: string;
-  },
-  lang: string
+  }
 ) =>
   axiosInstance.post(
-    `users/login`,
+    `staff/login`,
     {
       ...data,
     },
     {
       headers: {
-        "accept-language": lang ?? "ar",
+        "accept-language": "ar",
       },
     }
   );
 export const forgotPassword = (number: string, lang: string) =>
   axiosInstance.post(
-    `users/forgot-password
+    `staff/forgot-password
 `,
     {
       mobile: {
@@ -122,7 +121,7 @@ export const forgotPassword = (number: string, lang: string) =>
   );
 export const resetPassword = (data: any, lang: string) =>
   axiosInstance.post(
-    `users/change-password
+    `staff/change-password
 `,
     { ...data },
     {
@@ -134,7 +133,7 @@ export const resetPassword = (data: any, lang: string) =>
 
 export const updatePhoto = (data: any, lang: string) =>
   axiosInstance.post(
-    `users/update-photo
+    `staff/update-photo
 `,
     data,
     {
@@ -147,7 +146,7 @@ export const updatePhoto = (data: any, lang: string) =>
 
 export const deletePhoto = (lang: string) =>
   axiosInstance.post(
-    `users/delete-photo`,
+    `staff/delete-photo`,
     {},
     {
       headers: {
@@ -158,7 +157,7 @@ export const deletePhoto = (lang: string) =>
 
 export const getUserInfo = (lang: string) =>
   axiosInstance.post(
-    `users/get-profile-info`,
+    `staff/get-profile-info`,
     {},
     {
       headers: {
@@ -169,7 +168,7 @@ export const getUserInfo = (lang: string) =>
 
 export const updateNationalId = (data: any, lang: string) =>
   axiosInstance.post(
-    `users/update-national-id
+    `staff/update-national-id
 `,
     data,
     {
@@ -182,7 +181,7 @@ export const updateNationalId = (data: any, lang: string) =>
 
 export const updateMobile = (number: string, lang: string) =>
   axiosInstance.post(
-    `users/update-mobile
+    `staff/update-mobile
 `,
     {
       mobile: {
@@ -198,7 +197,7 @@ export const updateMobile = (number: string, lang: string) =>
   );
 export const updateEmail = (email: string, lang: string) =>
   axiosInstance.post(
-    `users/update-email
+    `staff/update-email
 `,
     {
       email: email,

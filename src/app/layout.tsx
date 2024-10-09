@@ -25,15 +25,15 @@ export default function RootLayout({
   const path = usePathname();
 
   return (
-    <html lang='en' style={{ minHeight: "100vh" }}>
+    <html lang='ar'>
       <body
         dir='rtl'
         id='body'
-        className={`${inter.className} flex flex-col  justify-between min-h-screen`}>
+        className={`${inter.className} flex flex-col  h-full justify-between `}>
         <AppWrapper>
           {path?.includes("login") ? "" : <SideMenu />}
 
-          <div className={path.includes?.("login") ? "" : "p-4 sm:mr-64"}>
+          <div className={`${path.includes?.("login") ? "" : "p-4 sm:mr-64"} min-h-screen`}>
             <div
               className={`w-full  ${
                 path.includes("login") ? "" : "pe-0 md:pe-10"

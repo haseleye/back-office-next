@@ -145,6 +145,11 @@ export interface GuestInfo {
   };
   lastName: string;
   mobile: string;
+  status: {
+    isSuspended: boolean;
+    login: { failedTrials: number; nextTrial: string };
+    message: string;
+  };
 }
 export interface UserDetails {
   bankChecks: bankChecks[];
@@ -153,6 +158,7 @@ export interface UserDetails {
   totalChecks: number;
   totalPayments: number;
   units: Unit[];
+ 
 }
 
 interface Mobile {

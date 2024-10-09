@@ -25,3 +25,70 @@ body {
     text-wrap: balance;
   }
 }
+
+.select__control {
+  background: #F2F0EF !important;
+}
+
+.select__control--is-focused {
+  background: #F2F0EF !important;
+  border: none !important;
+  outline: none !important;
+  width: 100% !important;
+  border-radius: 10px !important;
+  height: 44px !important;
+}
+
+.css-13cymwt-control {
+  background: #F2F0EF !important;
+  border: none !important;
+  outline: none !important;
+  width: 100% !important;
+  border-radius: 10px !important;
+  height: 44px !important;
+}
+
+.css-13cymwt-control:focus {
+  outline: none !important;
+}
+
+.select__indicator-separator {
+  display: none;
+}
+
+input {
+  outline: none;
+
+}
+
+input:focus {
+  outline: none;
+}
+ .file-upload {
+   display: flex;
+   align-items: center;
+   justify-content: flex-end;
+   border: 2px dashed black;
+   background-color: #D9D9D9;
+   padding: 10px 20px;
+   cursor: pointer;
+   width: 386px;
+   height: 65px;
+   position: relative;
+   font-family: Arial, sans-serif;
+   gap:70px;
+   font-size: 16px;
+ }
+
+ .file-upload input[type="file"] {
+   display: none;
+ }
+
+ .file-upload img {
+   width: 30px;
+   margin-right: 10px;
+ }
+
+ .file-upload span {
+   font-size: 16px;
+ }

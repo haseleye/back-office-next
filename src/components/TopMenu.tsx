@@ -5,17 +5,18 @@ import { Modal } from "./Modal";
 
 export default function TopMenu() {
   const [error, setError] = useState(false);
+  const [errorText, setErrorText] = useState("");
   const [searchMobile, setSearchMobile] = useState<string>("");
   const { setCurrentUser, currentUser } = useAppContext();
 
   const Search = async () => {
-    
     getUserDetails(searchMobile)
       .then((response) => {
         setCurrentUser((response.data as any)?.message);
       })
       .catch((error) => {
-                setCurrentUser(undefined);
+        setCurrentUser(undefined);
+        setErrorText(error?.response?.data?.error);
         setError(true);
       });
   };
@@ -35,30 +36,35 @@ export default function TopMenu() {
               className='w-[120px] md:w-[140px]'
             />
           </div>
-          <div className='flex flex-row w-full  items-center gap-3 md:gap-[30px] '>
-            <div
-              className={`flex flex-row bg-[#F2F0EF] w-full  md:w-[340px]  p-1 pe-4 rounded-lg ${
-                error ? "border-THEME_ERROR_COLOR border-[1px]" : ""
-              }`}>
-              <input
-                value={searchMobile}
-                onChange={(e) => setSearchMobile(e.target.value)}
-                dir='ltr'
-                className={`bg-[#F2F0EF] w-full outline-none text-base `}
-              />
-              <img
-                src='/assets/egypt.png'
-                className='mx-2'
-                width={30}
-                height={30}
-              />
+          <div>
+            <div className='flex flex-row w-full  items-center gap-3 md:gap-[30px] '>
+              <div
+                className={`flex flex-row bg-[#F2F0EF] w-full  md:w-[340px]  p-1 pe-4 rounded-lg ${
+                  error ? "border-THEME_ERROR_COLOR border-[1px]" : ""
+                }`}>
+                <input
+                  value={searchMobile}
+                  onChange={(e) => setSearchMobile(e.target.value)}
+                  dir='ltr'
+                  className={`bg-[#F2F0EF] w-full outline-none text-base `}
+                />
+                <img
+                  src='/assets/egypt.png'
+                  className='mx-2'
+                  width={30}
+                  height={30}
+                />
+              </div>
+              <button
+                onClick={Search}
+                disabled={searchMobile == ""}
+                className='bg-white disabled:opacity-70 rounded-lg px-4 py-1'>
+                ابحث
+              </button>
             </div>
-            <button
-              onClick={Search}
-              disabled={searchMobile == ""}
-              className='bg-white disabled:opacity-70 rounded-lg px-4 py-1'>
-              ابحث
-            </button>
+            <p className='text-base text-red-600 mt-1'>
+              {errorText ? errorText : ""}
+            </p>
           </div>
         </div>
         <div className='flex flex-col gap-5 '>
@@ -95,7 +101,12 @@ export default function TopMenu() {
             </div>
             <div className='flex flex-col  gap-5 md:gap-5 flex-1'>
               <p className='text-white text-lg md:text-xl font-medium'>
-                البريد الإلكتروني : {currentUser?.info?.email}
+                البريد الإلكتروني :{" "}
+                {currentUser?.info
+                  ? currentUser?.info?.email
+                    ? currentUser?.info?.email
+                    : "غير موجود"
+                  : ""}
               </p>
               <p className='text-white text-lg md:text-xl font-medium flex gap-1 flex-row'>
                 حالة الحساب :{" "}
@@ -111,9 +122,9 @@ export default function TopMenu() {
                       : ""
                   }`}>
                   {" "}
-                  {currentUser?.info?.status?.isSuspended
+                  {currentUser?.info?currentUser?.info?.status?.isSuspended
                     ? " معلق "
-                    : " نشط "}{" "}
+                    : " نشط ":''}{" "}
                 </span>
               </p>
             </div>

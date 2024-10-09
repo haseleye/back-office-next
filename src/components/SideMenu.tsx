@@ -1,10 +1,12 @@
 import { useAppContext } from "@/context";
-import { getCookie } from "cookies-next";
+import { deleteCookie, getCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 import { Fragment, useState } from "react";
 
 export const SideMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { selectedType, setSelectedType } = useAppContext();
+  const router = useRouter();
   const userData = getCookie("user")
     ? JSON.parse(getCookie("user") as string)
     : null;
@@ -35,7 +37,7 @@ export const SideMenu = () => {
           !isOpen ? "hidden" : "visible"
         }`}
         aria-label='Sidebar'>
-        <div className='h-full px-3 py-4 overflow-y-auto bg-THEME_SECONDARY_COLOR '>
+        <div className='h-full px-3 py-4 overflow-y-auto bg-THEME_SECONDARY_COLOR w-full'>
           <div className=' overflow-auto flex flex-col   pb-[150px]'>
             <div className='flex flex-col gap-2 items-center'>
               <img src='/assets/logo.svg' className='w-[150px]' />
@@ -99,6 +101,17 @@ export const SideMenu = () => {
                 <MenuImage isSelected={selectedType.cat == 2} />
                 <p className='text-white font-medium text-xl'> التقارير</p>
               </div>
+              <div
+                className='flex flex-row gap-3 mt-2 ps-[6px] items-center cursor-pointer'
+                onClick={() => {
+                  deleteCookie("user");
+                  deleteCookie("authToken");
+                  localStorage.removeItem("authToken");
+                  router.push("/login");
+                }}>
+                <img src='/assets/logout.svg' width={30} height={30} />
+                <p className='text-white font-medium text-xl'> تسجيل الخروج</p>
+              </div>
             </div>
           </div>
         </div>
@@ -161,40 +174,45 @@ const PaymentsSubMenu = ({
 }) => {
   return (
     <Fragment>
+      <div className='w-full flex justify-center'>
+        <img src='/assets/payments.svg' width={40} height={40} />
+      </div>
       <SubMenuItem
         onChange={onChange}
-        imgSrc='cash.svg'
+        imgSrc='add_payment.svg'
         index={0}
+        size={25}
         isSelected={selectedIndex == 0}
-        label='المدفوعات النقدية'
+        label='إضافة مدفوعات'
       />
       <SubMenuItem
         onChange={onChange}
-        imgSrc='cash.svg'
+        imgSrc='find_payment.svg'
         index={1}
-        isSelected={selectedIndex == 0}
-        label='المدفوعات النقدية'
-      />
-      <SubMenuItem
-        onChange={onChange}
-        imgSrc='check.svg'
-        index={2}
         isSelected={selectedIndex == 1}
-        label='الشيكات'
+        label='استعلام عن مدفوعات'
       />
       <SubMenuItem
         onChange={onChange}
-        imgSrc='cash.svg'
-        index={3}
-        isSelected={selectedIndex == 0}
-        label='المدفوعات النقدية'
-      />
-      <SubMenuItem
-        onChange={onChange}
-        imgSrc='unit.svg'
-        index={4}
+        imgSrc='link_payment.svg'
+        size={25}
+        index={2}
         isSelected={selectedIndex == 2}
-        label='الوحدات'
+        label='ربط مدفوعات'
+      />
+      <SubMenuItem
+        onChange={onChange}
+        imgSrc='add_check.svg'
+        index={3}
+        isSelected={selectedIndex == 3}
+        label='إضافة شيكات'
+      />
+      <SubMenuItem
+        onChange={onChange}
+        imgSrc='find_check.svg'
+        index={4}
+        isSelected={selectedIndex == 4}
+        label='استعلام عن شيكات'
       />
     </Fragment>
   );
@@ -239,12 +257,14 @@ const SubMenuItem = ({
   index,
   imgSrc,
   label,
+  size,
 }: {
   isSelected: boolean;
   onChange(index: number): void;
   index: number;
   imgSrc: string;
   label: string;
+  size?: number;
 }) => {
   return (
     <div
@@ -254,7 +274,10 @@ const SubMenuItem = ({
       className={`flex${
         isSelected ? " bg-[#A9A9A9]" : ""
       } py-[3px] px-[6px] rounded-md flex-row gap-2 items-end cursor-pointer`}>
-      <img src={`/assets/${imgSrc}`} width={30} height={30} />
+      <img
+        src={`/assets/${imgSrc}`}
+        className={`w-[28px] ${size ? `!h-[${size}px]` : "h-[30px]"}`}
+      />
       <p className='text-white font-medium text-lg'> {label}</p>
     </div>
   );

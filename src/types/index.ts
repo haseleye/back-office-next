@@ -48,7 +48,9 @@ export interface bankChecks {
   dueDate: string;
   amount: number;
   bankName: string;
-  status: string;
+  status: {
+    current:string
+  };
   statusText: string;
   unitId: string;
 }

@@ -2,6 +2,7 @@
 import BankCard from "@/components/BankCard";
 import { Modal } from "@/components/Modal";
 import PaymentCard from "@/components/PaymentCard";
+import UnitCard from "@/components/UnitCard";
 import { useAppContext } from "@/context";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
@@ -152,6 +153,17 @@ export default function Home() {
                   لا يوجد شيكات
                 </p>
               )
+            ) : selectedType.subCat == 2 ? (
+              currentUser?.units?.length ? (
+                currentUser?.units.map((item, index) => (
+                  <UnitCard item={item} key={`unit_${index}`} />
+                ))
+              ) : (
+                <p className='text-THEME_SECONDARY_COLOR text-2xl text-semibold w-full text-center mt-4'>
+                  {" "}
+                  لا يوجد وحدات{" "}
+                </p>
+              )
             ) : (
               ""
             )}
@@ -240,7 +252,7 @@ export default function Home() {
                             </div>
                           </div>
                           <div className='gap-5 flex flex-col'>
-                            <p className='text-black hidden md:visible text-base md:text-xl font-semibold '>
+                            <p className='text-black hidden md:flex text-base md:text-xl font-semibold '>
                               الهاتف المحمول :{" "}
                               <span dir='ltr' className='font-normal text-lg'>
                                 {currentUser?.info.mobile}
@@ -414,7 +426,7 @@ export default function Home() {
                             </div>
                           </div>
                           <div className='gap-5 flex flex-col'>
-                            <p className='text-black hidden md:visible text-base md:text-xl font-semibold '>
+                            <p className='text-black hidden md:flex text-base md:text-xl font-semibold '>
                               الهاتف المحمول :{" "}
                               <span dir='ltr' className='font-normal text-lg'>
                                 {currentUser?.info.mobile}
@@ -482,12 +494,186 @@ export default function Home() {
               ""
             )}
           </div>
-          <button
+         {selectedType.subCat==2?'': <button
             onClick={() => setShowModal(true)}
             className='bg-THEME_PRIMARY_COLOR w-full md:w-[160px] text-white rounded-md h-[50px] min-h-[50px]'>
             {selectedType.subCat == 0 ? "إضافة مدفوعات" : "إضافة شيكات"}
-          </button>
+          </button>}
         </div>
+      ) : selectedType.cat == 1 ? (
+        <>
+          {selectedType.subCat == 0 ? (
+            <div className='bg-white h-[600px] md:h-auto max-h-auto overflow-auto w-full p-6 pt-10  flex flex-col gap-5 rounded-b-lg items-center px-3 md:px-10 '>
+              <div className='flex  flex-col gap-3  md:flex-row w-full  justify-around'>
+                <div className='gap-5 flex flex-col'>
+                  <p className='text-black text-base md:text-xl font-semibold'>
+                    الاسم :{" "}
+                    <span className='font-normal text-lg truncate'>
+                      {currentUser
+                        ? `${currentUser?.info.firstName} ${currentUser?.info.lastName}`
+                        : "غير معلوم"}
+                    </span>
+                    <p className='text-black  md:hidden text-base md:text-xl font-semibold '>
+                      الهاتف المحمول :{" "}
+                      <span dir='ltr' className='font-normal text-lg'>
+                        {currentUser
+                          ? `${currentUser?.info.mobile} `
+                          : "غير معلوم"}
+                      </span>
+                    </p>
+                  </p>
+                  <div className='flex flex-row gap-1 items-center'>
+                    <p className='text-xl font-medium'>كود الحجز : </p>
+
+                    {currentUser ? (
+                      <div className='w-[230px]'>
+                        <Select
+                          noOptionsMessage={() => "لا يوجد  "}
+                          className='basic-single  h-11 rounded-md  text-base border-none'
+                          classNamePrefix='select'
+                          placeholder=''
+                          isDisabled={false}
+                          isLoading={false}
+                          isClearable={false}
+                          isRtl={true}
+                          isSearchable={true}
+                          name='color'
+                          options={bookingCodes}
+                        />
+                      </div>
+                    ) : (
+                      <span className='font-normal text-lg'>{"غير معلوم"}</span>
+                    )}
+                  </div>
+                  <div className='flex flex-row gap-2 items-center'>
+                    <p className='text-xl font-medium'> القيمة : </p>
+
+                    <input
+                      className='bg-[#F2F0EF] h-11  rounded-[10px] w-[105px] px-2 text-base'
+                      type='text'
+                    />
+                    <p className='text-xl '> جنيه </p>
+                  </div>
+                  <div className='flex flex-row gap-1 items-center'>
+                    <p className='text-xl font-medium'>التاريخ : </p>
+
+                    <input
+                      aria-label='Date'
+                      placeholder='يوم/شهر/سنة'
+                      value={formatDateToYYYYMMDD(new Date())}
+                      onChange={(e) => {
+                        console.log("Ee", e.target.value);
+                      }}
+                      className='bg-[#F2F0EF] w-[230px]  h-11 rounded-[10px] px-2 text-base'
+                      type='date'
+                    />
+                  </div>
+                </div>
+                <div className='gap-5 flex flex-col'>
+                  <p className='text-black  hidden md:flex text-base md:text-xl font-semibold '>
+                    الهاتف المحمول :{" "}
+                    <span dir='ltr' className='font-normal text-lg'>
+                      {currentUser
+                        ? `${currentUser?.info.mobile} `
+                        : "غير معلوم"}
+                    </span>
+                  </p>
+                  <div className='flex flex-row gap-1 items-center'>
+                    <p className='text-xl font-medium'>توجيه الدفع : </p>
+
+                    {currentUser ? (
+                      <div className='w-[143px]'>
+                        <Select
+                          className='basic-single  h-11 rounded-md  text-base border-none'
+                          classNamePrefix='select'
+                          placeholder=''
+                          isDisabled={false}
+                          isLoading={false}
+                          isClearable={false}
+                          isRtl={true}
+                          isSearchable={true}
+                          name='color'
+                          options={paymentTypes}
+                        />
+                      </div>
+                    ) : (
+                      <span className='font-normal text-lg'>{"غير معلوم"}</span>
+                    )}
+                  </div>
+                  <div className='flex flex-row gap-1 items-center'>
+                    <p className='text-xl font-medium'>طريقة الدفع : </p>
+                    <div className='w-[143px]'>
+                      <Select
+                        className='basic-single  h-11 rounded-md  text-base border-none'
+                        classNamePrefix='select'
+                        isDisabled={false}
+                        isLoading={false}
+                        placeholder=''
+                        isClearable={false}
+                        isRtl={true}
+                        isSearchable={true}
+                        name='paymentMethod'
+                        options={paymentMethods}
+                      />
+                    </div>
+                  </div>
+                  <div className='flex flex-row gap-1 items-center'>
+                    <p className='text-xl font-medium'>الوقت : </p>
+
+                    <input
+                      aria-label='time'
+                      className='bg-[#F2F0EF] w-[130px] h-11 rounded-md px-2 text-base'
+                      type='time'
+                      value={formatTimeToHHMM(new Date())}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className='flex  flex-col gap-5      justify-between px-0 md:px-10 w-full md:w-[85%]'>
+                <div className='flex flex-row gap-1 items-center w-full'>
+                  <p className='text-xl font-medium min-w-[100px]'>
+                    رقم المعاملة :{" "}
+                  </p>
+                  <input
+                    className='bg-[#F2F0EF]  h-11  w-full rounded-md px-2 text-base'
+                    type='text'
+                  />
+                </div>
+                <div className='flex flex-col gap-5 items-start w-full'>
+                  <p className='text-xl font-medium min-w-[100px]'>
+                    ملاحظات :{" "}
+                  </p>
+                  <textarea
+                    rows={3}
+                    className='bg-[#F2F0EF] outline-none p-1  h-[80px]  w-full rounded-md px-2 text-base'
+                  />
+                </div>
+                <div className='flex flex-col gap-y-2 md:flex-row w-full justify-around'>
+                  <button
+                    onClick={() => {
+                      (document.getElementById("body") as any).style.overflow =
+                        "scroll";
+                      setShowModal(false);
+                    }}
+                    className='bg-THEME_PRIMARY_COLOR w-full md:w-[160px] text-white rounded-md h-[50px] min-h-[50px]'>
+                    إضافة
+                  </button>
+                  <button
+                    onClick={() => {
+                      (document.getElementById("body") as any).style.overflow =
+                        "scroll";
+                      setShowModal(false);
+                    }}
+                    className='bg-THEME_PRIMARY_COLOR w-full md:w-[160px] text-white rounded-md h-[50px] min-h-[50px]'>
+                    إلغاء
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
+        </>
       ) : (
         ""
       )}

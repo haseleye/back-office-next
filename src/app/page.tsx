@@ -179,8 +179,8 @@ export default function Home() {
                   </div>
                   {selectedType.subCat == 0 ? (
                     <>
-                      <div className='bg-white max-h-auto overflow-auto w-full p-6 pt-10  flex flex-col gap-5 rounded-b-lg items-center px-10'>
-                        <div className='flex  flex-row gap-3 md:gap-[80px] md:flex-row w-full  justify-between '>
+                      <div className='bg-white h-[600px] md:h-auto max-h-auto overflow-auto w-full p-6 pt-10  flex flex-col gap-5 rounded-b-lg items-center px-3 md:px-10 '>
+                        <div className='flex   flex-col gap-3 md:gap-[80px] md:flex-row w-full  justify-between '>
                           <div className='gap-5 flex flex-col'>
                             <p className='text-black text-base md:text-xl font-semibold'>
                               الاسم :{" "}
@@ -188,6 +188,12 @@ export default function Home() {
                                 {currentUser?.info.firstName}{" "}
                                 {currentUser?.info.lastName}
                               </span>
+                              <p className='text-black  md:hidden text-base md:text-xl font-semibold '>
+                                الهاتف المحمول :{" "}
+                                <span dir='ltr' className='font-normal text-lg'>
+                                  {currentUser?.info.mobile}
+                                </span>
+                              </p>
                             </p>
                             <div className='flex flex-row gap-1 items-center'>
                               <p className='text-xl font-medium'>
@@ -234,7 +240,7 @@ export default function Home() {
                             </div>
                           </div>
                           <div className='gap-5 flex flex-col'>
-                            <p className='text-black text-base md:text-xl font-semibold '>
+                            <p className='text-black hidden md:visible text-base md:text-xl font-semibold '>
                               الهاتف المحمول :{" "}
                               <span dir='ltr' className='font-normal text-lg'>
                                 {currentUser?.info.mobile}
@@ -309,7 +315,7 @@ export default function Home() {
                             type='text'
                           />
                         </div>
-                        <div className='flex flex-row w-full justify-around'>
+                        <div className='flex flex-col gap-y-2 md:flex-row w-full justify-around'>
                           <button
                             onClick={() => {
                               (
@@ -335,14 +341,20 @@ export default function Home() {
                     </>
                   ) : (
                     <>
-                      <div className='bg-white max-h-auto overflow-auto w-full p-6 pt-10  flex flex-col gap-5 rounded-b-lg items-center px-10'>
-                        <div className='flex  flex-row gap-3 md:gap-[80px] md:flex-row w-full  justify-between '>
+                      <div className='bg-white h-[600px] md:h-auto max-h-auto overflow-auto w-full p-6 pt-10  flex flex-col gap-5 rounded-b-lg items-center px-3 md:px-10 '>
+                        <div className='flex flex-col  gap-3 md:gap-[80px] md:flex-row w-full  justify-between '>
                           <div className='gap-5 flex flex-col'>
                             <p className='text-black text-base md:text-xl font-semibold'>
                               الاسم :{" "}
                               <span className='font-normal text-lg truncate'>
                                 {currentUser?.info.firstName}{" "}
                                 {currentUser?.info.lastName}
+                              </span>
+                            </p>
+                            <p className='text-black md:hidden text-base md:text-xl font-semibold '>
+                              الهاتف المحمول :{" "}
+                              <span dir='ltr' className='font-normal text-lg'>
+                                {currentUser?.info.mobile}
                               </span>
                             </p>
                             <div className='flex flex-row gap-1 items-center'>
@@ -369,7 +381,7 @@ export default function Home() {
                               <p className='text-xl font-medium'>
                                 اسم البنك :{" "}
                               </p>
-                              <div className='w-[330px]'>
+                              <div className='w-[200px] md:w-[330px]'>
                                 <Select
                                   noOptionsMessage={() => "لا يوجد  "}
                                   className='basic-single  h-11 rounded-md  text-base border-none'
@@ -384,7 +396,7 @@ export default function Home() {
                                 />
                               </div>
                             </div>
-                            <div className='flex flex-row gap-1 items-center'>
+                            <div className='flex flex-row w-full gap-1 items-center'>
                               <p className='text-xl font-medium'>
                                 تاريخ الاستحقاق :{" "}
                               </p>
@@ -396,13 +408,13 @@ export default function Home() {
                                 onChange={(e) => {
                                   console.log("Ee", e.target.value);
                                 }}
-                                className='bg-[#F2F0EF] w-[270px]  h-11 rounded-[10px] px-2 text-base'
+                                className='bg-[#F2F0EF]  w-[200px] md:w-[270px]  h-11 rounded-[10px] px-2 text-base'
                                 type='date'
                               />
                             </div>
                           </div>
                           <div className='gap-5 flex flex-col'>
-                            <p className='text-black text-base md:text-xl font-semibold '>
+                            <p className='text-black hidden md:visible text-base md:text-xl font-semibold '>
                               الهاتف المحمول :{" "}
                               <span dir='ltr' className='font-normal text-lg'>
                                 {currentUser?.info.mobile}
@@ -439,7 +451,7 @@ export default function Home() {
                             alt='Upload Icon'
                           />
                         </label>
-                        <div className='flex flex-row w-full justify-around'>
+                        <div className='flex flex-col gap-y-2 md:flex-row w-full justify-around'>
                           <button
                             onClick={() => {
                               (

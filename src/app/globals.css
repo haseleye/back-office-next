@@ -78,6 +78,10 @@ input:focus {
    font-family: Arial, sans-serif;
    gap:70px;
    font-size: 16px;
+    @media (width<=768px) {
+        width: 220px;
+        gap: 20px;
+      }
  }
 
  .file-upload input[type="file"] {

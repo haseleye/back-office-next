@@ -667,6 +667,9 @@ video {
 .h-\[55px\] {
   height: 55px;
 }
+.h-\[600px\] {
+  height: 600px;
+}
 .h-\[80px\] {
   height: 80px;
 }
@@ -730,14 +733,8 @@ video {
 .w-\[230px\] {
   width: 230px;
 }
-.w-\[270px\] {
-  width: 270px;
-}
 .w-\[29px\] {
   width: 29px;
-}
-.w-\[330px\] {
-  width: 330px;
 }
 .w-\[35\%\] {
   width: 35%;
@@ -849,6 +846,9 @@ video {
 }
 .gap-\[50px\] {
   gap: 50px;
+}
+.gap-y-2 {
+  row-gap: 0.5rem;
 }
 .gap-y-8 {
   row-gap: 2rem;
@@ -1018,10 +1018,6 @@ video {
 .px-0 {
   padding-left: 0px;
   padding-right: 0px;
-}
-.px-10 {
-  padding-left: 2.5rem;
-  padding-right: 2.5rem;
 }
 .px-2 {
   padding-left: 0.5rem;
@@ -1312,6 +1308,10 @@ input:focus {
    font-family: Arial, sans-serif;
    gap:70px;
    font-size: 16px;
+    @media (width<=768px) {
+        width: 220px;
+        gap: 20px;
+      }
  }
 
  .file-upload input[type="file"] {
@@ -1373,6 +1373,10 @@ input:focus {
 
  @media (min-width: 768px) {
 
+  .md\:visible {
+    visibility: visible;
+  }
+
   .md\:inset-0 {
     inset: 0px;
   }
@@ -1399,6 +1403,10 @@ input:focus {
 
   .md\:flex {
     display: flex;
+  }
+
+  .md\:hidden {
+    display: none;
   }
 
   .md\:h-\[116px\] {
@@ -1451,6 +1459,14 @@ input:focus {
 
   .md\:w-\[208px\] {
     width: 208px;
+  }
+
+  .md\:w-\[270px\] {
+    width: 270px;
+  }
+
+  .md\:w-\[330px\] {
+    width: 330px;
   }
 
   .md\:w-\[340px\] {
@@ -1588,6 +1604,11 @@ input:focus {
 
   .md\:p-4 {
     padding: 1rem;
+  }
+
+  .md\:px-10 {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
   }
 
   .md\:px-16 {

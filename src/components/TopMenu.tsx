@@ -10,6 +10,8 @@ export default function TopMenu() {
   const { setCurrentUser, currentUser } = useAppContext();
 
   const Search = async () => {
+    setError(false)
+    setErrorText('')
     getUserDetails(searchMobile)
       .then((response) => {
         setCurrentUser((response.data as any)?.message);
@@ -24,7 +26,7 @@ export default function TopMenu() {
   const [showStatus, setShowStatus] = useState(false);
   return (
     <>
-      <div className='bg-THEME_SECONDARY_COLOR p-3 md:px-10 md:py-6 gap-[50px] md:gap-5 flex flex-col rounded-lg  mt-2  w-full'>
+      <div className='bg-THEME_SECONDARY_COLOR p-3 md:px-10 md:py-6 gap-[50px] md:gap-3 flex flex-col rounded-lg  mt-2  w-full'>
         <div className=' p-3 flex flex-col md:flex-row  items-center gap-3 md:gap-[60px]  w-full h-[47px] rounded-[10px]'>
           <div className='flex  items-center gap-3 md:gap-[30px]'>
             <img
@@ -46,7 +48,7 @@ export default function TopMenu() {
                   value={searchMobile}
                   onChange={(e) => setSearchMobile(e.target.value)}
                   dir='ltr'
-                  className={`bg-[#F2F0EF] w-full outline-none text-base `}
+                  className={`bg-[#F2F0EF] font-normal w-full outline-none text-base `}
                 />
                 <img
                   src='/assets/egypt.png'
@@ -67,20 +69,20 @@ export default function TopMenu() {
             </p>
           </div>
         </div>
-        <div className='flex flex-col gap-5 '>
-          <p className='text-white text-lg md:text-xl font-medium'>
+        <div className='flex flex-col gap-3 '>
+          <p className='text-white text-lg md:text-lg '>
             الاسم :{" "}
             {`${currentUser?.info?.firstName ?? ""} ${
               currentUser?.info?.lastName ?? ""
             }`}
           </p>
-          <div className='flex gap-5 md:gap-0 flex-col md:flex-row w-full'>
-            <div className='flex flex-col  gap-5 md:gap-5 flex-1'>
-              <p className='text-white text-lg md:text-xl font-medium flex  gap-1'>
+          <div className='flex gap-3 md:gap-0 flex-col md:flex-row w-full'>
+            <div className='flex flex-col  gap-3 md:gap-3 flex-1'>
+              <p className='text-white text-lg md:text-lg  flex  gap-1'>
                 الهاتف المحمول :{" "}
                 {<p dir='ltr'>{currentUser?.info?.mobile ?? ""}</p>}
               </p>
-              <p className='text-white text-lg md:text-xl font-medium flex flex-row gap-1 items-center'>
+              <p className='text-white text-lg md:text-lg  flex flex-row gap-1 items-center'>
                 بطاقة الرقم القومي :
                 <p>
                   {" "}
@@ -99,8 +101,8 @@ export default function TopMenu() {
                 </p>
               </p>
             </div>
-            <div className='flex flex-col  gap-5 md:gap-5 flex-1'>
-              <p className='text-white text-lg md:text-xl font-medium'>
+            <div className='flex flex-col  gap-3 md:gap-3 flex-1'>
+              <p className='text-white text-lg md:text-lg '>
                 البريد الإلكتروني :{" "}
                 {currentUser?.info
                   ? currentUser?.info?.email
@@ -108,7 +110,7 @@ export default function TopMenu() {
                     : "غير موجود"
                   : ""}
               </p>
-              <p className='text-white text-lg md:text-xl font-medium flex gap-1 flex-row'>
+              <p className='text-white text-lg md:text-lg  flex gap-1 flex-row'>
                 حالة الحساب :{" "}
                 <span
                   onClick={() => {
@@ -136,7 +138,7 @@ export default function TopMenu() {
         <Modal isTopCentered={false}>
           <div className=' w-auto '>
             <div className='h-[50px] w-full rounded-t-lg bg-THEME_PRIMARY_COLOR flex flex-row justify-between px-6 items-center'>
-              <p className='text-base md:text-xl text-white font-medium'>
+              <p className='text-base md:text-lg text-white '>
                 بطاقة الرقم القومي
               </p>
               <img
@@ -154,13 +156,13 @@ export default function TopMenu() {
             </div>
             <div className='bg-white w-full p-6 pt-10  flex flex-col gap-10 rounded-b-lg items-center'>
               <div className='flex  flex-col gap-3 md:gap-0 md:flex-row px-2 w-full md:px-6  justify-between'>
-                <p className='text-black text-base md:text-xl font-medium'>
+                <p className='text-black text-base md:text-lg '>
                   الاسم :{" "}
                   <span className='font-normal text-lg truncate'>
                     {currentUser?.info.firstName} {currentUser?.info.lastName}
                   </span>
                 </p>
-                <p className='text-black text-base md:text-xl font-medium flex flex-row gap-1 '>
+                <p className='text-black text-base md:text-lg  flex flex-row gap-1 '>
                   الهاتف المحمول :{" "}
                   <span dir='ltr' className='font-normal text-lg'>
                     {currentUser?.info.mobile}
@@ -194,7 +196,7 @@ export default function TopMenu() {
         <Modal isTopCentered={false}>
           <div className=' w-auto  min-w-full md:min-w-[600px] '>
             <div className='h-[50px] w-full rounded-t-lg bg-THEME_PRIMARY_COLOR flex flex-row justify-between px-6 items-center'>
-              <p className='text-base md:text-xl text-white font-medium'>
+              <p className='text-base md:text-lg text-white '>
                 سبب تعليق الحساب
               </p>
               <img
@@ -211,13 +213,13 @@ export default function TopMenu() {
             </div>
             <div className='bg-white w-full p-6 pt-10  flex flex-col gap-10 rounded-b-lg items-center'>
               <div className='flex  flex-col gap-3 md:gap-0 md:flex-row w-full  justify-between'>
-                <p className='text-black text-base md:text-xl font-medium'>
+                <p className='text-black text-base md:text-lg '>
                   الاسم :{" "}
                   <span className='font-normal text-lg truncate'>
                     {currentUser?.info.firstName} {currentUser?.info.lastName}
                   </span>
                 </p>
-                <p className='text-black text-base md:text-xl font-medium '>
+                <p className='text-black text-base md:text-lg  '>
                   الهاتف المحمول :{" "}
                   <span dir='ltr' className='font-normal text-lg'>
                     {currentUser?.info.mobile}
@@ -225,7 +227,7 @@ export default function TopMenu() {
                 </p>
               </div>
               <div className='w-full '>
-                <p className=' text-base md:text-xl '>
+                <p className=' text-base md:text-lg '>
                   {currentUser?.info.status.message}
                 </p>
               </div>

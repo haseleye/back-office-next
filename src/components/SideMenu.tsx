@@ -37,8 +37,8 @@ export const SideMenu = () => {
           !isOpen ? "hidden" : "visible"
         }`}
         aria-label='Sidebar'>
-        <div className='h-full px-3 py-4 overflow-y-auto bg-THEME_SECONDARY_COLOR w-full'>
-          <div className=' overflow-auto flex flex-col   pb-[150px]'>
+        <div className='h-full px-3 py-4  flex flex-col  justify-between  bg-THEME_SECONDARY_COLOR w-full'>
+          <div className='flex flex-col   '>
             <div className='flex flex-col gap-2 items-center'>
               <img src='/assets/logo.svg' className='w-[150px]' />
               <img
@@ -47,7 +47,7 @@ export const SideMenu = () => {
                 height={50}
                 className='rounded-full'
               />
-              <p className='text-white font-medium text-xl '>
+              <p className='text-white font-medium text-lg '>
                 {userData?.firstName} {userData?.lastName}
               </p>
             </div>
@@ -58,7 +58,7 @@ export const SideMenu = () => {
                   setSelectedType({ cat: 0, subCat: 0 });
                 }}>
                 <MenuImage isSelected={selectedType.cat == 0} />
-                <p className='text-white font-medium text-xl'> العملاء</p>
+                <p className='text-white font-medium text-lg'> العملاء</p>
               </div>
 
               {selectedType.cat == 0 ? (
@@ -80,7 +80,7 @@ export const SideMenu = () => {
                 }}>
                 <MenuImage isSelected={selectedType.cat == 1} />
 
-                <p className='text-white font-medium text-xl'> المدفوعات</p>
+                <p className='text-white font-medium text-lg'> المدفوعات</p>
               </div>
               {selectedType.cat == 1 ? (
                 <PaymentsSubMenu
@@ -99,20 +99,20 @@ export const SideMenu = () => {
                   setSelectedType({ cat: 2, subCat: 0 });
                 }}>
                 <MenuImage isSelected={selectedType.cat == 2} />
-                <p className='text-white font-medium text-xl'> التقارير</p>
-              </div>
-              <div
-                className='flex flex-row gap-3 mt-2 ps-[6px] items-center cursor-pointer'
-                onClick={() => {
-                  deleteCookie("user");
-                  deleteCookie("authToken");
-                  localStorage.removeItem("authToken");
-                  router.push("/login");
-                }}>
-                <img src='/assets/logout.svg' width={30} height={30} />
-                <p className='text-white font-medium text-xl'> تسجيل الخروج</p>
+                <p className='text-white font-medium text-lg'> التقارير</p>
               </div>
             </div>
+          </div>
+          <div
+            className='flex flex-row gap-3 mt-2 ps-[6px] items-center cursor-pointer'
+            onClick={() => {
+              deleteCookie("user");
+              deleteCookie("authToken");
+              localStorage.removeItem("authToken");
+              router.push("/login");
+            }}>
+            <img src='/assets/logout.svg' width={30} height={30} />
+            <p className='text-white font-medium text-lg'> تسجيل الخروج</p>
           </div>
         </div>
       </aside>
@@ -278,7 +278,7 @@ const SubMenuItem = ({
         src={`/assets/${imgSrc}`}
         className={`w-[28px] ${size ? `!h-[${size}px]` : "h-[30px]"}`}
       />
-      <p className='text-white font-medium text-lg'> {label}</p>
+      <p className='text-white font-medium text-base'> {label}</p>
     </div>
   );
 };

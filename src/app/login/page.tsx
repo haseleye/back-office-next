@@ -77,20 +77,25 @@ export default function Home() {
   };
   return (
     <React.Fragment>
-      <div className=' items-center justify-items-center min-h-screen gap-16 bg-hero-login-mobile  relative  md:bg-hero-login bg-cover bg-no-repeat'>
-        {/* <img src='/assets/logo.svg' className='absolute top-2 right-2' /> */}
-        <div className='h-screen   bg-[#ffffff66] flex flex-col items-center pt-[30px] gap-2 md:gap-3 w-full'>
+      <div className=' items-center  justify-items-center min-h-screen gap-16 bg-hero-login-mobile  z-30 relative  md:bg-hero-login bg-cover bg-no-repeat'>
+        <div className='absolute left-0 top-0 min-w-full  min-h-full bg-[#ffffff80] '>
+          <img
+            src='/assets/blacklogo.svg'
+            className='absolute start-5 top-5 h-[100px] z-[1000] w-[260px]'
+          />
+        </div>
+        <div className='h-screen z-50 relative   bg-[#ffffff66]  flex flex-col items-center pt-[30px] gap-2 md:gap-3 w-full'>
           <img
             src='/assets/Header1.svg'
-            className=' w-[350px] h-[44px]  md:w-[500px] md:h-[116px]'
+            className=' w-[350px] h-[44px]  md:w-[430px] md:h-[70px]'
           />
 
           <img
             src='/assets/Header2.svg'
-            className=' w-[200px] h-[35px]  md:w-[300px] md:h-[90px]'
+            className=' w-[200px] h-[35px]  md:w-[270px] md:h-[50px]'
           />
-          <div className='w-full px-3 md:px-[80px]'>
-            <div className='bg-[#d9d9d999]  gap-0 md:gap-[60px] flex  flex-col-reverse md:flex-row w-full border-[1px] border-solid border-white rounded-lg'>
+          <div className='w-full px-3 flex justify-center '>
+            <div className='bg-[#d9d9d999]  gap-0 md:gap-[60px] w-[80%] flex  flex-col-reverse md:flex-row  border-[1px] border-solid border-white rounded-lg'>
               <div className='flex flex-col flex-1 items-center pt-6 md:pt-10 pb-3 md:pb-6 pe-3 md:pe-0 ps-3 md:ps-[30px] gap-6  '>
                 <img src='/assets/signin.svg' className='w-[160px] ' />
                 <div className='flex p-3 items-center bg-[#F2F0EF] w-full h-[47px] rounded-[10px]'>
@@ -156,7 +161,9 @@ export default function Home() {
                         "hidden";
                       setShowForget(true);
                     }}
-                    className={`'w-full md:w-[160px] ${loading?'opacity-50':''} bg-THEME_PRIMARY_COLOR h-[50px] flex items-center justify-center rounded-lg text-white text-base'`}>
+                    className={`'w-full md:w-[160px] ${
+                      loading ? "opacity-50" : ""
+                    } bg-THEME_PRIMARY_COLOR h-[50px] flex items-center justify-center rounded-lg text-white text-base'`}>
                     {"نسيت كلمة المرور"}
                   </button>
                 </div>

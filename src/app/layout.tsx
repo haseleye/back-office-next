@@ -43,7 +43,6 @@ export default function RootLayout({
             </div>
           </div>
         </AppWrapper>
-        {path?.includes("login") ? "" : <Footer />}
       </body>
     </html>
   );

@@ -38,25 +38,25 @@ export const SideMenu = () => {
         <div className='h-full px-3 py-4 overflow-y-auto bg-THEME_SECONDARY_COLOR '>
           <div className=' overflow-auto flex flex-col   pb-[150px]'>
             <div className='flex flex-col gap-2 items-center'>
-              <img src='/assets/logo.svg' />
+              <img src='/assets/logo.svg' className='w-[150px]' />
               <img
                 src={userData?.profilePhoto}
-                width={100}
-                height={100}
+                width={50}
+                height={50}
                 className='rounded-full'
               />
-              <p className='text-white font-semibold text-2xl'>
-                {userData?.firstName}
+              <p className='text-white font-medium text-xl '>
+                {userData?.firstName} {userData?.lastName}
               </p>
             </div>
-            <div className='flex flex-col mt-6 gap-6 px-3'>
+            <div className='flex flex-col  mt-1 gap-[6px] px-3'>
               <div
                 className='flex flex-row gap-3 items-center cursor-pointer'
                 onClick={() => {
                   setSelectedType({ cat: 0, subCat: 0 });
                 }}>
                 <MenuImage isSelected={selectedType.cat == 0} />
-                <p className='text-white font-semibold text-2xl'> العملاء</p>
+                <p className='text-white font-medium text-xl'> العملاء</p>
               </div>
 
               {selectedType.cat == 0 ? (
@@ -78,15 +78,26 @@ export const SideMenu = () => {
                 }}>
                 <MenuImage isSelected={selectedType.cat == 1} />
 
-                <p className='text-white font-semibold text-2xl'> المدفوعات</p>
+                <p className='text-white font-medium text-xl'> المدفوعات</p>
               </div>
+              {selectedType.cat == 1 ? (
+                <PaymentsSubMenu
+                  onChange={(index) =>
+                    setSelectedType({ ...selectedType, subCat: index })
+                  }
+                  selectedIndex={selectedType.subCat}
+                  key={"customers"}
+                />
+              ) : (
+                ""
+              )}
               <div
                 className='flex flex-row gap-3 ps-[6px] items-center cursor-pointer'
                 onClick={() => {
                   setSelectedType({ cat: 2, subCat: 0 });
                 }}>
                 <MenuImage isSelected={selectedType.cat == 2} />
-                <p className='text-white font-semibold text-2xl'> التقارير</p>
+                <p className='text-white font-medium text-xl'> التقارير</p>
               </div>
             </div>
           </div>
@@ -115,7 +126,7 @@ const CustomerSubmenu = ({
   return (
     <Fragment>
       <div className='w-full flex justify-center'>
-        <img src='/assets/customers.svg' width={80} height={80} />
+        <img src='/assets/customers.svg' width={40} height={40} />
       </div>
       <SubMenuItem
         onChange={onChange}
@@ -159,15 +170,29 @@ const PaymentsSubMenu = ({
       />
       <SubMenuItem
         onChange={onChange}
-        imgSrc='check.svg'
+        imgSrc='cash.svg'
         index={1}
+        isSelected={selectedIndex == 0}
+        label='المدفوعات النقدية'
+      />
+      <SubMenuItem
+        onChange={onChange}
+        imgSrc='check.svg'
+        index={2}
         isSelected={selectedIndex == 1}
         label='الشيكات'
       />
       <SubMenuItem
         onChange={onChange}
+        imgSrc='cash.svg'
+        index={3}
+        isSelected={selectedIndex == 0}
+        label='المدفوعات النقدية'
+      />
+      <SubMenuItem
+        onChange={onChange}
         imgSrc='unit.svg'
-        index={2}
+        index={4}
         isSelected={selectedIndex == 2}
         label='الوحدات'
       />
@@ -228,9 +253,9 @@ const SubMenuItem = ({
       }}
       className={`flex${
         isSelected ? " bg-[#A9A9A9]" : ""
-      } p-[6px] rounded-md flex-row gap-2 items-end cursor-pointer`}>
-      <img src={`/assets/${imgSrc}`} width={40} height={40} />
-      <p className='text-white font-semibold text-2xl'> {label}</p>
+      } py-[3px] px-[6px] rounded-md flex-row gap-2 items-end cursor-pointer`}>
+      <img src={`/assets/${imgSrc}`} width={30} height={30} />
+      <p className='text-white font-medium text-lg'> {label}</p>
     </div>
   );
 };

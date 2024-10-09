@@ -9,7 +9,7 @@ const APPContext = createContext<{
     cat: number;
     subCat: number;
   };
-  setCurrentUser: (user: UserDetails) => void;
+  setCurrentUser: (user: UserDetails|undefined) => void;
   setSelectedType: (type: { cat: number; subCat: number }) => void;
 }>({
   currentUser: undefined,
@@ -32,7 +32,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
       subCat: 0,
     },
   });
-  const setCurrentUser = (user: UserDetails) => {
+  const setCurrentUser = (user: UserDetails|undefined) => {
     setState({ ...state, currentUser: user });
   };
   const setSelectedType = (type: { cat: number; subCat: number }) => {

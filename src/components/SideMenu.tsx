@@ -17,7 +17,7 @@ export const SideMenu = () => {
           setIsOpen(!isOpen);
         }}
         type='button'
-        className='inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600'>
+        className='inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 pb-[50px] rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600'>
         <span className='sr-only'>Open sidebar</span>
         <svg
           className='w-6 h-6'
@@ -37,7 +37,7 @@ export const SideMenu = () => {
           !isOpen ? "hidden" : "visible"
         }`}
         aria-label='Sidebar'>
-        <div className='h-full px-3 py-4  flex flex-col  justify-between  bg-THEME_SECONDARY_COLOR w-full'>
+        <div className='h-full px-3 py-4 pb-[50px]  flex flex-col  justify-between  bg-THEME_SECONDARY_COLOR w-full'>
           <div className='flex flex-col   '>
             <div className='flex flex-col gap-2 items-center'>
               <img src='/assets/logo.svg' className='w-[150px]' />

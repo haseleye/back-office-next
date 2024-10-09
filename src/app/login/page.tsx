@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Login } from "@/network/auth";
 import { Auth } from "@/components/auth";
 import { LoadingSpinner } from "@/components/loading";
-import { setCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 
 export default function Home() {
   const [error, setError] = useState<{
@@ -22,12 +22,17 @@ export default function Home() {
   const [password, setPassword] = useState("");
   const [showForget, setShowForget] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const router=useRouter()
+  const isLoggedIn = getCookie("authToken");
+
+  const router = useRouter();
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, [inputRef]);
+  useEffect(() => {
+    if (isLoggedIn) router.push("/");
+  }, []);
   const onSubmit = () => {
     setLoading(true);
     if (!mobileNumber) {
@@ -42,7 +47,9 @@ export default function Home() {
     } else {
       Login({
         mobileNumber: `+20${
-          mobileNumber?.[0] == "0" ? mobileNumber?.slice(1,mobileNumber.length) : mobileNumber
+          mobileNumber?.[0] == "0"
+            ? mobileNumber?.slice(1, mobileNumber.length)
+            : mobileNumber
         }`,
         password: password,
       })

@@ -1,17 +1,19 @@
 import { useAppContext } from "@/context";
 import { getUserDetails } from "@/network/home";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Modal } from "./Modal";
+import Select from "react-select";
+import { bankNames } from "./constants";
 
 export default function TopMenu() {
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState("");
   const [searchMobile, setSearchMobile] = useState<string>("");
   const { setCurrentUser, currentUser } = useAppContext();
-
+  const { selectedType } = useAppContext();
   const Search = async () => {
-    setError(false)
-    setErrorText('')
+    setError(false);
+    setErrorText("");
     getUserDetails(searchMobile)
       .then((response) => {
         setCurrentUser((response.data as any)?.message);
@@ -24,116 +26,313 @@ export default function TopMenu() {
   };
   const [showNational, setShowNational] = useState(false);
   const [showStatus, setShowStatus] = useState(false);
+  const searchType = useMemo(() => {
+    return selectedType.cat == 1 && selectedType.subCat == 1
+      ? "find_payment"
+      : selectedType.cat == 1 && selectedType.subCat == 4
+      ? "find_check"
+      : null;
+  }, [selectedType]);
+
   return (
     <>
-      <div className='bg-THEME_SECONDARY_COLOR p-3 md:px-10 md:py-6 gap-[50px] md:gap-3 flex flex-col rounded-lg  mt-2  w-full'>
-        <div className=' p-3 flex flex-col md:flex-row  items-center gap-3 md:gap-[60px]  w-full h-[47px] rounded-[10px]'>
-          <div className='flex  items-center gap-3 md:gap-[30px]'>
-            <img
-              src='/assets/search_white.svg'
-              className='w-5 md:w-[30px] h-5 md:h-[30px]'
-            />
-            <img
-              src='/assets/mobNumberWhite.svg'
-              className='w-[120px] md:w-[140px]'
-            />
-          </div>
-          <div>
-            <div className='flex flex-row w-full  items-center gap-3 md:gap-[30px] '>
-              <div
-                className={`flex flex-row bg-[#F2F0EF] w-full  md:w-[340px]  p-1 pe-4 rounded-lg ${
-                  error ? "border-THEME_ERROR_COLOR border-[1px]" : ""
-                }`}>
-                <input
-                  value={searchMobile}
-                  onChange={(e) => setSearchMobile(e.target.value)}
-                  dir='ltr'
-                  className={`bg-[#F2F0EF] font-normal w-full outline-none text-base `}
-                />
-                <img
-                  src='/assets/egypt.png'
-                  className='mx-2'
-                  width={30}
-                  height={30}
-                />
-              </div>
-              <button
-                onClick={Search}
-                disabled={searchMobile == ""}
-                className='bg-white disabled:opacity-70 rounded-lg px-4 py-1'>
-                ابحث
-              </button>
+      {!searchType ? (
+        <div className='bg-THEME_SECONDARY_COLOR p-3 md:px-10 md:py-6 gap-[50px] md:gap-3 flex flex-col rounded-lg  mt-2  w-full'>
+          <div className=' p-3 flex flex-col md:flex-row  items-center gap-3 md:gap-[60px]  w-full h-[47px] rounded-[10px]'>
+            <div className='flex  items-center gap-3 md:gap-[30px]'>
+              <img
+                src='/assets/search_white.svg'
+                className='w-5 md:w-[30px] h-5 md:h-[30px]'
+              />
+              <img
+                src='/assets/mobNumberWhite.svg'
+                className='w-[120px] md:w-[140px]'
+              />
             </div>
-            <p className='text-base text-red-600 mt-1'>
-              {errorText ? errorText : ""}
-            </p>
-          </div>
-        </div>
-        <div className='flex flex-col gap-3 '>
-          <p className='text-white text-lg md:text-lg '>
-            الاسم :{" "}
-            {`${currentUser?.info?.firstName ?? ""} ${
-              currentUser?.info?.lastName ?? ""
-            }`}
-          </p>
-          <div className='flex gap-3 md:gap-0 flex-col md:flex-row w-full'>
-            <div className='flex flex-col  gap-3 md:gap-3 flex-1'>
-              <p className='text-white text-lg md:text-lg  flex  gap-1'>
-                الهاتف المحمول :{" "}
-                {<p dir='ltr'>{currentUser?.info?.mobile ?? ""}</p>}
-              </p>
-              <p className='text-white text-lg md:text-lg  flex flex-row gap-1 items-center'>
-                بطاقة الرقم القومي :
-                <p>
-                  {" "}
-                  {currentUser?.info?.identification?.nationalId?.back ? (
-                    <span
-                      className='underline cursor-pointer'
-                      onClick={() => setShowNational(true)}>
-                      {" "}
-                      عرض
-                    </span>
-                  ) : currentUser?.info ? (
-                    "غير موجود"
-                  ) : (
-                    ""
-                  )}
-                </p>
-              </p>
-            </div>
-            <div className='flex flex-col  gap-3 md:gap-3 flex-1'>
-              <p className='text-white text-lg md:text-lg '>
-                البريد الإلكتروني :{" "}
-                {currentUser?.info
-                  ? currentUser?.info?.email
-                    ? currentUser?.info?.email
-                    : "غير موجود"
-                  : ""}
-              </p>
-              <p className='text-white text-lg md:text-lg  flex gap-1 flex-row'>
-                حالة الحساب :{" "}
-                <span
-                  onClick={() => {
-                    if (currentUser?.info.status.isSuspended) {
-                      setShowStatus(true);
-                    }
-                  }}
-                  className={`${
-                    currentUser?.info?.status?.isSuspended
-                      ? "underline cursor-pointer"
-                      : ""
+            <div>
+              <div className='flex flex-row w-full  items-center gap-3 md:gap-[30px] '>
+                <div
+                  className={`flex flex-row bg-[#F2F0EF] w-full  md:w-[340px]  p-1 pe-4 rounded-lg ${
+                    error ? "border-THEME_ERROR_COLOR border-[1px]" : ""
                   }`}>
-                  {" "}
-                  {currentUser?.info?currentUser?.info?.status?.isSuspended
-                    ? " معلق "
-                    : " نشط ":''}{" "}
-                </span>
+                  <input
+                    value={searchMobile}
+                    onChange={(e) => setSearchMobile(e.target.value)}
+                    dir='ltr'
+                    className={`bg-[#F2F0EF] font-normal w-full outline-none text-base `}
+                  />
+                  <img
+                    src='/assets/egypt.png'
+                    className='mx-2'
+                    width={30}
+                    height={30}
+                  />
+                </div>
+                <button
+                  onClick={Search}
+                  disabled={searchMobile == ""}
+                  className='bg-white disabled:opacity-70 rounded-lg px-4 py-1'>
+                  ابحث
+                </button>
+              </div>
+              <p className='text-base text-red-600 mt-1'>
+                {errorText ? errorText : ""}
               </p>
             </div>
           </div>
+          <div className='flex flex-col gap-3 '>
+            <p className='text-white text-lg md:text-lg '>
+              الاسم :{" "}
+              {`${currentUser?.info?.firstName ?? ""} ${
+                currentUser?.info?.lastName ?? ""
+              }`}
+            </p>
+            <div className='flex gap-3 md:gap-0 flex-col md:flex-row w-full'>
+              <div className='flex flex-col  gap-3 md:gap-3 flex-1'>
+                <p className='text-white text-lg md:text-lg  flex  gap-1'>
+                  الهاتف المحمول :{" "}
+                  {<p dir='ltr'>{currentUser?.info?.mobile ?? ""}</p>}
+                </p>
+                <p className='text-white text-lg md:text-lg  flex flex-row gap-1 items-center'>
+                  بطاقة الرقم القومي :
+                  <p>
+                    {" "}
+                    {currentUser?.info?.identification?.nationalId?.back ? (
+                      <span
+                        className='underline cursor-pointer'
+                        onClick={() => setShowNational(true)}>
+                        {" "}
+                        عرض
+                      </span>
+                    ) : currentUser?.info ? (
+                      "غير موجود"
+                    ) : (
+                      ""
+                    )}
+                  </p>
+                </p>
+              </div>
+              <div className='flex flex-col  gap-3 md:gap-3 flex-1'>
+                <p className='text-white text-lg md:text-lg '>
+                  البريد الإلكتروني :{" "}
+                  {currentUser?.info
+                    ? currentUser?.info?.email
+                      ? currentUser?.info?.email
+                      : "غير موجود"
+                    : ""}
+                </p>
+                <p className='text-white text-lg md:text-lg  flex gap-1 flex-row'>
+                  حالة الحساب :{" "}
+                  <span
+                    onClick={() => {
+                      if (currentUser?.info.status.isSuspended) {
+                        setShowStatus(true);
+                      }
+                    }}
+                    className={`${
+                      currentUser?.info?.status?.isSuspended
+                        ? "underline cursor-pointer"
+                        : ""
+                    }`}>
+                    {" "}
+                    {currentUser?.info
+                      ? currentUser?.info?.status?.isSuspended
+                        ? " معلق "
+                        : " نشط "
+                      : ""}{" "}
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-
+      ) : searchType == "find_payment" ? (
+        <div className='bg-THEME_SECONDARY_COLOR p-3 md:px-10 md:py-6 gap-[50px] md:gap-3 flex flex-col rounded-lg  mt-2  w-full'>
+          <div className=' p-3 flex flex-col md:flex-row  items-center gap-3 md:gap-[60px]  w-full h-[47px] rounded-[10px]'>
+            <div className='flex  items-center gap-3 md:gap-[20px]'>
+              <img
+                src='/assets/search_white.svg'
+                className='w-5 md:w-[30px] h-5 md:h-[30px]'
+              />
+              <p className='text-white text-xl min-w-[120px]'>
+                {"الرقم المرجعي"}
+              </p>
+            </div>
+            <div className='w-full'>
+              <div className='flex flex-row w-full  items-center gap-3 md:gap-[30px] '>
+                <div
+                  className={`flex flex-row bg-[#F2F0EF] w-full  md:w-full  p-1 pe-4 rounded-lg ${
+                    error ? "border-THEME_ERROR_COLOR border-[1px]" : ""
+                  }`}>
+                  <input
+                    value={searchMobile}
+                    onChange={(e) => setSearchMobile(e.target.value)}
+                    dir='ltr'
+                    className={`bg-[#F2F0EF]  font-normal w-full outline-none text-base `}
+                  />
+                </div>
+                <button
+                  onClick={Search}
+                  disabled={searchMobile == ""}
+                  className='bg-white disabled:opacity-70 rounded-lg px-4 py-1'>
+                  ابحث
+                </button>
+              </div>
+              <p className='text-base text-red-600 mt-1'>
+                {errorText ? errorText : ""}
+              </p>
+            </div>
+          </div>
+          <div className='flex flex-col gap-3 '>
+            <div className='flex gap-3 md:gap-0 flex-col md:flex-row w-full'>
+              <div className='flex flex-col  gap-3 md:gap-3 flex-1'>
+                <p className='text-white text-lg md:text-lg '>
+                  الاسم :{" "}
+                  {`${currentUser?.info?.firstName ?? ""} ${
+                    currentUser?.info?.lastName ?? ""
+                  }`}
+                </p>
+              </div>
+              <div className='flex flex-col  gap-3 md:gap-3 flex-1'>
+                <p className='text-white text-lg md:text-lg  flex  gap-1'>
+                  الهاتف المحمول :{" "}
+                  {<p dir='ltr'>{currentUser?.info?.mobile ?? ""}</p>}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : searchType == "find_check" ? (
+        <div className='bg-THEME_SECONDARY_COLOR p-3 md:px-10 md:py-6 gap-[50px] md:gap-3 flex flex-col rounded-lg  mt-2  w-full'>
+          <div className=' p-3 flex flex-col md:flex-row  items-center gap-3 md:gap-[0px]  w-full h-[47px] rounded-[10px]'>
+            <div className='flex  items-center gap-3 md:gap-[20px]'>
+              <img
+                src='/assets/search_white.svg'
+                className='w-5 md:w-[30px] h-5 md:h-[30px]'
+              />
+              <p className='text-white text-xl min-w-[90px]'>{"اسم البنك"}</p>
+            </div>
+            <div className='w-full'>
+              <div className='flex flex-row w-full  items-center gap-3 md:gap-[10px] '>
+                <div className='w-[250px] md:w-[330px] me-[20px]'>
+                  <Select
+                    noOptionsMessage={() => "لا يوجد  "}
+                    className='basic-single  h-11 rounded-md  text-base border-none'
+                    classNamePrefix='select'
+                    placeholder=''
+                    isDisabled={false}
+                    isLoading={false}
+                    isClearable={false}
+                    isRtl={true}
+                    isSearchable={true}
+                    options={bankNames}
+                  />
+                </div>
+                <p className='text-white text-xl min-w-[90px]'>{"رقم الشيك"}</p>
+                <div
+                  className={`flex flex-row bg-[#F2F0EF] w-full md:w-[200px]   p-1 pe-4 rounded-lg ${
+                    error ? "border-THEME_ERROR_COLOR border-[1px]" : ""
+                  }`}>
+                  <input
+                    value={searchMobile}
+                    onChange={(e) => setSearchMobile(e.target.value)}
+                    dir='ltr'
+                    className={`bg-[#F2F0EF]  font-normal w-full outline-none text-base `}
+                  />
+                </div>
+                <button
+                  onClick={Search}
+                  disabled={searchMobile == ""}
+                  className='bg-white disabled:opacity-70 rounded-lg px-4 py-1'>
+                  ابحث
+                </button>
+              </div>
+              <p className='text-base text-red-600 mt-1'>
+                {errorText ? errorText : ""}
+              </p>
+            </div>
+          </div>
+          <div className='flex flex-col gap-3 '>
+            <div className='flex gap-3 md:gap-0 flex-col md:flex-row w-full'>
+              <div className='flex flex-col  gap-3 md:gap-3 flex-1'>
+                <p className='text-white text-lg md:text-lg '>
+                  الاسم :{" "}
+                  {`${currentUser?.info?.firstName ?? ""} ${
+                    currentUser?.info?.lastName ?? ""
+                  }`}
+                </p>
+              </div>
+              <div className='flex flex-col  gap-3 md:gap-3 flex-1'>
+                <p className='text-white text-lg md:text-lg  flex  gap-1'>
+                  الهاتف المحمول :{" "}
+                  {<p dir='ltr'>{currentUser?.info?.mobile ?? ""}</p>}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+      {selectedType?.cat == 1 && selectedType.subCat == 2 ? (
+        <div className='bg-THEME_SECONDARY_COLOR p-3 md:px-10 md:py-6 gap-[50px] md:gap-3 flex flex-col rounded-lg  mt-2  w-full'>
+          <div className=' p-3 flex flex-col md:flex-row  items-center gap-3 md:gap-[60px]  w-full h-[47px] rounded-[10px]'>
+            <div className='flex  items-center gap-3 md:gap-[20px]'>
+              <img
+                src='/assets/search_white.svg'
+                className='w-5 md:w-[30px] h-5 md:h-[30px]'
+              />
+              <p className='text-white text-xl min-w-[120px]'>
+                {"الرقم المرجعي"}
+              </p>
+            </div>
+            <div className='w-full'>
+              <div className='flex flex-row w-full  items-center gap-3 md:gap-[30px] '>
+                <div
+                  className={`flex flex-row bg-[#F2F0EF] w-full  md:w-full  p-1 pe-4 rounded-lg ${
+                    error ? "border-THEME_ERROR_COLOR border-[1px]" : ""
+                  }`}>
+                  <input
+                    value={searchMobile}
+                    onChange={(e) => setSearchMobile(e.target.value)}
+                    dir='ltr'
+                    className={`bg-[#F2F0EF]  font-normal w-full outline-none text-base `}
+                  />
+                </div>
+                <button
+                  onClick={Search}
+                  disabled={searchMobile == ""}
+                  className='bg-white disabled:opacity-70 rounded-lg px-4 py-1'>
+                  ابحث
+                </button>
+              </div>
+              <p className='text-base text-red-600 mt-1'>
+                {errorText ? errorText : ""}
+              </p>
+            </div>
+          </div>
+          <div className='flex flex-col gap-3 '>
+            <div className='flex gap-3 md:gap-0 flex-col md:flex-row w-full'>
+              <div className='flex flex-col  gap-3 md:gap-3 flex-1'>
+                <p className='text-white text-lg md:text-lg '>
+                  الاسم :{" "}
+                  {`${currentUser?.info?.firstName ?? ""} ${
+                    currentUser?.info?.lastName ?? ""
+                  }`}
+                </p>
+              </div>
+              <div className='flex flex-col  gap-3 md:gap-3 flex-1'>
+                <p className='text-white text-lg md:text-lg  flex  gap-1'>
+                  الهاتف المحمول :{" "}
+                  {<p dir='ltr'>{currentUser?.info?.mobile ?? ""}</p>}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
       {showNational ? (
         <Modal isTopCentered={false}>
           <div className=' w-auto '>

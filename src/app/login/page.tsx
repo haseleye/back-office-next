@@ -99,7 +99,9 @@ export default function Home() {
               <div className='flex flex-col flex-1 items-center pt-6 md:pt-10 pb-3 md:pb-6 pe-3 md:pe-0 ps-3 md:ps-[30px] gap-6  '>
                 <img src='/assets/signin.svg' className='w-[160px] ' />
                 <div className='flex p-3 items-center bg-[#F2F0EF] w-full h-[47px] rounded-[10px]'>
-                  <img src='/assets/mobNumber.svg' />
+                  <p className='text-lg text-THEME_SECONDARY_COLOR w-[150px]'>
+                    الهاتف المحمول
+                  </p>
                   <input
                     autoComplete='new-password'
                     ref={inputRef}
@@ -121,7 +123,9 @@ export default function Home() {
                   />
                 </div>
                 <div className='flex p-3 items-center bg-[#F2F0EF] w-full h-[47px] rounded-[10px]'>
-                  <img src='/assets/passwordText.svg' />
+                  <p className='text-lg text-THEME_SECONDARY_COLOR w-[150px]'>
+                    كلمة المرور
+                  </p>
                   <input
                     dir='ltr'
                     autoComplete='new-password'

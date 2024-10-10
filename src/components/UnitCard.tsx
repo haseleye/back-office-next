@@ -1,8 +1,15 @@
 "use client";
 import { useAppContext } from "@/context";
 import { Unit } from "@/types";
+import { Dispatch, SetStateAction } from "react";
 
-export default function UnitCard({ item }: { item: Unit }) {
+export default function UnitCard({
+  item,
+  setShowUnitModal,
+}: {
+  item: Unit;
+  setShowUnitModal: Dispatch<SetStateAction<boolean>>;
+}) {
   // const { setCurrentModal, setUnitId } = useAppContext();
   return (
     <>
@@ -27,7 +34,7 @@ export default function UnitCard({ item }: { item: Unit }) {
               src='/assets/add_contract.svg'
               width={30}
               onClick={() => {
-                // setCurrentModal("select", item.id, fetchData);
+               setShowUnitModal(true)
               }}
             />
           ) : (

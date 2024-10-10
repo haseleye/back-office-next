@@ -15,13 +15,15 @@ export default function PaymentCard({ payment }: { payment: Payment }) {
               {Number(payment.amount).toLocaleString()} {"جنيه"}
             </span>
           </p>
-          <div className='flex flex-row gap-3 items-start'>
+          <div className='flex flex-row gap-3 items-center'>
             <img
               src={
                 payment?.paymentMethod == "instaPay"
-                  ? "/assets/instaPay1.svg"
+                  ? "/assets/instapay1.svg"
                   : payment.paymentMethod == "bankTransfer"
                   ? "/assets/bank_transfer.svg"
+                  : payment.paymentMethod == "bankDeposit"
+                  ? "/assets/bank_deposit.svg"
                   : "/assets/credit.svg"
               }
               className={`${

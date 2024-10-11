@@ -1,15 +1,19 @@
 import { useAppContext } from "@/context";
 import { getUserDetails } from "@/network/home";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Modal } from "./Modal";
 import Select from "react-select";
 import { bankNames } from "./constants";
+import { findCheck } from "@/network/auth";
 
 export default function TopMenu() {
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState("");
   const [searchMobile, setSearchMobile] = useState<string>("");
+  const [localUser, setLocalUser] = useState<any>();
   const { setCurrentUser, currentUser } = useAppContext();
+  const [paymentNumber, setPaymentNumber] = useState("");
+  const [bankName, setBankName] = useState(bankNames?.[0]);
   const { selectedType } = useAppContext();
   const Search = async () => {
     setError(false);
@@ -26,6 +30,7 @@ export default function TopMenu() {
   };
   const [showNational, setShowNational] = useState(false);
   const [showStatus, setShowStatus] = useState(false);
+  const { setChecks } = useAppContext();
   const searchType = useMemo(() => {
     return selectedType.cat == 1 && selectedType.subCat == 1
       ? "find_payment"
@@ -33,7 +38,28 @@ export default function TopMenu() {
       ? "find_check"
       : null;
   }, [selectedType]);
+  useEffect(() => {
+    console.log("currentUser", currentUser);
+  }, [currentUser]);
+  const searchCheck = () => {
+    findCheck(bankName.value, paymentNumber).then((response) => {
+      console.log("response", response.data.message.check);
+      setLocalUser({
+        mobile: response.data.message.check?.mobile?.number,
+        userName: response.data.message.check?.userName,
+      });
 
+      setCurrentUser({
+        ...(currentUser as any),
+        info: {
+          ...currentUser?.info,
+          mobile: response.data.message.check?.mobile?.number,
+          userName: response.data.message.check?.userName,
+        },
+      });
+      setChecks(response.data.message.check);
+    });
+  };
   return (
     <>
       {!searchType ? (
@@ -165,8 +191,8 @@ export default function TopMenu() {
                     error ? "border-THEME_ERROR_COLOR border-[1px]" : ""
                   }`}>
                   <input
-                    value={searchMobile}
-                    onChange={(e) => setSearchMobile(e.target.value)}
+                    value={paymentNumber}
+                    onChange={(e) => setPaymentNumber(e.target.value)}
                     dir='ltr'
                     className={`bg-[#F2F0EF]  font-normal w-full outline-none text-base `}
                   />
@@ -220,6 +246,10 @@ export default function TopMenu() {
                     className='basic-single  h-11 rounded-md  text-base border-none'
                     classNamePrefix='select'
                     placeholder=''
+                    value={bankName}
+                    onChange={(value) => {
+                      setBankName(value as any);
+                    }}
                     isDisabled={false}
                     isLoading={false}
                     isClearable={false}
@@ -234,15 +264,15 @@ export default function TopMenu() {
                     error ? "border-THEME_ERROR_COLOR border-[1px]" : ""
                   }`}>
                   <input
-                    value={searchMobile}
-                    onChange={(e) => setSearchMobile(e.target.value)}
+                    value={paymentNumber}
+                    onChange={(e) => setPaymentNumber(e.target.value)}
                     dir='ltr'
                     className={`bg-[#F2F0EF]  font-normal w-full outline-none text-base `}
                   />
                 </div>
                 <button
-                  onClick={Search}
-                  disabled={searchMobile == ""}
+                  onClick={searchCheck}
+                  disabled={paymentNumber == ""}
                   className='bg-white disabled:opacity-70 rounded-lg px-4 py-1'>
                   ابحث
                 </button>
@@ -257,15 +287,23 @@ export default function TopMenu() {
               <div className='flex flex-col  gap-3 md:gap-3 flex-1'>
                 <p className='text-white text-lg md:text-lg '>
                   الاسم :{" "}
-                  {`${currentUser?.info?.firstName ?? ""} ${
-                    currentUser?.info?.lastName ?? ""
-                  }`}
+                  {localUser?.userName
+                    ? localUser?.userName
+                    : `${currentUser?.info?.firstName ?? ""} ${
+                        currentUser?.info?.lastName ?? ""
+                      }`}
                 </p>
               </div>
               <div className='flex flex-col  gap-3 md:gap-3 flex-1'>
                 <p className='text-white text-lg md:text-lg  flex  gap-1'>
                   الهاتف المحمول :{" "}
-                  {<p dir='ltr'>{currentUser?.info?.mobile ?? ""}</p>}
+                  {
+                    <p dir='ltr'>
+                      {localUser?.mobile
+                        ? localUser.mobile
+                        : currentUser?.info?.mobile ?? ""}
+                    </p>
+                  }
                 </p>
               </div>
             </div>

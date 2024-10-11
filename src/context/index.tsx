@@ -1,5 +1,5 @@
 "use client";
-import { UserDetails } from "@/types";
+import { bankChecks, MobilePhone, Payment, UserDetails } from "@/types";
 import { getCookie } from "cookies-next";
 import { createContext, useContext, useState } from "react";
 
@@ -9,13 +9,17 @@ const APPContext = createContext<{
     cat: number;
     subCat: number;
   };
-  setCurrentUser: (user: UserDetails|undefined) => void;
+  checks: bankChecks[];
+  setCurrentUser: (user: UserDetails | undefined) => void;
   setSelectedType: (type: { cat: number; subCat: number }) => void;
+  setChecks: (check: bankChecks) => void;
 }>({
   currentUser: undefined,
   selectedType: { cat: 0, subCat: 0 },
+  checks:[],
   setCurrentUser: (user) => {},
   setSelectedType(type) {},
+  setChecks:(check)=>{}
 });
 
 export function AppWrapper({ children }: { children: React.ReactNode }) {
@@ -25,11 +29,20 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
       cat: number;
       subCat: number;
     };
+    checks: bankChecks[];
+    payments: Payment[];
+    mobile: MobilePhone;
   }>({
     currentUser: undefined,
     selectedType: {
       cat: 0,
       subCat: 0,
+    },
+    checks: [],
+    payments: [],
+    mobile: {
+      country: "Egypt",
+      number:''
     },
   });
   const setCurrentUser = (user: UserDetails|undefined) => {
@@ -38,14 +51,20 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   const setSelectedType = (type: { cat: number; subCat: number }) => {
     setState({ ...state, selectedType: type });
   };
+    const setChecks = (check: bankChecks) => {
+      setState({ ...state, checks: [check] });
+    };
+
 
   return (
     <APPContext.Provider
       value={{
         currentUser: state.currentUser,
         selectedType: state.selectedType,
+        checks:state.checks,
         setCurrentUser,
         setSelectedType,
+        setChecks,
       }}>
       {children}
     </APPContext.Provider>

@@ -49,7 +49,7 @@ export interface bankChecks {
   amount: number;
   bankName: string;
   status: {
-    current:string
+    current: string;
   };
   statusText: string;
   unitId: string;
@@ -145,6 +145,7 @@ export interface GuestInfo {
       front: string;
     };
   };
+  userName: string | undefined;
   lastName: string;
   mobile: string;
   status: {
@@ -160,7 +161,6 @@ export interface UserDetails {
   totalChecks: number;
   totalPayments: number;
   units: Unit[];
- 
 }
 
 interface Mobile {
@@ -169,6 +169,10 @@ interface Mobile {
     number: string;
   };
   isVerified: boolean;
+}
+export interface MobilePhone {
+  country: string;
+  number: string;
 }
 
 interface Email {

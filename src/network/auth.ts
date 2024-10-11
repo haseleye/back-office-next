@@ -86,16 +86,25 @@ export const createUser = (
     }
   );
 
-export const Login = (
-  data: {
-    mobileNumber: string;
-    password: string;
-  }
-) =>
+export const Login = (data: { mobileNumber: string; password: string }) =>
   axiosInstance.post(
     `staff/login`,
     {
       ...data,
+    },
+    {
+      headers: {
+        "accept-language": "ar",
+      },
+    }
+  );
+
+export const findCheck = (bankName: string, number: string) =>
+  axiosInstance.post(
+    `staff/find-bank-check`,
+    {
+      bankName: bankName,
+      number: number,
     },
     {
       headers: {

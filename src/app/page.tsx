@@ -14,7 +14,7 @@ export default function Home() {
   const isLoggedIn = getCookie("authToken");
   const router = useRouter();
   const [showUnitModal, setShowUnitModal] = useState(false);
-  const { currentUser, selectedType } = useAppContext();
+  const { currentUser, selectedType ,checks} = useAppContext();
   useEffect(() => {
     if (!isLoggedIn) {
       router.push("/login");
@@ -829,10 +829,15 @@ export default function Home() {
                     className='bg-THEME_PRIMARY_COLOR w-full md:w-[160px] text-white rounded-md h-[50px] min-h-[50px]'>
                     إضافة
                   </button>
-              
                 </div>
               </div>
             </>
+          ) : selectedType.subCat == 4 ? (
+            <div className="flex flex-row flex-wrap justify-center">
+              {checks.map((item,index) => (
+                <BankCard payment={item} key={`check_${index}`} />
+              ))}
+            </div>
           ) : (
             ""
           )}

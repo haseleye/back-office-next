@@ -19,7 +19,7 @@ export default function PaymentCard({ payment }: { payment: Payment }) {
             <img
               src={
                 payment?.paymentMethod == "instaPay"
-                  ? "/assets/instapay3.svg"
+                  ? "/assets/instaPay3.svg"
                   : payment.paymentMethod == "bankTransfer"
                   ? "/assets/bank_transfer.svg"
                   : payment.paymentMethod == "bankDeposit"
@@ -56,10 +56,7 @@ export default function PaymentCard({ payment }: { payment: Payment }) {
               <p
                 className='font-semibold  flex flex-row gap-1 items-center'
                 dir='ltr'>
-                {`${payment.id?.substring(
-                  0,
-                  11
-                )}...`}
+                {`${payment.id?.substring(0, 11)}...`}
                 <img
                   className='cursor-pointer'
                   src={`/assets/${copied ? "copied.png" : "copyPrimary.svg"}`}

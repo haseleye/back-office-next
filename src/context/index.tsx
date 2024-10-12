@@ -1,5 +1,5 @@
 "use client";
-import { bankChecks, MobilePhone, Payment, UserDetails } from "@/types";
+import { bankChecks, FindCheckType, MobilePhone, Payment, UserDetails } from "@/types";
 import { getCookie } from "cookies-next";
 import { createContext, useContext, useState } from "react";
 
@@ -9,17 +9,17 @@ const APPContext = createContext<{
     cat: number;
     subCat: number;
   };
-  checks: bankChecks[];
-  setCurrentUser: (user: UserDetails | undefined) => void;
+  checks: FindCheckType[];
+  setCurrentUser: (user: UserDetails | undefined,changeSelected ?: boolean) => void;
   setSelectedType: (type: { cat: number; subCat: number }) => void;
-  setChecks: (check: bankChecks) => void;
+  setChecks: (check: FindCheckType) => void;
 }>({
   currentUser: undefined,
   selectedType: { cat: 0, subCat: 0 },
-  checks:[],
+  checks: [],
   setCurrentUser: (user) => {},
   setSelectedType(type) {},
-  setChecks:(check)=>{}
+  setChecks: (check) => {},
 });
 
 export function AppWrapper({ children }: { children: React.ReactNode }) {
@@ -29,7 +29,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
       cat: number;
       subCat: number;
     };
-    checks: bankChecks[];
+    checks: FindCheckType[];
     payments: Payment[];
     mobile: MobilePhone;
   }>({
@@ -42,16 +42,17 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
     payments: [],
     mobile: {
       country: "Egypt",
-      number:''
+      number: "",
     },
   });
-  const setCurrentUser = (user: UserDetails|undefined) => {
-    setState({ ...state, currentUser: user });
+  const setCurrentUser = (user: UserDetails|undefined,changeSelected?:boolean) => {
+    setState({ ...state, currentUser: user,selectedType:changeSelected?{cat:0,subCat:0}:state.selectedType });
+
   };
   const setSelectedType = (type: { cat: number; subCat: number }) => {
-    setState({ ...state, selectedType: type });
+    setState({ ...state, selectedType: type ,checks:[]});
   };
-    const setChecks = (check: bankChecks) => {
+    const setChecks = (check: FindCheckType) => {
       setState({ ...state, checks: [check] });
     };
 

@@ -1,7 +1,7 @@
 import { useAppContext } from "@/context";
 import { deleteCookie, getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
-import { Fragment, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 
 export const SideMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,6 +10,28 @@ export const SideMenu = () => {
   const userData = getCookie("user")
     ? JSON.parse(getCookie("user") as string)
     : null;
+  const handleClickOutside = (event: any) => {
+    if (
+      (event.target?.offsetParent?.id || event.target.id) !=
+        "default-sidebar" &&
+      isOpen
+    ) {
+      console.log("JJKK");
+      setIsOpen(false);
+    } else {
+      console.log("IS OPEN");
+    }
+  };
+  useEffect(() => {
+    // Add a click event listener to the document
+    document.addEventListener("click", handleClickOutside);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [isOpen]);
+
   return (
     <>
       <button
@@ -17,12 +39,14 @@ export const SideMenu = () => {
           setIsOpen(!isOpen);
         }}
         type='button'
-        className='inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 pb-[50px] rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600'>
+        className={`inline-flex items-center ${
+          isOpen ? "" : "bg-THEME_SECONDARY_COLOR"
+        } sticky top-0  z-[100] md:relative md:bg-transparent w-full md:w-auto p-2 m-0 md:mt-2 md:ms-3 text-sm text-gray-500 pb-2 md:pb-[50px] rounded-none md:rounded-lg sm:hidden  focus:outline-none `}>
         <span className='sr-only'>Open sidebar</span>
         <svg
           className='w-6 h-6'
           aria-hidden='true'
-          fill='currentColor'
+          fill='white'
           viewBox='0 0 20 20'
           xmlns='http://www.w3.org/2000/svg'>
           <path
@@ -33,21 +57,25 @@ export const SideMenu = () => {
       </button>
       <aside
         id='default-sidebar'
-        className={` fixed top-0 right-0 z-40 w-64 h-screen transition-transform   md:flex md:translate-x-0  ${
+        className={` z-[200] md:z-[40]  fixed top-0 right-0  w-64 h-screen transition-transform   md:flex md:translate-x-0  ${
           !isOpen ? "hidden" : "visible"
         }`}
         aria-label='Sidebar'>
-        <div className='h-full px-3 py-4 pb-[50px]  flex flex-col  justify-between  bg-THEME_SECONDARY_COLOR w-full'>
-          <div className='flex flex-col   '>
+        <div className='h-full px-3 pt-5 md:pt-4 py-4 pb-[50px] relative  flex flex-col  justify-between  bg-THEME_SECONDARY_COLOR w-full'>
+          <img
+            src='/assets/close.png'
+            className='absolute top-3 left-5 w-5 h-5 '
+          />
+          <div className='flex flex-col  '>
             <div className='flex flex-col gap-2 items-center'>
-              <img src='/assets/logo.svg' className='w-[150px]' />
+              <img src='/assets/logo.svg' className='w-[100px] md:w-[150px]' />
               <img
                 src={userData?.profilePhoto}
                 width={50}
                 height={50}
                 className='rounded-full'
               />
-              <p className='text-white font-medium text-lg '>
+              <p className='text-white font-medium text-base md:text-lg '>
                 {userData?.firstName} {userData?.lastName}
               </p>
             </div>
@@ -58,7 +86,7 @@ export const SideMenu = () => {
                   setSelectedType({ cat: 0, subCat: 0 });
                 }}>
                 <MenuImage isSelected={selectedType.cat == 0} />
-                <p className='text-white font-medium text-lg'> العملاء</p>
+                <p className='text-white font-medium text-base md:text-lg'> العملاء</p>
               </div>
 
               {selectedType.cat == 0 ? (
@@ -80,7 +108,7 @@ export const SideMenu = () => {
                 }}>
                 <MenuImage isSelected={selectedType.cat == 1} />
 
-                <p className='text-white font-medium text-lg'> المدفوعات</p>
+                <p className='text-white font-medium text-base md:text-lg'> المدفوعات</p>
               </div>
               {selectedType.cat == 1 ? (
                 <PaymentsSubMenu
@@ -99,7 +127,7 @@ export const SideMenu = () => {
                   setSelectedType({ cat: 2, subCat: 0 });
                 }}>
                 <MenuImage isSelected={selectedType.cat == 2} />
-                <p className='text-white font-medium text-lg'> التقارير</p>
+                <p className='text-white font-medium text-base md:text-lg'> التقارير</p>
               </div>
             </div>
           </div>
@@ -112,7 +140,7 @@ export const SideMenu = () => {
               router.push("/login");
             }}>
             <img src='/assets/logout.svg' width={30} height={30} />
-            <p className='text-white font-medium text-lg'> تسجيل الخروج</p>
+            <p className='text-white font-medium text-base md:text-lg'> تسجيل الخروج</p>
           </div>
         </div>
       </aside>
@@ -276,9 +304,9 @@ const SubMenuItem = ({
       } py-[3px] px-[6px] rounded-md flex-row gap-2 items-end cursor-pointer`}>
       <img
         src={`/assets/${imgSrc}`}
-        className={`w-[28px] ${size ? `!h-[${size}px]` : "h-[30px]"}`}
+        className={`w-5 md:w-[28px]  ${size ? `!h-[${size}px]` : "h-5 md:h-[30px]"}`}
       />
-      <p className='text-white font-medium text-base'> {label}</p>
+      <p className='text-white font-medium text-sm md:text-base'> {label}</p>
     </div>
   );
 };

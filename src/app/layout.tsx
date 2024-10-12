@@ -31,9 +31,14 @@ export default function RootLayout({
         id='body'
         className={`${inter.className} flex flex-col  h-full justify-between `}>
         <AppWrapper>
+          <div id='alert-container' className='alert-container'></div>
+
           {path?.includes("login") ? "" : <SideMenu />}
 
-          <div className={`${path.includes?.("login") ? "" : "p-4 sm:mr-64"} min-h-screen`}>
+          <div
+            className={`${
+              path.includes?.("login") ? "" : "pt-0 md:pt-4 p-4 sm:mr-64"
+            } min-h-screen`}>
             <div
               className={`w-full  ${
                 path.includes("login") ? "" : "pe-0 md:pe-10"

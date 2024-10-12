@@ -5,6 +5,7 @@ import { Modal } from "./Modal";
 import Select from "react-select";
 import { bankNames } from "./constants";
 import { findCheck } from "@/network/auth";
+import FindCheck from "./FindCheck";
 
 export default function TopMenu() {
   const [error, setError] = useState(false);
@@ -13,7 +14,9 @@ export default function TopMenu() {
   const [localUser, setLocalUser] = useState<any>();
   const { setCurrentUser, currentUser } = useAppContext();
   const [paymentNumber, setPaymentNumber] = useState("");
-  const [bankName, setBankName] = useState(bankNames?.[0]);
+  const [bankName, setBankName] = useState<
+    { label: string; value: string } | undefined
+  >(undefined);
   const { selectedType } = useAppContext();
   const Search = async () => {
     setError(false);
@@ -42,7 +45,7 @@ export default function TopMenu() {
     console.log("currentUser", currentUser);
   }, [currentUser]);
   const searchCheck = () => {
-    findCheck(bankName.value, paymentNumber).then((response) => {
+    findCheck((bankName as any)?.value , paymentNumber).then((response) => {
       console.log("response", response.data.message.check);
       setLocalUser({
         mobile: response.data.message.check?.mobile?.number,
@@ -229,86 +232,7 @@ export default function TopMenu() {
           </div>
         </div>
       ) : searchType == "find_check" ? (
-        <div className='bg-THEME_SECONDARY_COLOR p-3 md:px-10 md:py-6 gap-[50px] md:gap-3 flex flex-col rounded-lg  mt-2  w-full'>
-          <div className=' p-3 flex flex-col md:flex-row  items-center gap-3 md:gap-[0px]  w-full h-[47px] rounded-[10px]'>
-            <div className='flex  items-center gap-3 md:gap-[20px]'>
-              <img
-                src='/assets/search_white.svg'
-                className='w-5 md:w-[30px] h-5 md:h-[30px]'
-              />
-              <p className='text-white text-xl min-w-[90px]'>{"اسم البنك"}</p>
-            </div>
-            <div className='w-full'>
-              <div className='flex flex-row w-full  items-center gap-3 md:gap-[10px] '>
-                <div className='w-[250px] md:w-[330px] me-[20px]'>
-                  <Select
-                    noOptionsMessage={() => "لا يوجد  "}
-                    className='basic-single  h-11 rounded-md  text-base border-none'
-                    classNamePrefix='select'
-                    placeholder=''
-                    value={bankName}
-                    onChange={(value) => {
-                      setBankName(value as any);
-                    }}
-                    isDisabled={false}
-                    isLoading={false}
-                    isClearable={false}
-                    isRtl={true}
-                    isSearchable={true}
-                    options={bankNames}
-                  />
-                </div>
-                <p className='text-white text-xl min-w-[90px]'>{"رقم الشيك"}</p>
-                <div
-                  className={`flex flex-row bg-[#F2F0EF] w-full md:w-[200px]   p-1 pe-4 rounded-lg ${
-                    error ? "border-THEME_ERROR_COLOR border-[1px]" : ""
-                  }`}>
-                  <input
-                    value={paymentNumber}
-                    onChange={(e) => setPaymentNumber(e.target.value)}
-                    dir='ltr'
-                    className={`bg-[#F2F0EF]  font-normal w-full outline-none text-base `}
-                  />
-                </div>
-                <button
-                  onClick={searchCheck}
-                  disabled={paymentNumber == ""}
-                  className='bg-white disabled:opacity-70 rounded-lg px-4 py-1'>
-                  ابحث
-                </button>
-              </div>
-              <p className='text-base text-red-600 mt-1'>
-                {errorText ? errorText : ""}
-              </p>
-            </div>
-          </div>
-          <div className='flex flex-col gap-3 '>
-            <div className='flex gap-3 md:gap-0 flex-col md:flex-row w-full'>
-              <div className='flex flex-col  gap-3 md:gap-3 flex-1'>
-                <p className='text-white text-lg md:text-lg '>
-                  الاسم :{" "}
-                  {localUser?.userName
-                    ? localUser?.userName
-                    : `${currentUser?.info?.firstName ?? ""} ${
-                        currentUser?.info?.lastName ?? ""
-                      }`}
-                </p>
-              </div>
-              <div className='flex flex-col  gap-3 md:gap-3 flex-1'>
-                <p className='text-white text-lg md:text-lg  flex  gap-1'>
-                  الهاتف المحمول :{" "}
-                  {
-                    <p dir='ltr'>
-                      {localUser?.mobile
-                        ? localUser.mobile
-                        : currentUser?.info?.mobile ?? ""}
-                    </p>
-                  }
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+       <FindCheck/>
       ) : (
         ""
       )}
@@ -372,8 +296,8 @@ export default function TopMenu() {
         ""
       )}
       {showNational ? (
-        <Modal isTopCentered={false}>
-          <div className=' w-auto '>
+        <Modal isTopCentered={window.innerWidth>768?false:true}>
+          <div className=' w-auto  mt-4 md:mt-0'>
             <div className='h-[50px] w-full rounded-t-lg bg-THEME_PRIMARY_COLOR flex flex-row justify-between px-6 items-center'>
               <p className='text-base md:text-lg text-white '>
                 بطاقة الرقم القومي
@@ -391,7 +315,7 @@ export default function TopMenu() {
                 height={20}
               />
             </div>
-            <div className='bg-white w-full p-6 pt-10  flex flex-col gap-10 rounded-b-lg items-center'>
+            <div className='bg-white w-full p-4 pt-3 md:pt-10  flex flex-col gap-3 md:gap-10 rounded-b-lg items-center'>
               <div className='flex  flex-col gap-3 md:gap-0 md:flex-row px-2 w-full md:px-6  justify-between'>
                 <p className='text-black text-base md:text-lg '>
                   الاسم :{" "}

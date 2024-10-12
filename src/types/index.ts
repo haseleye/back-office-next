@@ -54,6 +54,19 @@ export interface bankChecks {
   statusText: string;
   unitId: string;
 }
+export interface FindCheckType {
+  number: string;
+  dueDate: string;
+  amount: number;
+  bankName: string;
+  status: {
+    current: string;
+  };
+  statusText: string;
+  unitId: string;
+  userName: string;
+  mobile: { country: string; number: string };
+}
 export interface Unit {
   id: string;
   bookingDate: string;

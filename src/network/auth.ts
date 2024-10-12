@@ -63,25 +63,24 @@ export const resendOtpApiEmail = (email: string, lang: string) =>
     }
   );
 
-export const createUser = (
-  data: {
-    firstName: string;
-    lastName: string;
-    mobileNumber: string;
-    password: string;
-    verificationCode: string;
-  },
-  lang: string
-) =>
+export const addPayment = (data: {
+  id?: string;
+  unitId?: string;
+  paymentType?: string;
+  paymentMethod: string;
+  amount: 8000;
+  adviceDate: string;
+  transactionNumber: string;
+  comments: string;
+}) =>
   axiosInstance.post(
-    `staff/create-user`,
+    `staff/add-payment`,
     {
       ...data,
-      role: "User",
     },
     {
       headers: {
-        "accept-language": lang ?? "ar",
+        "accept-language": "ar",
       },
     }
   );
@@ -112,6 +111,7 @@ export const findCheck = (bankName: string, number: string) =>
       },
     }
   );
+
 export const forgotPassword = (number: string, lang: string) =>
   axiosInstance.post(
     `staff/forgot-password
@@ -217,3 +217,31 @@ export const updateEmail = (email: string, lang: string) =>
       },
     }
   );
+export const updateCheckStatus = ({
+  bankName,
+  number,
+  newStatus,
+  adviceDate,
+}: {
+  bankName:string;
+  number:string;
+  newStatus:string;
+  adviceDate:string;
+}) =>
+  axiosInstance.post(
+    `staff/update-check-status
+`,
+    {
+      bankName: bankName,
+      number: number,
+      newStatus: newStatus,
+      adviceDate: adviceDate,
+    },
+    {
+      headers: {
+        "accept-language":  "ar",
+      },
+    }
+  );
+
+  

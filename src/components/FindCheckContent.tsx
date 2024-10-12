@@ -13,7 +13,6 @@ export default function FindCheckContent() {
     setLoading(true);
     getUserDetails(checks?.[0]?.mobile?.number)
       .then((response) => {
-        console.log("response", response);
         setCurrentUser((response.data as any)?.message, true);
       })
       .catch((error) => {

@@ -16,10 +16,8 @@ export const SideMenu = () => {
         "default-sidebar" &&
       isOpen
     ) {
-      console.log("JJKK");
       setIsOpen(false);
     } else {
-      console.log("IS OPEN");
     }
   };
   useEffect(() => {
@@ -64,7 +62,7 @@ export const SideMenu = () => {
         <div className='h-full px-3 pt-5 md:pt-4 py-4 pb-[50px] relative  flex flex-col  justify-between  bg-THEME_SECONDARY_COLOR w-full'>
           <img
             src='/assets/close.png'
-            className='absolute top-3 left-5 w-5 h-5 '
+            className='absolute top-3 left-5 w-5 h-5  md:hidden'
           />
           <div className='flex flex-col  '>
             <div className='flex flex-col gap-2 items-center'>

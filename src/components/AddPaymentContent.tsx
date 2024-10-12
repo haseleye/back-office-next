@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Select from "react-select";
 import { addPayment } from "@/network/auth";
 import { getUserDetails } from "@/network/home";
+import { LoadingSpinner } from "./loading";
 
 interface FormTypes {
   unitId: undefined | string;
@@ -23,7 +24,19 @@ export default function AddPaymentContent({
   isModal: boolean;
   setShowModal: (value: boolean) => void;
 }) {
-  const [formData, setFormData] = useState<FormTypes>();
+  const [formData, setFormData] = useState<FormTypes>({
+    adviceDate: new Date().toISOString().split("T")[0],
+    adviceTime: `00:00`,
+    paymentType: undefined,
+    paymentMethod: undefined,
+    comments: "",
+    amount: "",
+    transactionNumber: "",
+    unitId: undefined,
+    id: undefined,
+  });
+  const [loading, setLoading] = useState(false);
+  const [typeError, setTypeError] = useState("");
   const { currentUser, setCurrentUser } = useAppContext();
   const bookingCodes = useMemo(() => {
     let checks =
@@ -41,11 +54,10 @@ export default function AddPaymentContent({
         label: item,
       };
     });
-    return newArray;
+    return [{ value: "حجز جديد", label: "حجز جديد" }, ...newArray];
   }, [currentUser]);
   function showAlert(message: string, type = "error", timeout = 3000) {
     const alertContainer = document.getElementById("alert-container");
-    console.log("alertContainer", alertContainer);
     // Create the alert element
     const alert = document.createElement("div");
     alert.className = `alert alert.success`;
@@ -61,36 +73,75 @@ export default function AddPaymentContent({
   }
 
   const onSubmit = () => {
-   
+    setLoading(true);
     let form = { ...formData };
     if (currentUser?.info.id) {
       form.id = currentUser?.info?.id;
     }
-    addPayment(form as any).then((response) => {
-       setFormData({
-         adviceDate: undefined,
-         adviceTime: undefined,
-         paymentType: undefined,
-         paymentMethod: undefined,
-         comments: "",
-         amount: "",
-         transactionNumber: "",
-         unitId: undefined,
-         id: undefined,
-       });
-      getUserDetails(currentUser?.info.mobile as string).then((response) => {
-        if (currentUser?.info.mobile) {
-          setCurrentUser((response.data as any)?.message);
+    addPayment({
+      ...(form as any),
+      adviceDate: `${formData.adviceDate}T${formData.adviceTime}`,
+      unitId: formData?.unitId == "حجز جديد"?'':formData?.unitId,
+    })
+      .then((response) => {
+        setFormData({
+          adviceDate: undefined,
+          adviceTime: undefined,
+          paymentType: undefined,
+          paymentMethod: undefined,
+          comments: "",
+          amount: "",
+          transactionNumber: "",
+          unitId: undefined,
+          id: undefined,
+        });
+        if (currentUser) {
+          getUserDetails(currentUser?.info.mobile as string).then(
+            (response) => {
+              if (currentUser?.info.mobile) {
+                setCurrentUser((response.data as any)?.message);
+              }
+            }
+          );
         }
-      });
         showAlert("تم إضافة عملية الدفع", "success");
-        window.scroll({top:0})
-    });
+
+        window.scroll({ top: 0 });
+        if (isModal) {
+          (document.getElementById("body") as any).style.overflow = "scroll";
+          setShowModal(false);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
-   
+
+  const paymentType = useMemo(() => {
+    setTypeError("");
+    if (!formData.unitId) return "";
+    if (formData?.unitId == "حجز جديد") {
+      setFormData({ ...formData, paymentType: "booking" });
+      return paymentTypes?.[0]?.label;
+    } else if (currentUser?.units?.length) {
+      let unit = currentUser?.units?.filter(
+        (item) => item.id == formData?.unitId
+      );
+      if (!unit?.[0]?.contractingDate) {
+        setFormData({ ...formData, paymentType: "contracting" } as any);
+        return paymentTypes?.[1]?.label;
+      }
+      if (!unit?.[0]?.contractDate && !unit?.[0]?.completionDate) {
+        setFormData({ ...formData, paymentType: "cashing" } as any);
+        return paymentTypes?.[2]?.label;
+      } else {
+        setTypeError(unit?.[0]?.info);
+      }
+    }
+    return "";
+  }, [formData?.unitId]);
   return (
-      <>
-    
+    <>
       <div
         className={`flex   flex-col gap-3 ${
           isModal ? "md:gap-[80px]" : ""
@@ -101,42 +152,48 @@ export default function AddPaymentContent({
           <p className='text-black text-base md:text-xl font-semibold'>
             الاسم :{" "}
             <span className='font-normal text-lg truncate'>
-              {currentUser?.info.firstName} {currentUser?.info.lastName}
+              {currentUser
+                ? `${currentUser?.info.firstName} ${currentUser?.info.lastName}`
+                : "غير معلوم"}
             </span>
             <p className='text-black  md:hidden text-base md:text-xl font-semibold '>
               الهاتف المحمول :{" "}
               <span dir='ltr' className='font-normal text-lg'>
-                {currentUser?.info.mobile}
+                {currentUser ? currentUser?.info.mobile : "غير معلوم"}
               </span>
             </p>
           </p>
           <div className='flex flex-row gap-1 items-center'>
             <p className='text-xl font-medium'>كود الحجز : </p>
-            <div className='w-[230px]'>
-              <Select
-                noOptionsMessage={() => "لا يوجد  "}
-                className={`basic-single  h-11 rounded-md  text-base border-none`}
-                classNamePrefix='select'
-                placeholder=''
-                value={{
-                  label: formData?.unitId,
-                  value: formData?.unitId,
-                }}
-                onChange={(value) => {
-                  setFormData({
-                    ...formData,
-                    unitId: value?.value as string,
-                  } as any);
-                }}
-                isDisabled={false}
-                isLoading={false}
-                isClearable={false}
-                isRtl={true}
-                isSearchable={true}
-                name='color'
-                options={bookingCodes}
-              />
-            </div>
+            {currentUser ? (
+              <div className='w-[230px]'>
+                <Select
+                  noOptionsMessage={() => "لا يوجد  "}
+                  className={`basic-single  h-11 rounded-md  text-base border-none`}
+                  classNamePrefix='select'
+                  placeholder=''
+                  value={{
+                    label: formData?.unitId,
+                    value: formData?.unitId,
+                  }}
+                  onChange={(value) => {
+                    setFormData({
+                      ...formData,
+                      unitId: value?.value as string,
+                    } as any);
+                  }}
+                  isDisabled={false}
+                  isLoading={false}
+                  isClearable={false}
+                  isRtl={true}
+                  isSearchable={true}
+                  name='color'
+                  options={bookingCodes}
+                />
+              </div>
+            ) : (
+              <p className='text-lg font-normal'>{"غير معلوم"}</p>
+            )}
           </div>
           <div className='flex flex-row gap-2 items-center'>
             <p className='text-xl font-medium'> القيمة : </p>
@@ -146,7 +203,8 @@ export default function AddPaymentContent({
               type='text'
               value={formData?.amount}
               onChange={(e) => {
-                setFormData({ ...formData, amount: e.target.value } as any);
+                if (/^[0-9]*$/.test(e.target.value))
+                  setFormData({ ...formData, amount: e.target.value } as any);
               }}
             />
             <p className='text-xl '> جنيه </p>
@@ -155,7 +213,9 @@ export default function AddPaymentContent({
             <p className='text-xl font-medium'>التاريخ : </p>
 
             <input
-            value={formData?.adviceDate ?? (new Date()).toISOString().split('T')[0]}
+              value={
+                formData?.adviceDate ?? new Date().toISOString().split("T")[0]
+              }
               onChange={(e) => {
                 setFormData({
                   ...formData,
@@ -171,38 +231,14 @@ export default function AddPaymentContent({
           <p className='text-black hidden md:flex text-base md:text-xl font-semibold '>
             الهاتف المحمول :{" "}
             <span dir='ltr' className='font-normal text-lg'>
-              {currentUser?.info.mobile}
+              {currentUser ? currentUser?.info.mobile : "غير معلوم"}
             </span>
           </p>
           <div className='flex flex-row gap-1 items-center'>
             <p className='text-xl font-medium'>توجيه الدفع : </p>
-            <div className='w-[143px]'>
-              <Select
-                className={`basic-single  h-11 rounded-md  text-base border-none`}
-                classNamePrefix='select'
-                placeholder=''
-                isDisabled={false}
-                isLoading={false}
-                value={
-                  formData?.paymentType
-                    ? paymentTypes?.filter?.(
-                        (item) => item.value == formData?.paymentType
-                      )
-                    : null
-                }
-                isClearable={false}
-                isRtl={true}
-                isSearchable={true}
-                name='paymentType'
-                onChange={(value) => {
-                  setFormData({
-                    ...formData,
-                    paymentType: value?.value,
-                  } as any);
-                }}
-                options={paymentTypes}
-              />
-            </div>
+            <p className='text-lg font-normal'>
+              {currentUser ? paymentType : "غير معلوم"}
+            </p>
           </div>
           <div className='flex flex-row gap-1 items-center'>
             <p className='text-xl font-medium'>طريقة الدفع : </p>
@@ -239,6 +275,7 @@ export default function AddPaymentContent({
 
             <input
               aria-label='time'
+              
               className='bg-[#F2F0EF] w-[130px] h-11 rounded-md px-2 text-base'
               type='time'
               value={formData?.adviceTime}
@@ -249,6 +286,8 @@ export default function AddPaymentContent({
           </div>
         </div>
       </div>
+      {/* {typeError ? <p className='text-red-600 text-base'>{typeError}</p> : ""} */}
+
       <div
         className={`${
           isModal
@@ -291,20 +330,24 @@ export default function AddPaymentContent({
         <button
           onClick={onSubmit}
           disabled={
-            !formData?.adviceDate ||
-            !formData?.amount ||
+            (currentUser && (!formData?.unitId || !formData?.paymentType)) ||
             !formData?.paymentMethod ||
+            !formData.adviceTime ||
+            !formData.adviceDate ||
+            !formData?.amount ||
             !formData.transactionNumber
           }
-          className={`bg-THEME_PRIMARY_COLOR w-full md:w-[160px] text-white rounded-md h-[50px] min-h-[50px] ${
-            !formData?.adviceDate ||
-            !formData?.amount ||
+          className={`bg-THEME_PRIMARY_COLOR w-full flex items-center justify-center md:w-[160px] text-white rounded-md h-[50px] min-h-[50px] ${
+            (currentUser && (!formData?.unitId || !formData?.paymentType)) ||
             !formData?.paymentMethod ||
+            !formData.adviceTime ||
+            !formData.adviceDate ||
+            !formData?.amount ||
             !formData.transactionNumber
               ? "opacity-50"
               : ""
           }`}>
-          إضافة
+          {loading ? <LoadingSpinner /> : "          إضافة"}
         </button>
         {isModal ? (
           <button

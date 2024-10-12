@@ -51,12 +51,12 @@ export default function AddPayment({
         label: item,
       };
     });
-    return newArray;
+    return [{ value: "-1", label: "حجز جديد" }, ...newArray];
   }, [currentUser]);
   return (
     <>
       {showModal ? (
-        <Modal isTopCentered={true}>
+        <Modal setShowModal={setShowModal} isTopCentered={true}>
           <div className=' w-auto  min-w-full md:min-w-[600px] mt-10 '>
             <div className='h-[50px] w-full rounded-t-lg bg-THEME_PRIMARY_COLOR flex flex-row justify-between px-6 items-center'>
               <p className='text-base md:text-xl  text-white font-semibold'>
@@ -145,7 +145,6 @@ export default function AddPayment({
                           placeholder='يوم/شهر/سنة'
                           value={formatDateToYYYYMMDD(new Date())}
                           onChange={(e) => {
-                            console.log("Ee", e.target.value);
                           }}
                           className='bg-[#F2F0EF]  w-[200px] md:w-[270px]  h-11 rounded-[10px] px-2 text-base'
                           type='date'

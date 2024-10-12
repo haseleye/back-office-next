@@ -731,6 +731,9 @@ video {
 .h-11 {
   height: 2.75rem;
 }
+.h-3 {
+  height: 0.75rem;
+}
 .h-5 {
   height: 1.25rem;
 }
@@ -1581,6 +1584,30 @@ input:focus {
 .css-1nmdiq5-menu {
   z-index: 10000 !important;
 }
+.select--is-disabled{
+  border-radius: 6px !important;
+}
+.select__control--is-disabled{
+  border-radius: 6px !important;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  /* Set the width for vertical scrollbars */
+  height: 8px;
+  /* Set the height for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  /* Color of the scrollbar thumb */
+  border-radius: 10px;
+  /* Roundness of the scrollbar thumb */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  /* Color of the scrollbar track */
+}
 
 .focus\:bg-\[\#88735026\]:focus {
   background-color: #88735026;
@@ -1633,6 +1660,10 @@ input:focus {
   .md\:my-5 {
     margin-top: 1.25rem;
     margin-bottom: 1.25rem;
+  }
+
+  .md\:-mt-2 {
+    margin-top: -0.5rem;
   }
 
   .md\:mb-0 {

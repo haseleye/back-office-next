@@ -51,7 +51,7 @@ export default function Home() {
         label: item,
       };
     });
-    return newArray;
+    return [{ value: "-1", label: "حجز جديد" }, ...newArray];
   }, [currentUser]);
 
   return (
@@ -61,7 +61,7 @@ export default function Home() {
       ) : selectedType.cat == 1 ? (
         <>
           {selectedType.subCat == 0 ? (
-            <div className='bg-white mb-[80px] md:mb-0 md:h-auto max-h-auto overflow-auto w-full p-6 pt-10  flex flex-col gap-5 rounded-b-lg items-center px-3 md:px-10 '>
+            <div className='bg-white mb-[80px] md:mb-0 md:h-auto max-h-auto  w-full p-6 pt-10  flex flex-col gap-5 rounded-b-lg items-center px-3 md:px-10 '>
               <AddPaymentContent isModal={false} setShowModal={() => {}} />
             </div>
           ) : selectedType.subCat == 3 ? (
@@ -125,7 +125,6 @@ export default function Home() {
                         placeholder='يوم/شهر/سنة'
                         value={formatDateToYYYYMMDD(new Date())}
                         onChange={(e) => {
-                          console.log("Ee", e.target.value);
                         }}
                         className='bg-[#F2F0EF]  w-[200px] md:w-[270px]  h-11 rounded-[10px] px-2 text-base'
                         type='date'

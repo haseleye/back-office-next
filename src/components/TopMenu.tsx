@@ -2,16 +2,16 @@ import { useAppContext } from "@/context";
 import { getUserDetails } from "@/network/home";
 import { useEffect, useMemo, useState } from "react";
 import { Modal } from "./Modal";
-import Select from "react-select";
-import { bankNames } from "./constants";
 import { findCheck } from "@/network/auth";
 import FindCheck from "./FindCheck";
+import { LoadingSpinner } from "./loading";
 
 export default function TopMenu() {
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState("");
   const [searchMobile, setSearchMobile] = useState<string>("");
   const [localUser, setLocalUser] = useState<any>();
+  const [searchLoading, setSearchLoading] = useState(false);
   const { setCurrentUser, currentUser } = useAppContext();
   const [paymentNumber, setPaymentNumber] = useState("");
   const [bankName, setBankName] = useState<
@@ -19,6 +19,7 @@ export default function TopMenu() {
   >(undefined);
   const { selectedType } = useAppContext();
   const Search = async () => {
+    setSearchLoading(true);
     setError(false);
     setErrorText("");
     getUserDetails(searchMobile)
@@ -29,11 +30,13 @@ export default function TopMenu() {
         setCurrentUser(undefined);
         setErrorText(error?.response?.data?.error);
         setError(true);
+      })
+      .finally(() => {
+        setSearchLoading(false);
       });
   };
   const [showNational, setShowNational] = useState(false);
   const [showStatus, setShowStatus] = useState(false);
-  const { setChecks } = useAppContext();
   const searchType = useMemo(() => {
     return selectedType.cat == 1 && selectedType.subCat == 1
       ? "find_payment"
@@ -41,28 +44,7 @@ export default function TopMenu() {
       ? "find_check"
       : null;
   }, [selectedType]);
-  useEffect(() => {
-    console.log("currentUser", currentUser);
-  }, [currentUser]);
-  const searchCheck = () => {
-    findCheck((bankName as any)?.value , paymentNumber).then((response) => {
-      console.log("response", response.data.message.check);
-      setLocalUser({
-        mobile: response.data.message.check?.mobile?.number,
-        userName: response.data.message.check?.userName,
-      });
 
-      setCurrentUser({
-        ...(currentUser as any),
-        info: {
-          ...currentUser?.info,
-          mobile: response.data.message.check?.mobile?.number,
-          userName: response.data.message.check?.userName,
-        },
-      });
-      setChecks(response.data.message.check);
-    });
-  };
   return (
     <>
       {!searchType ? (
@@ -85,6 +67,9 @@ export default function TopMenu() {
                     error ? "border-THEME_ERROR_COLOR border-[1px]" : ""
                   }`}>
                   <input
+                    onKeyDown={(e) => {
+                      if (e.code == "Enter") Search();
+                    }}
                     value={searchMobile}
                     onChange={(e) => setSearchMobile(e.target.value)}
                     dir='ltr'
@@ -99,9 +84,9 @@ export default function TopMenu() {
                 </div>
                 <button
                   onClick={Search}
-                  disabled={searchMobile == ""}
+                  disabled={searchMobile == "" || searchLoading}
                   className='bg-white disabled:opacity-70 rounded-lg px-4 py-1'>
-                  ابحث
+                  {searchLoading ? <LoadingSpinner primary /> : "ابحث"}
                 </button>
               </div>
               <p className='text-base text-red-600 mt-1'>
@@ -232,7 +217,7 @@ export default function TopMenu() {
           </div>
         </div>
       ) : searchType == "find_check" ? (
-       <FindCheck/>
+        <FindCheck />
       ) : (
         ""
       )}
@@ -296,7 +281,9 @@ export default function TopMenu() {
         ""
       )}
       {showNational ? (
-        <Modal isTopCentered={window.innerWidth>768?false:true}>
+        <Modal
+          setShowModal={setShowNational}
+          isTopCentered={window.innerWidth > 768 ? false : true}>
           <div className=' w-auto  mt-4 md:mt-0'>
             <div className='h-[50px] w-full rounded-t-lg bg-THEME_PRIMARY_COLOR flex flex-row justify-between px-6 items-center'>
               <p className='text-base md:text-lg text-white '>
@@ -354,7 +341,7 @@ export default function TopMenu() {
         </Modal>
       ) : null}
       {showStatus ? (
-        <Modal isTopCentered={false}>
+        <Modal setShowModal={setShowStatus} isTopCentered={false}>
           <div className=' w-auto  min-w-full md:min-w-[600px] '>
             <div className='h-[50px] w-full rounded-t-lg bg-THEME_PRIMARY_COLOR flex flex-row justify-between px-6 items-center'>
               <p className='text-base md:text-lg text-white '>

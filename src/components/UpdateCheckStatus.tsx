@@ -71,7 +71,7 @@ export default function UpdateCheckStatus({
     }),
   };
   return (
-    <Modal isTopCentered={window?.innerWidth>768?false:true}>
+    <Modal setShowModal={setShowModal} isTopCentered={window?.innerWidth>768?false:true}>
       <div className=' w-auto  min-w-full   md:min-w-[450px] md:w-auto mt-[60px] '>
         <div className='h-[50px] w-full rounded-t-lg bg-THEME_PRIMARY_COLOR flex flex-row justify-between px-6 items-center'>
           <p className='text-base md:text-lg  text-white font-semibold'>

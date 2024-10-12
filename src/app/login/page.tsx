@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Login } from "@/network/auth";
 import { Auth } from "@/components/auth";
 import { LoadingSpinner } from "@/components/loading";
@@ -23,16 +23,7 @@ export default function Home() {
   const [showForget, setShowForget] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const isLoggedIn = getCookie("authToken");
-
   const router = useRouter();
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [inputRef]);
-  useEffect(() => {
-    if (isLoggedIn) router.push("/");
-  }, []);
   const onSubmit = () => {
     setLoading(true);
     if (!mobileNumber) {
@@ -66,6 +57,7 @@ export default function Home() {
         .catch((err: any) => {
           setError({
             ...error,
+            mobile: true,
             api:
               (err?.response?.data?.message?.info ||
                 err?.response?.data?.error) ??
@@ -75,9 +67,13 @@ export default function Home() {
         });
     }
   };
+
+  
+
+
   return (
-    <React.Fragment>
-      <div className=' items-center  justify-items-center min-h-screen gap-16 bg-hero-login-mobile  z-30 relative  md:bg-hero-login bg-cover bg-no-repeat'>
+    <React.Fragment >
+      <div className=' items-center   justify-items-center min-h-screen gap-16 bg-hero-login-mobile  z-30 relative  md:bg-hero-login bg-cover bg-no-repeat'>
         <div className='absolute left-0 top-0 min-w-full  min-h-full bg-[#ffffff80] '>
           <img
             src='/assets/blacklogo.svg'
@@ -106,9 +102,12 @@ export default function Home() {
                     autoComplete='new-password'
                     ref={inputRef}
                     dir='ltr'
-                    className='bg-[#F2F0EF] w-full outline-none text-base'
+                    className={`bg-[#F2F0EF] w-full outline-none text-base `}
                     value={mobileNumber}
                     type='tel'
+                    onKeyDown={(e) => {
+                      if (e.code == "Enter") onSubmit();
+                    }}
                     onChange={(e) => {
                       setMobileNumber(e.target.value);
                       if (error.mobile) setError({ ...error, mobile: null });
@@ -131,13 +130,16 @@ export default function Home() {
                     autoComplete='new-password'
                     className='bg-[#F2F0EF] w-full outline-none text-base'
                     value={password}
+                    onKeyDown={(e) => {
+                      if (e.code == "Enter") onSubmit();
+                    }}
                     type={showPassword ? "text" : "password"}
                     onChange={(e) => {
                       setPassword(e.target.value);
                       if (error.password)
                         setError({ ...error, password: null });
                     }}
-                    placeholder='100 123 456'
+                    placeholder=''
                   />
                   <img
                     src={
@@ -153,16 +155,20 @@ export default function Home() {
                     height={24}
                   />
                 </div>
-                <div className='flex flex-col md:flex-row items-center mt-[30px] md:mt-0 gap-6 w-full  md:gap-[100px]'>
+                <p className='text-red-600 text-base h-3'>{error.api}</p>
+
+                <div className='flex flex-col md:flex-row items-center mt-[30px] md:-mt-2 gap-6 w-full  md:gap-[100px]'>
                   <button
                     onClick={onSubmit}
-                    className='w-full md:w-[160px] bg-THEME_PRIMARY_COLOR h-[50px] flex items-center justify-center rounded-lg text-white text-base'>
+                    disabled={!mobileNumber || !password}
+                    className={`w-full md:w-[160px] bg-THEME_PRIMARY_COLOR h-[50px] flex items-center justify-center rounded-lg text-white text-base ${
+                      !mobileNumber || !password ? "opacity-50" : ""
+                    }`}>
                     {loading ? <LoadingSpinner /> : "تسجيل الدخول"}
                   </button>
                   <button
                     onClick={() => {
-                      (document.getElementById("body") as any).style.overflow =
-                        "hidden";
+                     
                       setShowForget(true);
                     }}
                     className={`'w-full md:w-[160px] ${
@@ -192,7 +198,6 @@ export default function Home() {
       </div>
       <Auth
         closeModal={() => {
-          (document.getElementById("body") as any).style.overflow = "scroll";
           setShowForget(false);
         }}
         isModalOpen={showForget}

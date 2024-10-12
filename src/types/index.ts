@@ -77,6 +77,7 @@ export interface Unit {
   totalAmount: number;
   totalChecksAmount: number;
   contractDate: string | null;
+  completionDate?: string | null;
   info: string;
   discount?: string;
 }

@@ -4,14 +4,27 @@ import { useEffect } from "react";
 export const Modal = ({
   children,
   isTopCentered,
+  setShowModal,
 }: {
   children: React.ReactNode;
   isTopCentered: boolean;
+  setShowModal: (value: boolean) => void;
 }) => {
   useEffect(() => {
     (document.getElementById("body") as any).style.overflow = "hidden";
-  }, []);
+    document.addEventListener("keydown", handleEscKeyPress);
 
+    return () => {
+      document.removeEventListener("keydown", handleEscKeyPress);
+    };
+  }, []);
+  const handleEscKeyPress = (event: any) => {
+    if (event.key === "Escape") {
+      // Add any logic you want to execute when 'Esc' is pressed
+      (document.getElementById("body") as any).style.overflow = "scroll";
+      setShowModal(false);
+    }
+  };
   return (
     <div
       id='modal'

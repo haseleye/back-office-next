@@ -26,7 +26,6 @@ export default function FindCheck() {
         setChecks(response.data.message.check);
       })
       .catch((error) => {
-        console.log("ERORR");
         setErrorText(error?.response?.data?.error);
         setError(true);
       });

@@ -8,6 +8,7 @@ import { LoadingSpinner } from "./loading";
 
 export default function TopMenu() {
   const [error, setError] = useState(false);
+  const [mobileError, setMobileError] = useState("");
   const [errorText, setErrorText] = useState("");
   const [searchMobile, setSearchMobile] = useState<string>("");
   const [localUser, setLocalUser] = useState<any>();
@@ -19,6 +20,10 @@ export default function TopMenu() {
   >(undefined);
   const { selectedType } = useAppContext();
   const Search = async () => {
+    if (!new RegExp("^0?1[0125][0-9]{8}$").test(searchMobile)) {
+      setErrorText("رقم الهاتف غير سليم");
+      return;
+    }
     setSearchLoading(true);
     setError(false);
     setErrorText("");
@@ -44,7 +49,13 @@ export default function TopMenu() {
       ? "find_check"
       : null;
   }, [selectedType]);
-
+  const isSuspended = useMemo(() => {
+    let nextTrail =
+      (new Date(currentUser?.info?.status?.login?.nextTrial as any) as any) -
+      (new Date() as any);
+    if (nextTrail > 0 || currentUser?.info.status.isSuspended) return true;
+    else return false;
+  }, [currentUser]);
   return (
     <>
       {!searchType ? (
@@ -64,7 +75,9 @@ export default function TopMenu() {
               <div className='flex flex-row w-full  items-center gap-3 md:gap-[30px] '>
                 <div
                   className={`flex flex-row bg-[#F2F0EF] w-full  md:w-[340px]  p-1 pe-4 rounded-lg ${
-                    error ? "border-THEME_ERROR_COLOR border-[1px]" : ""
+                    error || mobileError || errorText
+                      ? "border-THEME_ERROR_COLOR border-[1px]"
+                      : ""
                   }`}>
                   <input
                     onKeyDown={(e) => {
@@ -89,11 +102,11 @@ export default function TopMenu() {
                   {searchLoading ? <LoadingSpinner primary /> : "ابحث"}
                 </button>
               </div>
-              <p className='text-base text-red-600 mt-1'>
-                {errorText ? errorText : ""}
-              </p>
             </div>
           </div>
+          <p className='text-base px-4 text-red-600 mt-1'>
+            {errorText ? errorText : ""}
+          </p>
           <div className='flex flex-col gap-3 '>
             <p className='text-white text-lg md:text-lg '>
               الاسم :{" "}
@@ -139,18 +152,16 @@ export default function TopMenu() {
                   حالة الحساب :{" "}
                   <span
                     onClick={() => {
-                      if (currentUser?.info.status.isSuspended) {
+                      if (isSuspended) {
                         setShowStatus(true);
                       }
                     }}
                     className={`${
-                      currentUser?.info?.status?.isSuspended
-                        ? "underline cursor-pointer"
-                        : ""
+                      isSuspended ? "underline cursor-pointer" : ""
                     }`}>
                     {" "}
                     {currentUser?.info
-                      ? currentUser?.info?.status?.isSuspended
+                      ? isSuspended
                         ? " معلق "
                         : " نشط "
                       : ""}{" "}
@@ -375,8 +386,23 @@ export default function TopMenu() {
                 </p>
               </div>
               <div className='w-full '>
-                <p className=' text-base md:text-lg '>
-                  {currentUser?.info.status.message}
+                <p className=' text-base md:text-lg text-center '>
+                  {(currentUser?.info.status.message
+                    ? currentUser?.info.status.message
+                    : null) ??
+                    `هذا الحساب معلق حتى تاريخ ${new Date(
+                      currentUser?.info.status.login.nextTrial as any
+                    )?.toLocaleDateString("ar-AE", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })} الساعة ${new Date(
+                      currentUser?.info.status.login.nextTrial as any
+                    ).toLocaleTimeString("ar-AE", {
+                      hour: "2-digit",
+                      hourCycle: "h12",
+                      minute: "2-digit",
+                    })}`}
                 </p>
               </div>
               <button

@@ -8,7 +8,7 @@ import { getCookie, setCookie } from "cookies-next";
 
 export default function Home() {
   const [error, setError] = useState<{
-    mobile: null | boolean;
+    mobile: null | string;
     password: null | boolean;
     api: null | boolean | string;
   }>({
@@ -26,8 +26,8 @@ export default function Home() {
   const router = useRouter();
   const onSubmit = () => {
     setLoading(true);
-    if (!mobileNumber) {
-      setError({ ...error, mobile: true });
+    if (!mobileNumber || !new RegExp("^0?1[0125][0-9]{8}$").test(mobileNumber)) {
+      setError({ ...error, mobile: 'رقم الهاتف غير سليم' });
       setLoading(false);
       return;
     }
@@ -57,7 +57,7 @@ export default function Home() {
         .catch((err: any) => {
           setError({
             ...error,
-            mobile: true,
+            mobile: "رقم الهاتف",
             api:
               (err?.response?.data?.message?.info ||
                 err?.response?.data?.error) ??
@@ -68,16 +68,13 @@ export default function Home() {
     }
   };
 
-  
-
-
   return (
-    <React.Fragment >
+    <React.Fragment>
       <div className=' items-center   justify-items-center min-h-screen gap-16 bg-hero-login-mobile  z-30 relative  md:bg-hero-login bg-cover bg-no-repeat'>
         <div className='absolute left-0 top-0 min-w-full  min-h-full bg-[#ffffff80] '>
           <img
             src='/assets/blacklogo.svg'
-            className='absolute start-5 top-5 h-[100px] z-[1000] w-[260px]'
+            className='absolute start-5 top-5 h-[100px] z-[1000] w-[260px] hidden md:visible'
           />
         </div>
         <div className='h-screen z-50 relative   bg-[#ffffff66]  flex flex-col items-center pt-[30px] gap-2 md:gap-3 w-full'>
@@ -91,18 +88,18 @@ export default function Home() {
             className=' w-[200px] h-[35px]  md:w-[270px] md:h-[50px]'
           />
           <div className='w-full px-3 flex justify-center '>
-            <div className='bg-[#d9d9d999]  gap-0 md:gap-[60px] w-[80%] flex  flex-col-reverse md:flex-row  border-[1px] border-solid border-white rounded-lg'>
+            <div className='bg-[#d9d9d999]  gap-0 md:gap-[60px] w-full md:w-[80%] flex  flex-col-reverse md:flex-row  border-[1px] border-solid border-white rounded-lg'>
               <div className='flex flex-col flex-1 items-center pt-6 md:pt-10 pb-3 md:pb-6 pe-3 md:pe-0 ps-3 md:ps-[30px] gap-6  '>
                 <img src='/assets/signin.svg' className='w-[160px] ' />
-                <div className='flex p-3 items-center bg-[#F2F0EF] w-full h-[47px] rounded-[10px]'>
-                  <p className='text-lg text-THEME_SECONDARY_COLOR w-[150px]'>
+                <div className={`flex p-3 items-center bg-[#F2F0EF] w-full h-[47px] rounded-[10px]${error?.mobile ? 'border-[1px] border-red-600' : ''}`}>
+                  <p className='text-base md:text-lg text-THEME_SECONDARY_COLOR  w-[150px]'>
                     الهاتف المحمول
                   </p>
                   <input
                     autoComplete='new-password'
                     ref={inputRef}
                     dir='ltr'
-                    className={`bg-[#F2F0EF] w-full outline-none text-base `}
+                    className={`bg-[#F2F0EF] w-full outline-none text-base  `}
                     value={mobileNumber}
                     type='tel'
                     onKeyDown={(e) => {
@@ -122,7 +119,7 @@ export default function Home() {
                   />
                 </div>
                 <div className='flex p-3 items-center bg-[#F2F0EF] w-full h-[47px] rounded-[10px]'>
-                  <p className='text-lg text-THEME_SECONDARY_COLOR w-[150px]'>
+                  <p className='text-base md:text-lg text-THEME_SECONDARY_COLOR w-[150px]'>
                     كلمة المرور
                   </p>
                   <input
@@ -155,9 +152,9 @@ export default function Home() {
                     height={24}
                   />
                 </div>
-                <p className='text-red-600 text-base h-3'>{error.api}</p>
+                <p className='text-red-600 text-base h-3 -mt-2'>{error.api}</p>
 
-                <div className='flex flex-col md:flex-row items-center mt-[30px] md:-mt-2 gap-6 w-full  md:gap-[100px]'>
+                <div className='flex flex-col md:flex-row items-center mt-3 md:-mt-1 gap-6 w-full  md:gap-[100px]'>
                   <button
                     onClick={onSubmit}
                     disabled={!mobileNumber || !password}
@@ -168,17 +165,16 @@ export default function Home() {
                   </button>
                   <button
                     onClick={() => {
-                     
                       setShowForget(true);
                     }}
-                    className={`'w-full md:w-[160px] ${
+                    className={`w-full   md:w-[160px]  ${
                       loading ? "opacity-50" : ""
                     } bg-THEME_PRIMARY_COLOR h-[50px] flex items-center justify-center rounded-lg text-white text-base'`}>
                     {"نسيت كلمة المرور"}
                   </button>
                 </div>
               </div>
-              <div className='flex flex-col flex-1 items-start pt-4 md:pt-8 ps-3 md:ps-10 pe-3 md:pe-[30px] gap-5 md:gap-[30px] border-b-[1px] md:border-s-[1px] border-white border-solid'>
+              <div className='flex flex-col flex-1 items-start pt-4 md:pt-8 ps-3 md:ps-10 pe-3 md:pe-[30px] gap-3 md:gap-[30px] border-b-[1px] md:border-s-[1px] border-white border-solid'>
                 <img
                   src='/assets/helloText.svg'
                   className='mb-2.5 w-[101px] '

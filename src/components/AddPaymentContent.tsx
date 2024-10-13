@@ -81,7 +81,7 @@ export default function AddPaymentContent({
     addPayment({
       ...(form as any),
       adviceDate: `${formData.adviceDate}T${formData.adviceTime}`,
-      unitId: formData?.unitId == "حجز جديد"?'':formData?.unitId,
+      unitId: formData?.unitId == "حجز جديد" ? "" : formData?.unitId,
     })
       .then((response) => {
         setFormData({
@@ -228,19 +228,19 @@ export default function AddPaymentContent({
           </div>
         </div>
         <div className='gap-5 flex flex-col'>
-          <p className='text-black hidden md:flex text-base md:text-xl font-semibold '>
+          <p className='text-black hidden md:flex text-base md:text-xl font-semibold  h-[28.6px]'>
             الهاتف المحمول :{" "}
             <span dir='ltr' className='font-normal text-lg'>
               {currentUser ? currentUser?.info.mobile : "غير معلوم"}
             </span>
           </p>
-          <div className='flex flex-row gap-1 items-center'>
+          <div className='flex flex-row gap-1 items-center h-11'>
             <p className='text-xl font-medium'>توجيه الدفع : </p>
             <p className='text-lg font-normal'>
               {currentUser ? paymentType : "غير معلوم"}
             </p>
           </div>
-          <div className='flex flex-row gap-1 items-center'>
+          <div className='flex flex-row gap-1 items-center h-11'>
             <p className='text-xl font-medium'>طريقة الدفع : </p>
             <div className='w-[143px]'>
               <Select
@@ -270,12 +270,11 @@ export default function AddPaymentContent({
               />
             </div>
           </div>
-          <div className='flex flex-row gap-1 items-center'>
+          <div className='flex flex-row gap-1 items-center h-11'>
             <p className='text-xl font-medium'>الوقت : </p>
 
             <input
               aria-label='time'
-              
               className='bg-[#F2F0EF] w-[130px] h-11 rounded-md px-2 text-base'
               type='time'
               value={formData?.adviceTime}

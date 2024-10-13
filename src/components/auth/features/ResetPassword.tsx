@@ -7,10 +7,10 @@ import { resetPassword } from "@/network/auth";
 import { usePathname } from "next/navigation";
 let interval: any = null;
 export const ResetPassword = ({
-  handleChangeStep,
+  closeModal,
   checkUserData,
 }: {
-  handleChangeStep(step: AUTH_STEP_ENUM): void;
+  closeModal(): void;
   checkUserData: checkUserModal;
 }) => {
   const [error, setError] = useState({
@@ -64,7 +64,7 @@ export const ResetPassword = ({
           <p className='text-sm text-THEME_PRIMARY_COLOR'>{success}</p>
           <div className='flex w-full justify-center'>
             <button
-              onClick={() => handleChangeStep(AUTH_STEP_ENUM.MOBILE_NUMBER)}
+              onClick={() => closeModal()}
               className={`h-[55px] w-full   bg-THEME_PRIMARY_COLOR disabled:opacity-45 rounded-lg flex justify-center items-center  text-white font-medium text-base mt-[25px] md:mt-[90px] mb-2`}>
               {"تسجيل الدخول"}
             </button>
@@ -89,6 +89,13 @@ export const ResetPassword = ({
             {error && typeof error == "string" ? (
               <p className='text-THEME_ERROR_COLOR text-sm  mt-4 text-center'>
                 {error}
+              </p>
+            ) : (
+              ""
+            )}
+            {error?.api ? (
+              <p className='text-THEME_ERROR_COLOR text-sm  mt-4 text-center'>
+                {error.api}
               </p>
             ) : (
               ""

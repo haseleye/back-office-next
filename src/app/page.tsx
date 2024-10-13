@@ -66,7 +66,7 @@ export default function Home() {
             </div>
           ) : selectedType.subCat == 3 ? (
             <>
-              <div className='bg-white h-[450px] overflow-auto w-full p-6 pt-10  flex flex-col gap-5 md:gap-7 rounded-b-lg items-center px-3 md:px-10 '>
+              <div className='bg-white   w-full p-6 pt-10  flex flex-col gap-5 md:gap-7 rounded-b-lg items-center px-3 md:px-10 '>
                 <div className='flex flex-col  gap-3 md:gap-[50px] md:flex-row w-full justify-around  '>
                   <div className='gap-5 md:gap-7 flex flex-col'>
                     <p className='text-black text-base md:text-xl font-semibold'>

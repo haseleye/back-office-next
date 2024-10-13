@@ -84,7 +84,7 @@ export const Auth = ({
               />
             ) : currentStep == AUTH_STEP_ENUM.RESET_PASSWORD ? (
               <ResetPassword
-                handleChangeStep={handleChangeStep}
+                closeModal={closeModal}
                 checkUserData={checkUserData}
               />
             ) : (

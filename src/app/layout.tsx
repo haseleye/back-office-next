@@ -6,7 +6,7 @@ import { Footer } from "@/components/footer";
 import { Inter } from "next/font/google";
 import { usePathname } from "next/navigation";
 import { getCookie } from "cookies-next";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SideMenu } from "@/components/SideMenu";
 import TopMenu from "@/components/TopMenu";
 import { AppWrapper, useAppContext } from "@/context";
@@ -23,7 +23,22 @@ export default function RootLayout({
   children: React.ReactElement;
 }>) {
   const path = usePathname();
+ useEffect(() => {
+   // Push current page state to history
+   window.history.pushState(null, "", window.location.href);
 
+   // Event listener to handle back button
+   const handlePopState = () => {
+     // Redirect to the current URL (effectively reloading the page)
+     window.location.href = location.pathname;
+   };
+
+   window.addEventListener("popstate", handlePopState);
+
+   return () => {
+     window.removeEventListener("popstate", handlePopState);
+   };
+ }, [location]);
   return (
     <html lang='ar'>
       <body

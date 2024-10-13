@@ -12,7 +12,7 @@ export const checkUser = (number: string, lang: string) =>
     },
     {
       headers: {
-        "accept-language": lang ?? "ar",
+        "accept-language": "ar",
       },
     }
   );
@@ -32,7 +32,7 @@ export const verifyOtp = (
     },
     {
       headers: {
-        "accept-language": lang ?? "ar",
+        "accept-language": "ar",
       },
     }
   );
@@ -45,7 +45,7 @@ export const resendOtpApi = (mobileNumber: string, lang: string) =>
     },
     {
       headers: {
-        "accept-language": lang ?? "ar",
+        "accept-language": "ar",
       },
     }
   );
@@ -58,7 +58,7 @@ export const resendOtpApiEmail = (email: string, lang: string) =>
     },
     {
       headers: {
-        "accept-language": lang ?? "ar",
+        "accept-language": "ar",
       },
     }
   );
@@ -112,6 +112,29 @@ export const findCheck = (bankName: string, number: string) =>
     }
   );
 
+export const linkPayment = (
+  id: string,
+  unitId: string,
+  paymentType: string,
+  paymentMethod: string,
+  transactionNumber: string
+) =>
+  axiosInstance.post(
+    `staff/link-payment`,
+    {
+      id: id,
+      unitId: unitId,
+      paymentType: paymentType,
+      paymentMethod: paymentMethod,
+      transactionNumber: transactionNumber,
+    },
+    {
+      headers: {
+        "accept-language": "ar",
+      },
+    }
+  );
+
 export const forgotPassword = (number: string, lang: string) =>
   axiosInstance.post(
     `staff/forgot-password
@@ -124,7 +147,7 @@ export const forgotPassword = (number: string, lang: string) =>
     },
     {
       headers: {
-        "accept-language": lang ?? "ar",
+        "accept-language": "ar",
       },
     }
   );
@@ -135,7 +158,7 @@ export const resetPassword = (data: any, lang: string) =>
     { ...data },
     {
       headers: {
-        "accept-language": lang ?? "ar",
+        "accept-language": "ar",
       },
     }
   );
@@ -147,7 +170,7 @@ export const updatePhoto = (data: any, lang: string) =>
     data,
     {
       headers: {
-        "accept-language": lang ?? "ar",
+        "accept-language": "ar",
         "Content-Type": "multipart/form-data",
       },
     }
@@ -159,7 +182,7 @@ export const deletePhoto = (lang: string) =>
     {},
     {
       headers: {
-        "accept-language": lang ?? "ar",
+        "accept-language": "ar",
       },
     }
   );
@@ -170,7 +193,7 @@ export const getUserInfo = (lang: string) =>
     {},
     {
       headers: {
-        "accept-language": lang ?? "ar",
+        "accept-language": "ar",
       },
     }
   );
@@ -182,7 +205,7 @@ export const updateNationalId = (data: any, lang: string) =>
     data,
     {
       headers: {
-        "accept-language": lang ?? "ar",
+        "accept-language": "ar",
         "Content-Type": "multipart/form-data",
       },
     }
@@ -200,7 +223,7 @@ export const updateMobile = (number: string, lang: string) =>
     },
     {
       headers: {
-        "accept-language": lang ?? "ar",
+        "accept-language": "ar",
       },
     }
   );
@@ -213,7 +236,7 @@ export const updateEmail = (email: string, lang: string) =>
     },
     {
       headers: {
-        "accept-language": lang ?? "ar",
+        "accept-language": "ar",
       },
     }
   );
@@ -223,10 +246,10 @@ export const updateCheckStatus = ({
   newStatus,
   adviceDate,
 }: {
-  bankName:string;
-  number:string;
-  newStatus:string;
-  adviceDate:string;
+  bankName: string;
+  number: string;
+  newStatus: string;
+  adviceDate: string;
 }) =>
   axiosInstance.post(
     `staff/update-check-status
@@ -239,9 +262,7 @@ export const updateCheckStatus = ({
     },
     {
       headers: {
-        "accept-language":  "ar",
+        "accept-language": "ar",
       },
     }
   );
-
-  

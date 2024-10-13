@@ -69,7 +69,7 @@ export const paymentMethods = [
   { value: "bankDeposit", label: "إيداع بنكي" },
   { value: "bankTransfer", label: "تحويل بنكي" },
   { value: "instaPay", label: "إنستاباي" },
-  { value: "creditCard", label: "كارت إئتمان" },
+  // { value: "creditCard", label: "كارت إئتمان" },
 ];
 export const paymentTypes = [
   { value: "booking", label: "دفعة الحجز" },

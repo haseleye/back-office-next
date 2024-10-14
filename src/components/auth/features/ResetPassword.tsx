@@ -20,14 +20,29 @@ export const ResetPassword = ({
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(null);
   const [password, setPassword] = useState("");
+  const [regextError, setRegexError] = useState<string[]>([]);
 
   const pathname = usePathname();
 
   const onSubmit = () => {
-    if (password == "" || password.length < 6) {
+    if (
+      password == "" ||
+      password.length < 8 ||
+      !new RegExp(
+        "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ _%^&*-]).{8,20}$"
+      ).test(password)
+    ) {
       setError({ ...error, password: true });
+      setRegexError([
+        "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل ",
+        "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل ",
+        "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل )",
+        "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل",
+        "يجب أن تتكون كلمة المرور من 8 إلى 20 حرفًا",
+      ]);
       return;
     }
+
     setLoading(true);
     resetPassword(
       {
@@ -84,6 +99,7 @@ export const ResetPassword = ({
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder=''
                 value={password}
+                error={error.password}
               />
             </div>
             {error && typeof error == "string" ? (
@@ -97,6 +113,17 @@ export const ResetPassword = ({
               <p className='text-THEME_ERROR_COLOR text-sm  mt-4 text-center'>
                 {error.api}
               </p>
+            ) : (
+              ""
+            )}
+            {regextError?.length ? (
+              <ul className='mt-5 list-none'>
+                {regextError.map((item) => (
+                  <li className="text-red-600 text-sm mb-1 before:content-['•'] before:me-2">
+                    {item}
+                  </li>
+                ))}
+              </ul>
             ) : (
               ""
             )}

@@ -710,6 +710,9 @@ video {
 .mt-\[60px\] {
   margin-top: 60px;
 }
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
 .block {
   display: block;
 }
@@ -718,6 +721,9 @@ video {
 }
 .inline-flex {
   display: inline-flex;
+}
+.list-item {
+  display: list-item;
 }
 .hidden {
   display: none;
@@ -799,9 +805,6 @@ video {
 }
 .\!w-\[50px\] {
   width: 50px !important;
-}
-.w-10 {
-  width: 2.5rem;
 }
 .w-5 {
   width: 1.25rem;
@@ -931,6 +934,9 @@ video {
 }
 .cursor-pointer {
   cursor: pointer;
+}
+.list-none {
+  list-style-type: none;
 }
 .flex-row {
   flex-direction: row;
@@ -1610,6 +1616,21 @@ input:focus {
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
   /* Color of the scrollbar track */
+}
+
+.before\:ms-2::before {
+  content: var(--tw-content);
+  margin-inline-start: 0.5rem;
+}
+
+.before\:me-2::before {
+  content: var(--tw-content);
+  margin-inline-end: 0.5rem;
+}
+
+.before\:content-\[\'\2022\'\]::before {
+  --tw-content: '•';
+  content: var(--tw-content);
 }
 
 .focus\:bg-\[\#88735026\]:focus {

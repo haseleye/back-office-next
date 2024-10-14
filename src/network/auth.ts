@@ -111,32 +111,32 @@ export const findCheck = (bankName: string, number: string) =>
       },
     }
   );
-  export const findPaymentApi = (refNumber: string) =>
-    axiosInstance.post(
-      `staff/find-user-payment`,
-      {
-        referenceNumber:refNumber
-      },
-      {
-        headers: {
-          "accept-language": "ar",
-        },
-      }
-    );
-  export const addCheck = (form: FormData) =>
-    axiosInstance.post(`staff/add-bank-check`, form, {
+export const findPaymentApi = (refNumber: string) =>
+  axiosInstance.post(
+    `staff/find-payment`,
+    {
+      referenceNumber: refNumber,
+    },
+    {
       headers: {
         "accept-language": "ar",
-        "Content-Type": "multipart/form-data",
       },
-    });
-    export const addContract = (form: FormData) =>
-      axiosInstance.post(`staff/add-contract`, form, {
-        headers: {
-          "accept-language": "ar",
-          "Content-Type": "multipart/form-data",
-        },
-      });
+    }
+  );
+export const addCheck = (form: FormData) =>
+  axiosInstance.post(`staff/add-bank-check`, form, {
+    headers: {
+      "accept-language": "ar",
+      "Content-Type": "multipart/form-data",
+    },
+  });
+export const addContract = (form: FormData) =>
+  axiosInstance.post(`staff/add-contract`, form, {
+    headers: {
+      "accept-language": "ar",
+      "Content-Type": "multipart/form-data",
+    },
+  });
 export const linkPayment = (
   id: string,
   unitId: string,

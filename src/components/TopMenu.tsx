@@ -2,7 +2,7 @@ import { useAppContext } from "@/context";
 import { getUserDetails } from "@/network/home";
 import { useEffect, useMemo, useState } from "react";
 import { Modal } from "./Modal";
-import { findCheck } from "@/network/auth";
+import { findCheck, findPaymentApi } from "@/network/auth";
 import FindCheck from "./FindCheck";
 import { LoadingSpinner } from "./loading";
 
@@ -18,7 +18,8 @@ export default function TopMenu() {
   const [bankName, setBankName] = useState<
     { label: string; value: string } | undefined
   >(undefined);
-  const { selectedType } = useAppContext();
+  const { selectedType, setFindPayment } = useAppContext();
+  const [refNumber,setNumber]=useState('')
   const Search = async () => {
     if (!new RegExp("^0?1[0125][0-9]{8}$").test(searchMobile)) {
       setErrorText("رقم الهاتف غير سليم");
@@ -56,6 +57,19 @@ export default function TopMenu() {
     if (nextTrail > 0 || currentUser?.info.status.isSuspended) return true;
     else return false;
   }, [currentUser]);
+
+  const findPayment = () => {
+
+    findPaymentApi(paymentNumber).then((response1) => {
+      let payment = response1.data?.message?.paymentData;
+      getUserDetails(payment?.mobile?.number).then((response) => {
+          setFindPayment(payment, (response.data as any)?.message);
+      })
+
+    }).catch((error) => {
+      setErrorText(error.response?.data?.error)
+    });
+  }
   return (
     <>
       {!searchType ? (
@@ -197,8 +211,8 @@ export default function TopMenu() {
                   />
                 </div>
                 <button
-                  onClick={Search}
-                  disabled={searchMobile == ""}
+                  onClick={findPayment}
+                  disabled={paymentNumber == ""}
                   className='bg-white disabled:opacity-70 rounded-lg px-4 py-1'>
                   ابحث
                 </button>

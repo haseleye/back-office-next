@@ -1,5 +1,5 @@
 "use client";
-import { bankChecks, FindCheckType, MobilePhone, Payment, UserDetails } from "@/types";
+import { bankChecks, FindCheckType, FindPaymentType, MobilePhone, Payment, UserDetails } from "@/types";
 import { getCookie } from "cookies-next";
 import { createContext, useContext, useState } from "react";
 
@@ -10,9 +10,14 @@ const APPContext = createContext<{
     subCat: number;
   };
   checks: FindCheckType[];
-  setCurrentUser: (user: UserDetails | undefined,changeSelected ?: boolean) => void;
+  findPayment: FindPaymentType | undefined;
+  setCurrentUser: (
+    user: UserDetails | undefined,
+    changeSelected?: boolean
+  ) => void;
   setSelectedType: (type: { cat: number; subCat: number }) => void;
   setChecks: (check: FindCheckType) => void;
+  setFindPayment: (payment: FindPaymentType,user:UserDetails) => void;
 }>({
   currentUser: undefined,
   selectedType: { cat: 0, subCat: 0 },
@@ -20,6 +25,8 @@ const APPContext = createContext<{
   setCurrentUser: (user) => {},
   setSelectedType(type) {},
   setChecks: (check) => {},
+  setFindPayment: (payment,user) => {},
+  findPayment: undefined,
 });
 
 export function AppWrapper({ children }: { children: React.ReactNode }) {
@@ -32,6 +39,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
     checks: FindCheckType[];
     payments: Payment[];
     mobile: MobilePhone;
+    findPayment: FindPaymentType|undefined
   }>({
     currentUser: undefined,
     selectedType: {
@@ -39,6 +47,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
       subCat: 0,
     },
     checks: [],
+    findPayment: undefined,
     payments: [],
     mobile: {
       country: "Egypt",
@@ -56,13 +65,18 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
       setState({ ...state, checks: [check] });
     };
 
+      const setFindPayment = (payment: FindPaymentType,user:any) => {
+        setState({ ...state, findPayment: payment ,currentUser:user});
+      };
 
   return (
     <APPContext.Provider
       value={{
         currentUser: state.currentUser,
         selectedType: state.selectedType,
-        checks:state.checks,
+        checks: state.checks,
+        findPayment: state.findPayment,
+        setFindPayment,
         setCurrentUser,
         setSelectedType,
         setChecks,

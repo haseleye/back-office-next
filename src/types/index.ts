@@ -67,6 +67,17 @@ export interface FindCheckType {
   userName: string;
   mobile: { country: string; number: string };
 }
+export interface FindPaymentType {
+  mobile: { country: string; number: string };
+  unitId: string;
+  paymentType: string;
+  paymentMethod: string;
+  amount: number;
+  status: string;
+  date: string;
+  transactionNumber: string;
+  comments: string;
+}
 export interface Unit {
   id: string;
   bookingDate: string;

@@ -11,6 +11,7 @@ export default function Customers() {
   const [showUnitModal, setShowUnitModal] = useState(false);
   const { currentUser, selectedType } = useAppContext();
   const [showModal, setShowModal] = useState(false);
+  const [selectedUnit,setSelectedUnit]=useState('')
   return (
     <>
       {currentUser && selectedType.cat == 0 ? (
@@ -44,12 +45,18 @@ export default function Customers() {
                   {currentUser?.units.map((item, index) => (
                     <UnitCard
                       item={item}
-                      setShowUnitModal={setShowUnitModal}
+                      setShowUnitModal={() => {
+                        setShowUnitModal(true);
+                        setSelectedUnit(item.id);
+                      }}
                       key={`unit_${index}`}
                     />
                   ))}
                   {showUnitModal ? (
-                    <AddContractModal setShowUnitModal={setShowUnitModal} />
+                    <AddContractModal
+                      selectedUnit={selectedUnit}
+                      setShowUnitModal={setShowUnitModal}
+                    />
                   ) : (
                     ""
                   )}

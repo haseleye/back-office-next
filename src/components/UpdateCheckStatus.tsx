@@ -53,6 +53,7 @@ export default function UpdateCheckStatus({
             adviceDate: undefined,
             newStatus: undefined,
           });
+            (document.getElementById("body") as any).style.overflow = "scroll";
           setShowModal(false);
         });
       })

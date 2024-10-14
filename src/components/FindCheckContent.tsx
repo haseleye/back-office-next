@@ -10,6 +10,7 @@ export default function FindCheckContent() {
   const { setCurrentUser, checks } = useAppContext();
   const [ModalOpen, setModalOpen] = useState(false);
   const customerClick = () => {
+    
     setLoading(true);
     getUserDetails(checks?.[0]?.mobile?.number)
       .then((response) => {

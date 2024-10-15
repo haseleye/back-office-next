@@ -47,7 +47,6 @@ export default function AddContractModal({
       alertContainer?.removeChild(alert);
     }, timeout);
   }
-  console.log("D",form.pdfFile)
   useEffect(() => {
     setForm({ ...form, unitId: selectedUnit });
   }, [selectedUnit]);
@@ -90,16 +89,7 @@ export default function AddContractModal({
         setLoading(false);
       });
   };
-  console.log("");
-  console.log(
-    "adsdasd",
-    !form?.pdfFile ||
-      !form.contractData ||
-      !form.unitId ||
-      !form.unitNumber ||
-      fileSizeError ||
-      !currentUser
-  );
+ 
   return (
     <Modal setShowModal={setShowUnitModal} isTopCentered={false}>
       <div className=' w-auto  min-w-full md:min-w-[600px] mt-10 '>

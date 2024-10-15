@@ -91,6 +91,11 @@ export interface Unit {
   completionDate?: string | null;
   info: string;
   discount?: string;
+  contract?: {
+    date: string;
+    pdfUrl: string;
+    staffID:string;
+  };
 }
 
 export interface myUnit {

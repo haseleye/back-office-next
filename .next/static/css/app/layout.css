@@ -641,6 +641,9 @@ video {
 .-mt-2 {
   margin-top: -0.5rem;
 }
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
 .mb-10 {
   margin-bottom: 2.5rem;
 }
@@ -710,9 +713,6 @@ video {
 .mt-\[60px\] {
   margin-top: 60px;
 }
-.mb-1 {
-  margin-bottom: 0.25rem;
-}
 .block {
   display: block;
 }
@@ -721,9 +721,6 @@ video {
 }
 .inline-flex {
   display: inline-flex;
-}
-.list-item {
-  display: list-item;
 }
 .hidden {
   display: none;
@@ -791,6 +788,9 @@ video {
 .h-screen {
   height: 100vh;
 }
+.h-\[330px\] {
+  height: 330px;
+}
 .min-h-\[100vh\] {
   min-height: 100vh;
 }
@@ -802,6 +802,12 @@ video {
 }
 .min-h-screen {
   min-height: 100vh;
+}
+.min-h-\[500px\] {
+  min-height: 500px;
+}
+.min-h-\[330px\] {
+  min-height: 330px;
 }
 .\!w-\[50px\] {
   width: 50px !important;
@@ -1062,6 +1068,9 @@ video {
 }
 .rounded-none {
   border-radius: 0px;
+}
+.rounded-sm {
+  border-radius: 0.125rem;
 }
 .rounded-b-lg {
   border-bottom-right-radius: 0.5rem;
@@ -1618,11 +1627,6 @@ input:focus {
   /* Color of the scrollbar track */
 }
 
-.before\:ms-2::before {
-  content: var(--tw-content);
-  margin-inline-start: 0.5rem;
-}
-
 .before\:me-2::before {
   content: var(--tw-content);
   margin-inline-end: 0.5rem;
@@ -1768,6 +1772,10 @@ input:focus {
 
   .md\:h-screen {
     height: 100vh;
+  }
+
+  .md\:h-\[550px\] {
+    height: 550px;
   }
 
   .md\:max-h-full {

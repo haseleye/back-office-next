@@ -1,5 +1,4 @@
-"use client";
-import { useAppContext } from "@/context";
+"use client";;
 import { Unit } from "@/types";
 import { Dispatch, SetStateAction } from "react";
 
@@ -28,22 +27,22 @@ export default function UnitCard({
               </span>
             </p>
           </div>
-          {item.unitNumber == "---" ? (
+          {item?.contract ? (
+            <a href={item?.contract?.pdfUrl} target="_blank">
+              <img
+                src='/assets/contract.svg'
+                className='cursor-pointer '
+                width={30}
+               
+              />
+            </a>
+          ) : (
             <img
               className='cursor-pointer'
               src='/assets/add_contract.svg'
               width={30}
               onClick={() => {
-               setShowUnitModal(true)
-              }}
-            />
-          ) : (
-            <img
-              src='/assets/contract.svg'
-              className='cursor-pointer '
-              width={30}
-              onClick={() => {
-                // setCurrentModal(`info_${item.info}`);
+                setShowUnitModal(true);
               }}
             />
           )}

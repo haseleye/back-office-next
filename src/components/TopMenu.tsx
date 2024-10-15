@@ -19,7 +19,7 @@ export default function TopMenu() {
     { label: string; value: string } | undefined
   >(undefined);
   const { selectedType, setFindPayment } = useAppContext();
-  const [refNumber,setNumber]=useState('')
+  const [refNumber, setNumber] = useState("");
   const Search = async () => {
     if (!new RegExp("^0?1[0125][0-9]{8}$").test(searchMobile)) {
       setErrorText("رقم الهاتف غير سليم");
@@ -59,17 +59,17 @@ export default function TopMenu() {
   }, [currentUser]);
 
   const findPayment = () => {
-
-    findPaymentApi(paymentNumber).then((response1) => {
-      let payment = response1.data?.message?.paymentData;
-      getUserDetails(payment?.mobile?.number).then((response) => {
+    findPaymentApi(paymentNumber)
+      .then((response1) => {
+        let payment = response1.data?.message?.paymentData;
+        getUserDetails(payment?.mobile?.number).then((response) => {
           setFindPayment(payment, (response.data as any)?.message);
+        });
       })
-
-    }).catch((error) => {
-      setErrorText(error.response?.data?.error)
-    });
-  }
+      .catch((error) => {
+        setErrorText(error.response?.data?.error);
+      });
+  };
   return (
     <>
       {!searchType ? (
@@ -352,15 +352,26 @@ export default function TopMenu() {
                   className='w-[350px] h-[220px]  rounded-lg'
                 />
               </div>
-              <button
-                onClick={() => {
-                  (document.getElementById("body") as any).style.overflow =
-                    "scroll";
-                  setShowNational(false);
-                }}
-                className='bg-THEME_PRIMARY_COLOR w-full md:w-[160px] text-white rounded-md h-[50px] min-h-[50px]'>
-                إغلاق
-              </button>
+              <div className='w-full flex flex-col md:flex-row gap-6   justify-center '>
+                <button
+                  onClick={() => {
+                    (document.getElementById("body") as any).style.overflow =
+                      "scroll";
+                    setShowNational(false);
+                  }}
+                  className='bg-THEME_PRIMARY_COLOR w-full md:w-[160px] text-white rounded-md h-[50px] min-h-[50px]'>
+                  تحميل
+                </button>
+                <button
+                  onClick={() => {
+                    (document.getElementById("body") as any).style.overflow =
+                      "scroll";
+                    setShowNational(false);
+                  }}
+                  className='bg-THEME_PRIMARY_COLOR w-full md:w-[160px] text-white rounded-md h-[50px] min-h-[50px]'>
+                  إغلاق
+                </button>
+              </div>
             </div>
           </div>
         </Modal>
@@ -399,7 +410,7 @@ export default function TopMenu() {
                   </span>
                 </p>
               </div>
-              <div className='w-full '>
+              <div className='w-full flex    '>
                 <p className=' text-base md:text-lg text-center '>
                   {(currentUser?.info.status.message
                     ? currentUser?.info.status.message

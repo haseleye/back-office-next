@@ -127,6 +127,11 @@ export default function AddCheckContent({
         setLoading(false);
       });
   };
+  const unitIdIsWrong = useMemo(() => {
+    const unit = currentUser?.units?.filter((item) => item.id == form?.unitId);
+    if (!unit?.[0]?.contractDate && form?.unitId) return true;
+    else return false;
+  }, [form]);
   return (
     <>
       <div className='bg-white   w-full p-6 pt-10  flex flex-col gap-5 md:gap-7 rounded-b-lg items-center px-3 md:px-10 '>
@@ -271,8 +276,11 @@ export default function AddCheckContent({
             ? "الحد الأقصى لحجم الملف هو 1 ميجابايت"
             : errorText
             ? errorText
+            : unitIdIsWrong
+            ? "لا يمكن إضافة شيك بنكي إلا بعد توقيع العقد وتحديث بيانات العميل بذلك"
             : ""}
         </p>
+
         <div className='flex flex-col gap-y-2 md:flex-row w-full justify-center'>
           <button
             disabled={
@@ -284,7 +292,8 @@ export default function AddCheckContent({
               !form.number ||
               !form?.dueDate ||
               fileSizeError ||
-              !currentUser
+              !currentUser ||
+              unitIdIsWrong
                 ? true
                 : false
             }
@@ -302,7 +311,8 @@ export default function AddCheckContent({
               !form.number ||
               !form.dueDate ||
               fileSizeError ||
-              !currentUser
+              !currentUser ||
+              unitIdIsWrong
                 ? " opacity-50"
                 : ""
             }`}>

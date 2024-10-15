@@ -1,19 +1,12 @@
-"use client";
+"use client";;
 import AddCheckContent from "@/components/AddCheck";
 import AddPaymentContent from "@/components/AddPaymentContent";
-import BankCard from "@/components/BankCard";
-import {
-  bankNames,
-  paymentMethods,
-  paymentTypes,
-} from "@/components/constants";
 import Customers from "@/components/customers";
 import FindCheckContent from "@/components/FindCheckContent";
 import { useAppContext } from "@/context";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo } from "react";
-import Select from "react-select";
+import { useEffect } from "react";
 
 export default function Home() {
   const isLoggedIn = getCookie("authToken");

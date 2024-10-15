@@ -138,7 +138,7 @@ export default function AddPaymentContent({
         setTypeError(unit?.[0]?.info);
       }
     }
-    return "";
+    return "غير متاح";
   }, [formData?.unitId]);
   return (
     <>
@@ -237,7 +237,7 @@ export default function AddPaymentContent({
           <div className='flex flex-row gap-1 items-center h-11'>
             <p className='text-xl font-medium'>توجيه الدفع : </p>
             <p className='text-lg font-normal'>
-              {currentUser ? paymentType : "غير معلوم"}
+              {currentUser ? paymentType == 'غير متاح' ? <p className="text-red-600 text-base" >{paymentType}</p>:paymentType : "غير معلوم"}
             </p>
           </div>
           <div className='flex flex-row gap-1 items-center h-11'>
@@ -247,11 +247,12 @@ export default function AddPaymentContent({
                 className={`basic-single  h-11 rounded-md  text-base border-none`}
                 classNamePrefix='select'
                 isDisabled={false}
+                
                 isLoading={false}
                 placeholder=''
                 isClearable={false}
                 isRtl={true}
-                isSearchable={true}
+                isSearchable={false}
                 name='paymentMethod'
                 options={paymentMethods}
                 value={

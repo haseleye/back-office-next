@@ -191,7 +191,7 @@ export default function AddContractModal({
                 ? (form.pdfFile as any)?.name
                 : "تحميل ملف ال PDF الخاص بالعقد "}
             </span>
-            <img src='/assets/uploadImage.svg' width={30} alt='Upload Icon' />
+            <img src='/assets/upload_pdf.svg' width={30} alt='Upload Icon' />
           </label>
           <p className='text-red-600 text-base'>
             {fileSizeError

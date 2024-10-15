@@ -9,48 +9,42 @@ import { paymentMethods } from "./constants";
 
 export default function FindPaymentType() {
   const [loading, setLoading] = useState(false);
-  const { setCurrentUser, checks, findPayment } = useAppContext();
+  const { setSelectedType, checks, findPayment } = useAppContext();
   const [ModalOpen, setModalOpen] = useState(false);
   const customerClick = () => {
     setLoading(true);
-    getUserDetails(checks?.[0]?.mobile?.number)
-      .then((response) => {
-        setCurrentUser((response.data as any)?.message, true);
-      })
-      .catch((error) => {
-        setCurrentUser(undefined, true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    setSelectedType({ cat: 0, subCat: 0 });
   };
   return (
     <>
       <div className='flex flex-col gap-3 items-center'>
         {findPayment ? (
           <PaymentCard
-            payment={{
-              ...findPayment,
-              adviceDate: findPayment?.date,
-              paymentMethod: paymentMethods?.filter(
-                (item) => item?.label == findPayment.paymentMethod
-              )?.[0]?.value,
-              paymentMethodText: findPayment?.paymentMethod
-            } as any}
+            payment={
+              {
+                ...findPayment,
+                adviceDate: findPayment?.date,
+                paymentMethod: paymentMethods?.filter(
+                  (item) => item?.label == findPayment.paymentMethod
+                )?.[0]?.value,
+                paymentMethodText: findPayment?.paymentMethod,
+                id: findPayment?.transactionNumber,
+              } as any
+            }
             key={`FindPayment`}
           />
         ) : (
           ""
         )}
 
-        {checks?.length > 0 ? (
+        {findPayment ? (
           <div className='flex flex-col gap-[100px]  md:flex-row '>
             <button
               onClick={() => {
                 setModalOpen(true);
               }}
               className='bg-THEME_PRIMARY_COLOR w-full md:w-[135px] text-white rounded-md h-[50px] min-h-[50px]'>
-              تحديث حالة الشيك
+              عرض المزيد{" "}
             </button>
             <button
               onClick={customerClick}
@@ -62,7 +56,6 @@ export default function FindPaymentType() {
           ""
         )}
       </div>
-      {ModalOpen ? <UpdateCheckStatus setShowModal={setModalOpen} /> : ""}
     </>
   );
 }

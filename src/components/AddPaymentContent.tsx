@@ -37,6 +37,8 @@ export default function AddPaymentContent({
   });
   const [loading, setLoading] = useState(false);
   const [typeError, setTypeError] = useState("");
+  const [error, setError] = useState("");
+
   const { currentUser, setCurrentUser } = useAppContext();
   const bookingCodes = useMemo(() => {
     let checks =
@@ -80,7 +82,9 @@ export default function AddPaymentContent({
     }
     addPayment({
       ...(form as any),
-      adviceDate: `${formData.adviceDate}T${formData.adviceTime}`,
+      adviceDate: new Date(
+        `${formData.adviceDate}T${formData.adviceTime}`
+      ).toISOString(),
       unitId: formData?.unitId == "حجز جديد" ? "" : formData?.unitId,
     })
       .then((response) => {
@@ -112,6 +116,9 @@ export default function AddPaymentContent({
           setShowModal(false);
         }
       })
+      .catch((error) => {
+        setError(error.response.data.error);
+      })
       .finally(() => {
         setLoading(false);
       });
@@ -131,11 +138,24 @@ export default function AddPaymentContent({
         setFormData({ ...formData, paymentType: "contracting" } as any);
         return paymentTypes?.[1]?.label;
       }
-      if (!unit?.[0]?.contractDate && !unit?.[0]?.completionDate) {
+
+      if (
+        !unit?.[0]?.contractDate &&
+        !unit?.[0]?.completionDate &&
+        !(unit?.[0]?.category == "نوع الوحدة لم يتحدد")
+      ) {
         setFormData({ ...formData, paymentType: "cashing" } as any);
+
         return paymentTypes?.[2]?.label;
       } else {
-        setTypeError(unit?.[0]?.info);
+        console.log("unit?.[0]?.category", unit?.[0]?.category);
+        setTypeError(
+          (unit?.[0]?.category == "نوع الوحدة لم يتحدد")
+            ? "يجب اختيار نوع الوحدة لهذا الحجز أولاً قبل إضافة مدفوعات جديدة"
+            : unit?.[0]?.completionDate
+            ? "هذه الوحدة مستوفاة القيمة الإجمالية ، لا يمكن أي دفع مبالغ مالية عليها الآن"
+            : "هذه الوحدة تم إنهاء إجراءات التعاقد عليها ، لا يمكن أي دفع مبالغ مالية عليها الآن"
+        );
       }
     }
     return "غير متاح";
@@ -143,7 +163,7 @@ export default function AddPaymentContent({
   return (
     <>
       <div
-        className={`flex   flex-col gap-3 ${
+        className={`flex relative   flex-col gap-3 ${
           isModal ? "md:gap-[80px]" : ""
         } md:flex-row w-full  ${
           isModal ? "justify-between" : "justify-around"
@@ -195,7 +215,15 @@ export default function AddPaymentContent({
               <p className='text-lg font-normal'>{"غير معلوم"}</p>
             )}
           </div>
-          <div className='flex flex-row gap-2 items-center'>
+          {typeError ? (
+            <p className='min-h-6  md:absolute h-auto md:h-6 md:top-[100px] md:start-0 text-red-600 text-center md:text-start '>
+              {typeError}
+            </p>
+          ) : (
+            ""
+          )}
+
+          <div className='flex flex-row gap-2 items-center mt-0 md:mt-4'>
             <p className='text-xl font-medium'> القيمة : </p>
 
             <input
@@ -237,17 +265,25 @@ export default function AddPaymentContent({
           <div className='flex flex-row gap-1 items-center h-11'>
             <p className='text-xl font-medium'>توجيه الدفع : </p>
             <p className='text-lg font-normal'>
-              {currentUser ? paymentType == 'غير متاح' ? <p className="text-red-600 text-base" >{paymentType}</p>:paymentType : "غير معلوم"}
+              {currentUser ? (
+                paymentType == "غير متاح" ? (
+                  <p className='text-red-600 text-base'>{paymentType}</p>
+                ) : (
+                  paymentType
+                )
+              ) : (
+                "غير معلوم"
+              )}
             </p>
           </div>
-          <div className='flex flex-row gap-1 items-center h-11'>
+
+          <div className='flex flex-row gap-1 items-center h-11 mt-0  md:mt-4'>
             <p className='text-xl font-medium'>طريقة الدفع : </p>
             <div className='w-[143px]'>
               <Select
                 className={`basic-single  h-11 rounded-md  text-base border-none`}
                 classNamePrefix='select'
                 isDisabled={false}
-                
                 isLoading={false}
                 placeholder=''
                 isClearable={false}
@@ -286,7 +322,6 @@ export default function AddPaymentContent({
           </div>
         </div>
       </div>
-      {/* {typeError ? <p className='text-red-600 text-base'>{typeError}</p> : ""} */}
 
       <div
         className={`${
@@ -323,6 +358,7 @@ export default function AddPaymentContent({
           />
         </div>
       </div>
+      {error ? <p className='text-red-600 text-base '>{error}</p> : ""}
       <div
         className={`flex flex-col gap-y-2 md:flex-row w-full justify-around ${
           isModal ? "" : "items-center"

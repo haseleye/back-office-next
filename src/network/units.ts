@@ -12,27 +12,23 @@ export const getUnits = (lang: string) =>
     }
   );
 
-export const getUnitTypes = (unitId: string, lang: string) =>
+export const getUnitTypes = (unitId: string,id:string) =>
   axiosInstance.post(
-    "users/get-unit-types",
-    { unitId: unitId },
+    "staff/get-unit-types",
+    { unitId: unitId ,id:id},
     {
       headers: {
-        "accept-language": lang ?? "ar",
+        "accept-language": "ar",
       },
     }
   );
-export const selectUnitType = (
-  unitId: string,
-  category: string,
-  lang: string
-) =>
+export const selectUnitType = (unitId: string, category: string,id:string) =>
   axiosInstance.post(
-    "users/select-unit-type",
-    { unitId: unitId, category: category },
+    "staff/select-unit-type",
+    { unitId: unitId, category: category,id:id },
     {
       headers: {
-        "accept-language": lang ?? "ar",
+        "accept-language": "ar",
       },
     }
   );

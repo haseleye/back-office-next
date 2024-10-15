@@ -13,7 +13,7 @@ export default function TopMenu() {
   const [searchMobile, setSearchMobile] = useState<string>("");
   const [localUser, setLocalUser] = useState<any>();
   const [searchLoading, setSearchLoading] = useState(false);
-  const { setCurrentUser, currentUser } = useAppContext();
+  const { setCurrentUser, currentUser ,findPayment} = useAppContext();
   const [paymentNumber, setPaymentNumber] = useState("");
   const [bankName, setBankName] = useState<
     { label: string; value: string } | undefined
@@ -58,7 +58,7 @@ export default function TopMenu() {
     else return false;
   }, [currentUser]);
 
-  const findPayment = () => {
+  const findPaymentClick = () => {
     findPaymentApi(paymentNumber)
       .then((response1) => {
         let payment = response1.data?.message?.paymentData;
@@ -206,12 +206,11 @@ export default function TopMenu() {
                   <input
                     value={paymentNumber}
                     onChange={(e) => setPaymentNumber(e.target.value)}
-                    dir='ltr'
-                    className={`bg-[#F2F0EF]  font-normal w-full outline-none text-base `}
+                    className={`bg-[#F2F0EF] px-1 md:px-3 font-normal w-full outline-none text-base `}
                   />
                 </div>
                 <button
-                  onClick={findPayment}
+                  onClick={findPaymentClick}
                   disabled={paymentNumber == ""}
                   className='bg-white disabled:opacity-70 rounded-lg px-4 py-1'>
                   ابحث

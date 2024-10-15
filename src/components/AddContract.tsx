@@ -5,6 +5,7 @@ import { addContract } from "@/network/auth";
 import { getUserDetails } from "@/network/home";
 import { useEffect, useState } from "react";
 import { LoadingSpinner } from "./loading";
+import { blob } from "stream/consumers";
 
 export default function AddContractModal({
   setShowUnitModal,
@@ -46,13 +47,13 @@ export default function AddContractModal({
       alertContainer?.removeChild(alert);
     }, timeout);
   }
+  console.log("D",form.pdfFile)
   useEffect(() => {
     setForm({ ...form, unitId: selectedUnit });
   }, [selectedUnit]);
   const submit = () => {
     setErrorText("");
     setLoading(true);
-    console.log("form", form);
     let formData = new FormData();
     formData.set("id", currentUser?.info.id as string);
     formData.set(
@@ -60,8 +61,8 @@ export default function AddContractModal({
       form.unitId == "حجز جديد" ? "" : (form.unitId as string)
     );
     formData.set("unitNumber", form.unitNumber as string);
-    formData.set("contractData", form.contractData as string);
-    formData.set("pdfFile", form.pdfFile as File);
+    formData.set("contractDate", form.contractData as string);
+    formData.set("pdfFile", form.pdfFile as any);
     addContract(formData)
       .then((response) => {
         setForm({
@@ -181,7 +182,7 @@ export default function AddContractModal({
                 if ((file?.size as any) > 1 * 1024 * 1024)
                   setFileSizeError(true);
                 else {
-                  setForm({ ...form, pdfFile: file as any });
+                  setForm({ ...form, pdfFile: e.target.files?.[0] as any });
                   setFileSizeError(false);
                 }
               }}

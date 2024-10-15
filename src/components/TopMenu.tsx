@@ -11,7 +11,6 @@ export default function TopMenu() {
   const [mobileError, setMobileError] = useState("");
   const [errorText, setErrorText] = useState("");
   const [searchMobile, setSearchMobile] = useState<string>("");
-  const [localUser, setLocalUser] = useState<any>();
   const [searchLoading, setSearchLoading] = useState(false);
   const { setCurrentUser, currentUser ,findPayment} = useAppContext();
   const [paymentNumber, setPaymentNumber] = useState("");
@@ -59,6 +58,7 @@ export default function TopMenu() {
   }, [currentUser]);
 
   const findPaymentClick = () => {
+    setSearchLoading(true)
     findPaymentApi(paymentNumber)
       .then((response1) => {
         let payment = response1.data?.message?.paymentData;
@@ -68,7 +68,10 @@ export default function TopMenu() {
       })
       .catch((error) => {
         setErrorText(error.response?.data?.error);
-      });
+      }).finally(() => {
+        setSearchLoading(false)
+      })
+    
   };
   return (
     <>
@@ -213,7 +216,7 @@ export default function TopMenu() {
                   onClick={findPaymentClick}
                   disabled={paymentNumber == ""}
                   className='bg-white disabled:opacity-70 rounded-lg px-4 py-1'>
-                  ابحث
+                  {searchLoading ? <LoadingSpinner primary /> : "ابحث"}
                 </button>
               </div>
               <p className='text-base text-red-600 mt-1'>

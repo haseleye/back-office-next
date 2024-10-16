@@ -59,7 +59,7 @@ export default function UnitCard({
           ) : item?.contractDate ? (
             <a href={item?.contract?.pdfUrl} target='_blank'>
               <img
-                src='/assets/contract.svg'
+                src='/assets/download_contract.svg'
                 className='cursor-pointer '
                 width={30}
               />
@@ -410,7 +410,7 @@ const SelectUnitModal = ({
                       setCurrentUser((response.data as any)?.message);
                       closeModal();
                       setLoading(false);
-                      showAlert("تم إضافة الشيك بنجاح", "success");
+                      showAlert("تم اختيار الوحدة بنجاح", "success");
                     }
                   })
                   .catch((error) => {});

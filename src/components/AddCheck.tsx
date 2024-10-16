@@ -227,11 +227,14 @@ export default function AddCheckContent({
 
               <input
                 className='bg-[#F2F0EF] h-11  rounded-[10px] w-[105px] px-2 text-base'
-                type='text'
+                type='tel'
+                
                 value={form.amount}
                 onChange={(e) => {
-                  if (/^[0-9]*$/.test(e.target.value))
-                    setForm({ ...form, amount: e.target.value } as any);
+                  
+                 if (/^[0-9]*$/.test(e.target.value)) {
+                   setForm({ ...form, amount: e.target.value } as any);
+                 }
                 }}
               />
               <p className='text-xl '> جنيه </p>
@@ -251,12 +254,8 @@ export default function AddCheckContent({
             </div>
           </div>
         </div>
-      
-        <AddCheckBankImage
-          form={form}
-          setForm={setForm}
 
-        />
+        <AddCheckBankImage form={form} setForm={setForm} />
         <p className='text-red-600 text-base'>
           {fileSizeError
             ? "الحد الأقصى لحجم الملف هو 1 ميجابايت"

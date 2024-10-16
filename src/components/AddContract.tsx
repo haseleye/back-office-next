@@ -137,6 +137,7 @@ export default function AddContractModal({
                   }}
                   className='bg-[#F2F0EF]  w-[200px] md:w-[270px]  h-11 rounded-[10px] px-2 text-base'
                   type='date'
+                  max={new Date().toISOString()?.split('T')?.[0]}
                 />
               </div>
             </div>
@@ -179,7 +180,7 @@ export default function AddContractModal({
             />
             <span>
               {form?.pdfFile
-                ? (form.pdfFile as any)?.name
+                ? (form.pdfFile as any)?.name?.split('.')?.[0]
                 : "تحميل ملف ال PDF الخاص بالعقد "}
             </span>
             <img src='/assets/upload_pdf.svg' width={30} alt='Upload Icon' />

@@ -16,7 +16,7 @@ const APPContext = createContext<{
     changeSelected?: boolean
   ) => void;
   setSelectedType: (type: { cat: number; subCat: number }) => void;
-  setChecks: (check: FindCheckType) => void;
+  setChecks: (check: FindCheckType|null) => void;
   setFindPayment: (payment: FindPaymentType,user:UserDetails) => void;
 }>({
   currentUser: undefined,
@@ -61,8 +61,8 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   const setSelectedType = (type: { cat: number; subCat: number }) => {
     setState({ ...state, selectedType: type ,checks:[]});
   };
-    const setChecks = (check: FindCheckType) => {
-      setState({ ...state, checks: [check] });
+    const setChecks = (check: FindCheckType|null) => {
+      setState({ ...state, checks: check?[check]:[] });
     };
 
       const setFindPayment = (payment: FindPaymentType,user:any) => {

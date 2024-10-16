@@ -45,7 +45,7 @@ const Example = ({
       <button
         className='bg-THEME_PRIMARY_COLOR rounded-lg h-10 w-[181px] text-center text-white'
         onClick={onCrop}>
-        {"حفظ"}
+        {"تحميل"}
       </button>
     </div>
   );

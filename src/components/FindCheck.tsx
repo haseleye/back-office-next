@@ -3,9 +3,11 @@ import { useState } from "react";
 import Select from "react-select";
 import { bankNames } from "./constants";
 import { findCheck } from "@/network/auth";
+import { LoadingSpinner } from "./loading";
 
 export default function FindCheck() {
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [errorText, setErrorText] = useState("");
   const [localUser, setLocalUser] = useState<any>();
   const { setCurrentUser, currentUser } = useAppContext();
@@ -17,6 +19,9 @@ export default function FindCheck() {
   const { setChecks } = useAppContext();
 
   const searchCheck = () => {
+    setError(false)
+    setErrorText('');
+    setLoading(true)
     findCheck((bankName as any)?.value, checkNumber)
       .then((response) => {
         setLocalUser({
@@ -27,13 +32,16 @@ export default function FindCheck() {
       })
       .catch((error) => {
         setErrorText(error?.response?.data?.error);
+        setChecks(null)
         setError(true);
+      }).finally(() => {
+        setLoading(false)
       });
   };
   return (
     <>
-      <div className='bg-THEME_SECONDARY_COLOR p-3 md:px-10 md:py-6 gap-[50px] md:gap-3 flex flex-col rounded-lg  mt-2  w-full'>
-        <div className=' p-3 flex flex-col md:flex-row  items-center gap-3 md:gap-[0px]  w-full h-[47px] rounded-[10px]'>
+      <div className='bg-THEME_SECONDARY_COLOR p-3 md:px-10 md:py-6 gap-0 md:gap-3 flex flex-col rounded-lg  mt-2  w-full'>
+        <div className=' p-3 flex flex-col md:flex-row  items-center gap-3 md:gap-[0px]  w-full h-auto md:h-[47px] rounded-[10px]'>
           <div className='flex  items-center gap-3 md:gap-[20px]'>
             <img
               src='/assets/search_white.svg'
@@ -42,9 +50,9 @@ export default function FindCheck() {
             <p className='text-white text-xl min-w-[90px]'>{"اسم البنك"}</p>
           </div>
           <div className='w-full'>
-            <div className='flex flex-row w-full  items-center gap-3 md:gap-[10px] '>
+            <div className='flex flex-col md:flex-row w-full  items-center gap-3 md:gap-[10px] '>
               <div
-                className={`w-[250px] md:w-[330px] me-[20px] ${
+                className={`w-full md:w-[330px] me-0 md:me-[20px] ${
                   error ? "border-[1px] border-red-600 rounded-md" : ""
                 }`}>
                 <Select
@@ -73,6 +81,9 @@ export default function FindCheck() {
                   error ? "border-THEME_ERROR_COLOR border-[1px]" : ""
                 }`}>
                 <input
+                  onKeyDown={(e) => {
+                    if (e.code == "Enter") searchCheck();
+                  }}
                   value={checkNumber}
                   onChange={(e) => {
                     setError(false);
@@ -86,12 +97,12 @@ export default function FindCheck() {
                 onClick={searchCheck}
                 disabled={checkNumber == ""}
                 className='bg-white disabled:opacity-70 rounded-lg px-4 py-1'>
-                ابحث
+                {loading ? <LoadingSpinner /> : "ابحث"}
               </button>
             </div>
           </div>
         </div>
-        <p className='text-base  text-red-600 mt-1 px-5'>
+        <p className='text-base  text-red-600 mt-1 px-5  ps-5 md:ps-[140px] text-center md:text-start'>
           {errorText ? errorText : ""}
         </p>
         <div className='flex flex-col gap-3 '>

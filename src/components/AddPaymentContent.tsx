@@ -251,6 +251,7 @@ export default function AddPaymentContent({
               }}
               className='bg-[#F2F0EF] w-[230px]  h-11 rounded-[10px] px-2 text-base'
               type='date'
+              max={new Date().toISOString()?.split("T")?.[0]}
             />
           </div>
         </div>

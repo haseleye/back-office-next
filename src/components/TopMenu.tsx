@@ -12,7 +12,7 @@ export default function TopMenu() {
   const [errorText, setErrorText] = useState("");
   const [searchMobile, setSearchMobile] = useState<string>("");
   const [searchLoading, setSearchLoading] = useState(false);
-  const { setCurrentUser, currentUser ,findPayment} = useAppContext();
+  const { setCurrentUser, currentUser, findPayment } = useAppContext();
   const [paymentNumber, setPaymentNumber] = useState("");
   const [bankName, setBankName] = useState<
     { label: string; value: string } | undefined
@@ -57,8 +57,9 @@ export default function TopMenu() {
     else return false;
   }, [currentUser]);
 
+  const [downloadLoading, setDownloadLoading] = useState(false);
   const findPaymentClick = () => {
-    setSearchLoading(true)
+    setSearchLoading(true);
     findPaymentApi(paymentNumber)
       .then((response1) => {
         let payment = response1.data?.message?.paymentData;
@@ -68,17 +69,39 @@ export default function TopMenu() {
       })
       .catch((error) => {
         setErrorText(error.response?.data?.error);
-      }).finally(() => {
-        setSearchLoading(false)
       })
-    
+      .finally(() => {
+        setSearchLoading(false);
+      });
+  };
+  const downloadImages = () => {
+    setDownloadLoading(true);
+    const a = document.createElement("a") as any;
+    a.href = currentUser?.info.identification?.nationalId?.back;
+    a.download = currentUser?.info.identification?.nationalId?.back
+      .split("/")
+      .pop();
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => {
+      const a2 = document.createElement("a") as any;
+      a2.href = currentUser?.info.identification?.nationalId?.front;
+      a2.download = currentUser?.info.identification?.nationalId?.front
+        .split("/")
+        .pop();
+      document.body.appendChild(a2);
+      a2.click();
+      document.body.removeChild(a2);
+      setDownloadLoading(false);
+    }, 1000);
   };
   return (
     <>
       {!searchType ? (
-        <div className='bg-THEME_SECONDARY_COLOR p-3 md:px-10 md:py-6 gap-[50px] md:gap-3 flex flex-col rounded-lg  mt-2  w-full'>
+        <div className='bg-THEME_SECONDARY_COLOR p-3 md:px-10 md:py-6 gap-[70px] md:gap-0 flex flex-col rounded-lg  mt-2  w-full'>
           <div className=' p-3 flex flex-col md:flex-row  items-center gap-3 md:gap-[60px]  w-full h-[47px] rounded-[10px]'>
-            <div className='flex  items-center gap-3 md:gap-[30px]'>
+            <div className='flex  items-center gap-3 md:gap-[30px] mb-0 md:mb-6'>
               <img
                 src='/assets/search_white.svg'
                 className='w-5 md:w-[30px] h-5 md:h-[30px]'
@@ -119,11 +142,12 @@ export default function TopMenu() {
                   {searchLoading ? <LoadingSpinner primary /> : "ابحث"}
                 </button>
               </div>
+              <p className='text-base  text-red-600 mt-1 h-6 min-h-6'>
+                {errorText ? errorText : ""}
+              </p>
             </div>
           </div>
-          <p className='text-base px-4 text-red-600 mt-1'>
-            {errorText ? errorText : ""}
-          </p>
+
           <div className='flex flex-col gap-3 '>
             <p className='text-white text-lg md:text-lg '>
               الاسم :{" "}
@@ -356,13 +380,9 @@ export default function TopMenu() {
               </div>
               <div className='w-full flex flex-col md:flex-row gap-6   justify-center '>
                 <button
-                  onClick={() => {
-                    (document.getElementById("body") as any).style.overflow =
-                      "scroll";
-                    setShowNational(false);
-                  }}
-                  className='bg-THEME_PRIMARY_COLOR w-full md:w-[160px] text-white rounded-md h-[50px] min-h-[50px]'>
-                  تحميل
+                  onClick={downloadImages}
+                  className='bg-THEME_PRIMARY_COLOR w-full md:w-[160px] text-white flex flex-row items-center justify-center rounded-md h-[50px] min-h-[50px]'>
+                  {downloadLoading ? <LoadingSpinner /> : "تحميل"}
                 </button>
                 <button
                   onClick={() => {

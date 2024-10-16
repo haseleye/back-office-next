@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import Select from "react-select";
 import { LoadingSpinner } from "./loading";
+import { AddCheckBankImage } from "./profileImage";
 
 export default function AddCheckContent({
   isModal,
@@ -84,7 +85,6 @@ export default function AddCheckContent({
   const submit = () => {
     setErrorText("");
     setLoading(true);
-    console.log("form", form);
     let formData = new FormData();
     formData.set("id", currentUser?.info.id as string);
     formData.set(
@@ -162,7 +162,6 @@ export default function AddCheckContent({
                     value: form?.unitId,
                   }}
                   onChange={(value) => {
-                    console.log("vakl", value);
                     setForm({
                       ...form,
                       unitId: value?.value as string,
@@ -172,7 +171,7 @@ export default function AddCheckContent({
                   isLoading={false}
                   isClearable={false}
                   isRtl={true}
-                  isSearchable={true}
+                  isSearchable={false}
                   name='Codes'
                   options={bookingCodes}
                 />
@@ -252,25 +251,12 @@ export default function AddCheckContent({
             </div>
           </div>
         </div>
-        <label className='file-upload'>
-          <input
-            type='file'
-            accept='image/jpeg, image/png, image/jpg'
-            onChange={(e) => {
-              console.log("E,trr", e.target.files?.[0]);
-              let file = e.target.files?.[0];
-              if ((file?.size as any) > 1 * 1024 * 1024) setFileSizeError(true);
-              else {
-                setForm({ ...form, image: file as any });
-                setFileSizeError(false);
-              }
-            }}
-          />
-          <span>
-            {form?.image ? (form.image as any)?.name : "تحميل صورة الشيك"}
-          </span>
-          <img src='/assets/uploadImage.svg' width={30} alt='Upload Icon' />
-        </label>
+      
+        <AddCheckBankImage
+          form={form}
+          setForm={setForm}
+
+        />
         <p className='text-red-600 text-base'>
           {fileSizeError
             ? "الحد الأقصى لحجم الملف هو 1 ميجابايت"

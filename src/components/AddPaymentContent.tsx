@@ -148,13 +148,12 @@ export default function AddPaymentContent({
 
         return paymentTypes?.[2]?.label;
       } else {
-        console.log("unit?.[0]?.category", unit?.[0]?.category);
         setTypeError(
-          (unit?.[0]?.category == "نوع الوحدة لم يتحدد")
+          unit?.[0]?.category == "نوع الوحدة لم يتحدد"
             ? "يجب اختيار نوع الوحدة لهذا الحجز أولاً قبل إضافة مدفوعات جديدة"
             : unit?.[0]?.completionDate
             ? "هذه الوحدة مستوفاة القيمة الإجمالية ، لا يمكن أي دفع مبالغ مالية عليها الآن"
-            : "هذه الوحدة تم إنهاء إجراءات التعاقد عليها ، لا يمكن أي دفع مبالغ مالية عليها الآن"
+            : "هذه الوحدة تم إنهاء إجراءات التعاقد عليها ، لا يمكن دفع أي مبالغ مالية عليها الآن"
         );
       }
     }
@@ -206,7 +205,7 @@ export default function AddPaymentContent({
                   isLoading={false}
                   isClearable={false}
                   isRtl={true}
-                  isSearchable={true}
+                  isSearchable={false}
                   name='color'
                   options={bookingCodes}
                 />

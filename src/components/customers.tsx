@@ -16,7 +16,7 @@ export default function Customers() {
     <>
       {currentUser && selectedType.cat == 0 ? (
         <div className=' flex flex-col gap-6 items-center'>
-          <div className='flex justify-between flex-wrap  gap-3 '>
+          <div className='flex justify-between flex-wrap  gap-3 w-full'>
             {selectedType.subCat == 0 ? (
               currentUser?.payments?.length ? (
                 currentUser?.payments.map((item, index) => (

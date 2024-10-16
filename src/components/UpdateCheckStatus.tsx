@@ -72,7 +72,9 @@ export default function UpdateCheckStatus({
     }),
   };
   return (
-    <Modal setShowModal={setShowModal} isTopCentered={window?.innerWidth>768?false:true}>
+    <Modal
+      setShowModal={setShowModal}
+      isTopCentered={window?.innerWidth > 768 ? false : true}>
       <div className=' w-auto  min-w-full   md:min-w-[450px] md:w-auto mt-[60px] '>
         <div className='h-[50px] w-full rounded-t-lg bg-THEME_PRIMARY_COLOR flex flex-row justify-between px-6 items-center'>
           <p className='text-base md:text-lg  text-white font-semibold'>
@@ -139,7 +141,7 @@ export default function UpdateCheckStatus({
                     isLoading={false}
                     isClearable={false}
                     isRtl={true}
-                    isSearchable={true}
+                    isSearchable={false}
                     name='New Status'
                     options={options}
                   />
@@ -176,7 +178,7 @@ export default function UpdateCheckStatus({
               className={`bg-THEME_PRIMARY_COLOR  flex items-center justify-center w-full md:w-[160px] text-white rounded-md h-[50px] min-h-[50px] ${
                 !formData?.newStatus ? "opacity-50" : ""
               }`}>
-             {loading?<LoadingSpinner/>:' تأكيد'}
+              {loading ? <LoadingSpinner /> : " تأكيد"}
             </button>
             <button
               onClick={() => {

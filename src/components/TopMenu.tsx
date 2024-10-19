@@ -5,6 +5,7 @@ import { Modal } from "./Modal";
 import { findPaymentApi } from "@/network/auth";
 import FindCheck from "./FindCheck";
 import { LoadingSpinner } from "./loading";
+import LinkPayment from "./LinkPayment";
 
 export default function TopMenu() {
   const [error, setError] = useState(false);
@@ -60,14 +61,17 @@ export default function TopMenu() {
   const [downloadLoading, setDownloadLoading] = useState(false);
   useEffect(() => {
     setSearchMobile("");
+  }, [selectedType?.cat]);
+  useEffect(() => {
     setErrorText("");
     setPaymentNumber("");
     setError(false);
-  }, [selectedType?.cat]);
+  }, [selectedType]);
 
   const findPaymentClick = () => {
     setFindPayment(undefined);
-
+    setError(false);
+    setErrorText("");
     setSearchLoading(true);
     findPaymentApi(paymentNumber)
       .then((response1) => {
@@ -286,8 +290,8 @@ export default function TopMenu() {
       )}
       {selectedType?.cat == 1 && selectedType.subCat == 2 ? (
         <div className='bg-THEME_SECONDARY_COLOR p-3 md:px-10 md:py-6 gap-[50px] md:gap-3 flex flex-col rounded-lg  mt-2  w-full'>
-          <div className=' p-3 flex flex-col md:flex-row  items-center gap-3 md:gap-[60px]  w-full h-[47px] rounded-[10px]'>
-            <div className='flex  items-center gap-3 md:gap-[20px]'>
+          <div className=' p-3 flex flex-col md:flex-row  items-start gap-3 md:gap-[60px]  w-full h-[70px] rounded-[10px]'>
+            <div className='flex  items-center gap-3 md:gap-[20px] '>
               <img
                 src='/assets/search_white.svg'
                 className='w-5 md:w-[30px] h-5 md:h-[30px]'
@@ -299,24 +303,26 @@ export default function TopMenu() {
             <div className='w-full'>
               <div className='flex flex-row w-full  items-center gap-3 md:gap-[30px] '>
                 <div
-                  className={`flex flex-row bg-[#F2F0EF] w-full   p-1 pe-4 rounded-lg md:w-[58%] ${
+                  className={`flex flex-row bg-[#F2F0EF] w-full  md:w-[58%]  p-1 pe-4 rounded-lg ${
                     error ? "border-THEME_ERROR_COLOR border-[1px]" : ""
                   }`}>
                   <input
-                    value={searchMobile}
-                    onChange={(e) => setSearchMobile(e.target.value)}
-                    dir='ltr'
-                    className={`bg-[#F2F0EF]  font-normal w-full outline-none text-base `}
+                    value={paymentNumber}
+                    onKeyDown={(e) => {
+                      if (e.code == "Enter") findPaymentClick();
+                    }}
+                    onChange={(e) => setPaymentNumber(e.target.value)}
+                    className={`bg-[#F2F0EF] px-1 md:px-3 font-normal w-full outline-none text-base `}
                   />
                 </div>
                 <button
-                  onClick={Search}
-                  disabled={searchMobile == ""}
+                  onClick={findPaymentClick}
+                  disabled={paymentNumber == ""}
                   className='bg-white disabled:opacity-70 rounded-lg px-4 py-1'>
-                  ابحث
+                  {searchLoading ? <LoadingSpinner primary /> : "ابحث"}
                 </button>
               </div>
-              <p className='text-base text-red-600 mt-1'>
+              <p className='text-base text-red-600 mt-1 h-6'>
                 {errorText ? errorText : ""}
               </p>
             </div>

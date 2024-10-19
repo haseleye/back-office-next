@@ -72,15 +72,24 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
     });
   };
   const setSelectedType = (type: { cat: number; subCat: number }) => {
+    
     if (type.cat != state.selectedType.cat) {
       setState({
         ...state,
         selectedType: type,
         checks: [],
         currentUser: undefined,
+        findPayment:undefined
+        
       });
+  
     } else {
-      setState({ ...state, selectedType: type, checks: [] });
+      setState({
+        ...state,
+        selectedType: type,
+        checks: [],
+        findPayment: undefined,
+      });
     }
   };
   const setChecks = (check: FindCheckType | null) => {

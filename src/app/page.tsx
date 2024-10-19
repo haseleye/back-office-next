@@ -134,14 +134,7 @@ export default function Home() {
                       <p className='text-lg font-normal'>{"غير معلوم"}</p>
                     )}
                   </div>
-                  {typeError ? (
-                    <p
-                      className={`min-h-6  md:absolute h-auto md:h-6 md:top-[100px] md:start-[85px]  text-red-600 text-center md:text-start`}>
-                      {typeError}
-                    </p>
-                  ) : (
-                    ""
-                  )}
+                 
                 </div>
                 <div className='flex flex-row gap-1 items-center h-11'>
                   <p className='text-xl font-medium'>توجيه الدفع : </p>

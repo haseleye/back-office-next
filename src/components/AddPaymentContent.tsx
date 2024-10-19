@@ -1,6 +1,6 @@
 import { useAppContext } from "@/context";
 import { paymentMethods, paymentTypes } from "@/components/constants";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Select from "react-select";
 import { addPayment } from "@/network/auth";
 import { getUserDetails } from "@/network/home";
@@ -74,6 +74,7 @@ export default function AddPaymentContent({
     }, timeout);
   }
 
+ 
   const onSubmit = () => {
     setLoading(true);
     let form = { ...formData };
@@ -158,7 +159,7 @@ export default function AddPaymentContent({
       }
     }
     return "غير متاح";
-  }, [formData?.unitId]);
+  }, [formData?.unitId,currentUser]);
   return <>
     <div
       className={`flex relative   flex-col gap-3 ${

@@ -723,6 +723,9 @@ video {
 .mt-6 {
   margin-top: 1.5rem;
 }
+.mt-8 {
+  margin-top: 2rem;
+}
 .mt-\[25px\] {
   margin-top: 25px;
 }
@@ -731,12 +734,6 @@ video {
 }
 .mt-\[60px\] {
   margin-top: 60px;
-}
-.-mt-2\.5 {
-  margin-top: -0.625rem;
-}
-.mt-8 {
-  margin-top: 2rem;
 }
 .block {
   display: block;
@@ -825,6 +822,9 @@ video {
 .h-\[56px\] {
   height: 56px;
 }
+.h-\[70px\] {
+  height: 70px;
+}
 .h-\[80px\] {
   height: 80px;
 }
@@ -836,9 +836,6 @@ video {
 }
 .h-screen {
   height: 100vh;
-}
-.h-\[70px\] {
-  height: 70px;
 }
 .min-h-6 {
   min-height: 1.5rem;
@@ -965,6 +962,9 @@ video {
 }
 .min-w-max {
   min-width: max-content;
+}
+.min-w-\[150px\] {
+  min-width: 150px;
 }
 .max-w-\[200px\] {
   max-width: 200px;
@@ -1094,9 +1094,6 @@ video {
 }
 .gap-\[70px\] {
   gap: 70px;
-}
-.gap-2\.5 {
-  gap: 0.625rem;
 }
 .gap-y-2 {
   row-gap: 0.5rem;
@@ -1811,20 +1808,12 @@ input:focus {
     inset: 0px;
   }
 
-  .md\:start-0 {
-    inset-inline-start: 0px;
+  .md\:start-\[85px\] {
+    inset-inline-start: 85px;
   }
 
   .md\:top-\[100px\] {
     top: 100px;
-  }
-
-  .md\:start-\[100px\] {
-    inset-inline-start: 100px;
-  }
-
-  .md\:start-\[85px\] {
-    inset-inline-start: 85px;
   }
 
   .md\:z-\[40\] {
@@ -2029,16 +2018,16 @@ input:focus {
     width: 550px;
   }
 
+  .md\:w-\[58\%\] {
+    width: 58%;
+  }
+
   .md\:w-\[620px\] {
     width: 620px;
   }
 
   .md\:w-\[80\%\] {
     width: 80%;
-  }
-
-  .md\:w-\[85\%\] {
-    width: 85%;
   }
 
   .md\:w-auto {
@@ -2049,16 +2038,8 @@ input:focus {
     width: fit-content;
   }
 
-  .md\:w-full {
-    width: 100%;
-  }
-
-  .md\:w-\[90\%\] {
-    width: 90%;
-  }
-
-  .md\:w-\[58\%\] {
-    width: 58%;
+  .md\:w-\[220px\] {
+    width: 220px;
   }
 
   .md\:min-w-\[450px\] {
@@ -2162,6 +2143,10 @@ input:focus {
     gap: 86px;
   }
 
+  .md\:gap-5 {
+    gap: 1.25rem;
+  }
+
   .md\:overflow-hidden {
     overflow: hidden;
   }
@@ -2252,11 +2237,6 @@ input:focus {
   .md\:py-\[34px\] {
     padding-top: 34px;
     padding-bottom: 34px;
-  }
-
-  .md\:px-\[30px\] {
-    padding-left: 30px;
-    padding-right: 30px;
   }
 
   .md\:pb-6 {

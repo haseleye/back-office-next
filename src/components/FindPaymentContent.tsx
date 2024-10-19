@@ -1,6 +1,6 @@
 "use client";
 import { useAppContext } from "@/context";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PaymentCard from "./PaymentCard";
 import { paymentMethods } from "./constants";
 import { Modal } from "./Modal";

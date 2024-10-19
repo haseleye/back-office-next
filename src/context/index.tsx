@@ -1,5 +1,12 @@
 "use client";
-import { bankChecks, FindCheckType, FindPaymentType, MobilePhone, Payment, UserDetails } from "@/types";
+import {
+  bankChecks,
+  FindCheckType,
+  FindPaymentType,
+  MobilePhone,
+  Payment,
+  UserDetails,
+} from "@/types";
 import { getCookie } from "cookies-next";
 import { createContext, useContext, useState } from "react";
 
@@ -16,8 +23,8 @@ const APPContext = createContext<{
     changeSelected?: boolean
   ) => void;
   setSelectedType: (type: { cat: number; subCat: number }) => void;
-  setChecks: (check: FindCheckType|null) => void;
-  setFindPayment: (payment: FindPaymentType,user:UserDetails) => void;
+  setChecks: (check: FindCheckType | null) => void;
+  setFindPayment: (payment: FindPaymentType|undefined, user?: UserDetails) => void;
 }>({
   currentUser: undefined,
   selectedType: { cat: 0, subCat: 0 },
@@ -25,7 +32,7 @@ const APPContext = createContext<{
   setCurrentUser: (user) => {},
   setSelectedType(type) {},
   setChecks: (check) => {},
-  setFindPayment: (payment,user) => {},
+  setFindPayment: (payment, user) => {},
   findPayment: undefined,
 });
 
@@ -39,7 +46,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
     checks: FindCheckType[];
     payments: Payment[];
     mobile: MobilePhone;
-    findPayment: FindPaymentType|undefined
+    findPayment: FindPaymentType | undefined;
   }>({
     currentUser: undefined,
     selectedType: {
@@ -54,20 +61,35 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
       number: "",
     },
   });
-  const setCurrentUser = (user: UserDetails|undefined,changeSelected?:boolean) => {
-    setState({ ...state, currentUser: user,selectedType:changeSelected?{cat:0,subCat:0}:state.selectedType });
-
+  const setCurrentUser = (
+    user: UserDetails | undefined,
+    changeSelected?: boolean
+  ) => {
+    setState({
+      ...state,
+      currentUser: user,
+      selectedType: changeSelected ? { cat: 0, subCat: 0 } : state.selectedType,
+    });
   };
   const setSelectedType = (type: { cat: number; subCat: number }) => {
-    setState({ ...state, selectedType: type ,checks:[]});
+    if (type.cat != state.selectedType.cat) {
+      setState({
+        ...state,
+        selectedType: type,
+        checks: [],
+        currentUser: undefined,
+      });
+    } else {
+      setState({ ...state, selectedType: type, checks: [] });
+    }
   };
-    const setChecks = (check: FindCheckType|null) => {
-      setState({ ...state, checks: check?[check]:[] });
-    };
+  const setChecks = (check: FindCheckType | null) => {
+    setState({ ...state, checks: check ? [check] : [] });
+  };
 
-      const setFindPayment = (payment: FindPaymentType,user:any) => {
-        setState({ ...state, findPayment: payment ,currentUser:user});
-      };
+  const setFindPayment = (payment: FindPaymentType|undefined, user?: any) => {
+    setState({ ...state, findPayment: payment, currentUser: user??undefined });
+  };
 
   return (
     <APPContext.Provider

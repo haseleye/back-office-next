@@ -13,7 +13,7 @@ export const AddCheckBankImage = ({
   const [type, setType] = useState<any>();
   const [cropperOpen, setCropperOpen] = useState(false);
   const [enabled, setEnabled] = useState(true);
-
+  const [name, setName] = useState("");
   const onSave = (file: any) => {
     const felo = base64ToFile(
       (file as any)?.split(",")?.[1] as any,
@@ -21,13 +21,13 @@ export const AddCheckBankImage = ({
       type as string
     );
     setForm({ ...form, image: felo });
-     setFile(null);
-     (document.getElementById("body") as any).style.overflow = "scroll";
-     setCropperOpen(false);
-     setEnabled(true);
+    setFile(null);
+    (document.getElementById("body") as any).style.overflow = "scroll";
+    setCropperOpen(false);
+    setEnabled(true);
   };
 
-  const {  getInputProps } = useDropzone({
+  const { getInputProps } = useDropzone({
     accept: {
       "image/jpeg": [".jpeg"],
       "image/jpg": [".jpg"],
@@ -36,6 +36,7 @@ export const AddCheckBankImage = ({
 
     onDrop: (acceptedFiles) => {
       setType(acceptedFiles?.[0]?.type);
+     setName(acceptedFiles?.[0]?.name)
       const profileUrl = acceptedFiles.map((file) =>
         Object.assign(file, {
           preview: URL.createObjectURL(file),
@@ -64,14 +65,14 @@ export const AddCheckBankImage = ({
                 setEnabled(true);
               }}
               onSave={onSave}
-          />
+            />
           ) : null}
         </>
       ) : (
         <label className='file-upload'>
           <input type='file' {...getInputProps()} />
           <span>
-            {form?.image ? (form.image as any)?.name : "تحميل صورة الشيك"}
+            {form?.image ? name : "تحميل صورة الشيك"}
           </span>
           <img src='/assets/uploadImage.svg' width={30} alt='Upload Icon' />
         </label>

@@ -2,7 +2,7 @@ import { useAppContext } from "@/context";
 import { getUserDetails } from "@/network/home";
 import { useEffect, useMemo, useState } from "react";
 import { Modal } from "./Modal";
-import { findCheck, findPaymentApi } from "@/network/auth";
+import { findPaymentApi } from "@/network/auth";
 import FindCheck from "./FindCheck";
 import { LoadingSpinner } from "./loading";
 
@@ -20,6 +20,7 @@ export default function TopMenu() {
   const { selectedType, setFindPayment } = useAppContext();
   const [refNumber, setNumber] = useState("");
   const Search = async () => {
+    setCurrentUser(undefined);
     if (!new RegExp("^0?1[0125][0-9]{8}$").test(searchMobile)) {
       setErrorText("رقم الهاتف غير سليم");
       return;
@@ -32,7 +33,6 @@ export default function TopMenu() {
         setCurrentUser((response.data as any)?.message);
       })
       .catch((error) => {
-        setCurrentUser(undefined);
         setErrorText(error?.response?.data?.error);
         setError(true);
       })
@@ -58,7 +58,16 @@ export default function TopMenu() {
   }, [currentUser]);
 
   const [downloadLoading, setDownloadLoading] = useState(false);
+  useEffect(() => {
+    setSearchMobile("");
+    setErrorText("");
+    setPaymentNumber("");
+    setError(false);
+  }, [selectedType?.cat]);
+
   const findPaymentClick = () => {
+    setFindPayment(undefined);
+
     setSearchLoading(true);
     findPaymentApi(paymentNumber)
       .then((response1) => {
@@ -137,7 +146,7 @@ export default function TopMenu() {
                 </div>
                 <button
                   onClick={Search}
-                  disabled={searchMobile == "" || searchLoading}
+                  // disabled={searchMobile == "" || searchLoading}
                   className='bg-white disabled:opacity-70 rounded-lg px-4 py-1'>
                   {searchLoading ? <LoadingSpinner primary /> : "ابحث"}
                 </button>
@@ -214,8 +223,8 @@ export default function TopMenu() {
         </div>
       ) : searchType == "find_payment" ? (
         <div className='bg-THEME_SECONDARY_COLOR p-3 md:px-10 md:py-6 gap-[50px] md:gap-3 flex flex-col rounded-lg  mt-2  w-full'>
-          <div className=' p-3 flex flex-col md:flex-row  items-center gap-3 md:gap-[60px]  w-full h-[47px] rounded-[10px]'>
-            <div className='flex  items-center gap-3 md:gap-[20px]'>
+          <div className=' p-3 flex flex-col md:flex-row  items-start gap-3 md:gap-[60px]  w-full h-[70px] rounded-[10px]'>
+            <div className='flex  items-center gap-3 md:gap-[20px] '>
               <img
                 src='/assets/search_white.svg'
                 className='w-5 md:w-[30px] h-5 md:h-[30px]'
@@ -227,11 +236,14 @@ export default function TopMenu() {
             <div className='w-full'>
               <div className='flex flex-row w-full  items-center gap-3 md:gap-[30px] '>
                 <div
-                  className={`flex flex-row bg-[#F2F0EF] w-full  md:w-full  p-1 pe-4 rounded-lg ${
+                  className={`flex flex-row bg-[#F2F0EF] w-full  md:w-[58%]  p-1 pe-4 rounded-lg ${
                     error ? "border-THEME_ERROR_COLOR border-[1px]" : ""
                   }`}>
                   <input
                     value={paymentNumber}
+                    onKeyDown={(e) => {
+                      if (e.code == "Enter") findPaymentClick();
+                    }}
                     onChange={(e) => setPaymentNumber(e.target.value)}
                     className={`bg-[#F2F0EF] px-1 md:px-3 font-normal w-full outline-none text-base `}
                   />
@@ -243,7 +255,7 @@ export default function TopMenu() {
                   {searchLoading ? <LoadingSpinner primary /> : "ابحث"}
                 </button>
               </div>
-              <p className='text-base text-red-600 mt-1'>
+              <p className='text-base text-red-600 mt-1 h-6'>
                 {errorText ? errorText : ""}
               </p>
             </div>
@@ -287,7 +299,7 @@ export default function TopMenu() {
             <div className='w-full'>
               <div className='flex flex-row w-full  items-center gap-3 md:gap-[30px] '>
                 <div
-                  className={`flex flex-row bg-[#F2F0EF] w-full  md:w-full  p-1 pe-4 rounded-lg ${
+                  className={`flex flex-row bg-[#F2F0EF] w-full   p-1 pe-4 rounded-lg md:w-[58%] ${
                     error ? "border-THEME_ERROR_COLOR border-[1px]" : ""
                   }`}>
                   <input

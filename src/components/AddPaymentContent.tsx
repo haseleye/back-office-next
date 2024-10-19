@@ -1,6 +1,6 @@
 import { useAppContext } from "@/context";
 import { paymentMethods, paymentTypes } from "@/components/constants";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Select from "react-select";
 import { addPayment } from "@/network/auth";
 import { getUserDetails } from "@/network/home";
@@ -165,17 +165,17 @@ export default function AddPaymentContent({
         className={`flex relative   flex-col gap-3 ${
           isModal ? "md:gap-[80px]" : ""
         } md:flex-row w-full  ${
-          isModal ? "justify-between" : "justify-around"
-        }`}>
+          isModal ? "justify-between" : "justify-between md:w-[80%]"
+        } `}>
         <div className='gap-5 flex flex-col'>
-          <p className='text-black text-base md:text-xl font-semibold'>
+          <p className='text-black text-base md:text-xl '>
             الاسم :{" "}
             <span className='font-normal text-lg truncate'>
               {currentUser
                 ? `${currentUser?.info.firstName} ${currentUser?.info.lastName}`
                 : "غير معلوم"}
             </span>
-            <p className='text-black  md:hidden text-base md:text-xl font-semibold '>
+            <p className='text-black  md:hidden text-base md:text-xl  '>
               الهاتف المحمول :{" "}
               <span dir='ltr' className='font-normal text-lg'>
                 {currentUser ? currentUser?.info.mobile : "غير معلوم"}
@@ -215,7 +215,8 @@ export default function AddPaymentContent({
             )}
           </div>
           {typeError ? (
-            <p className='min-h-6  md:absolute h-auto md:h-6 md:top-[100px] md:start-0 text-red-600 text-center md:text-start '>
+            <p
+              className={`min-h-6  md:absolute h-auto md:h-6 md:top-[100px] md:start-[85px]  text-red-600 text-center md:text-start`}>
               {typeError}
             </p>
           ) : (
@@ -256,7 +257,7 @@ export default function AddPaymentContent({
           </div>
         </div>
         <div className='gap-5 flex flex-col'>
-          <p className='text-black hidden md:flex text-base md:text-xl font-semibold  h-[28.6px]'>
+          <p className='text-black hidden md:flex text-base md:text-xl   h-[28.6px]'>
             الهاتف المحمول :{" "}
             <span dir='ltr' className='font-normal text-lg'>
               {currentUser ? currentUser?.info.mobile : "غير معلوم"}
@@ -327,7 +328,7 @@ export default function AddPaymentContent({
         className={`${
           isModal
             ? "w-full"
-            : "flex  flex-col gap-5   justify-between px-0 md:px-10 w-full md:w-[85%]"
+            : "flex  flex-col gap-5   justify-between px-0  w-full md:w-[80%]"
         }`}>
         <div className='flex flex-row gap-1 items-center w-full'>
           <p className='text-xl font-medium min-w-[100px]'>رقم المعاملة : </p>
@@ -343,7 +344,10 @@ export default function AddPaymentContent({
             }}
           />
         </div>
-        <div className='flex flex-col gap-5 items-start w-full'>
+        <div
+          className={`flex flex-row gap-1 items-start w-full ${
+            isModal ? "mt-4" : ""
+          }`}>
           <p className='text-xl font-medium min-w-[100px]'>ملاحظات : </p>
           <textarea
             rows={5}
@@ -358,46 +362,48 @@ export default function AddPaymentContent({
           />
         </div>
       </div>
-      {error ? <p className='text-red-600 text-base '>{error}</p> : ""}
-      <div
-        className={`flex flex-col gap-y-2 md:flex-row w-full justify-around ${
-          isModal ? "" : "items-center"
-        }`}>
-        <button
-          onClick={onSubmit}
-          disabled={
-            (currentUser && (!formData?.unitId || !formData?.paymentType)) ||
-            !formData?.paymentMethod ||
-            !formData.adviceTime ||
-            !formData.adviceDate ||
-            !formData?.amount ||
-            !formData.transactionNumber
-          }
-          className={`bg-THEME_PRIMARY_COLOR w-full flex items-center justify-center md:w-[160px] text-white rounded-md h-[50px] min-h-[50px] ${
-            (currentUser && (!formData?.unitId || !formData?.paymentType)) ||
-            !formData?.paymentMethod ||
-            !formData.adviceTime ||
-            !formData.adviceDate ||
-            !formData?.amount ||
-            !formData.transactionNumber
-              ? "opacity-50"
-              : ""
+      <div className='flex flex-col gap-2 items-center  -mt-2 w-full'>
+         <p className='text-red-600 text-base min-h-6 '>{error}</p> 
+        <div
+          className={`flex flex-col gap-y-2 md:flex-row w-full justify-around ${
+            isModal ? "" : "items-center"
           }`}>
-          {loading ? <LoadingSpinner /> : "          إضافة"}
-        </button>
-        {isModal ? (
           <button
-            onClick={() => {
-              (document.getElementById("body") as any).style.overflow =
-                "scroll";
-              setShowModal(false);
-            }}
-            className='bg-THEME_PRIMARY_COLOR w-full md:w-[160px] text-white rounded-md h-[50px] min-h-[50px]'>
-            إلغاء
+            onClick={onSubmit}
+            disabled={
+              (currentUser && (!formData?.unitId || !formData?.paymentType)) ||
+              !formData?.paymentMethod ||
+              !formData.adviceTime ||
+              !formData.adviceDate ||
+              !formData?.amount ||
+              !formData.transactionNumber
+            }
+            className={`bg-THEME_PRIMARY_COLOR w-full flex items-center justify-center md:w-[160px] text-white rounded-md h-[50px] min-h-[50px] ${
+              (currentUser && (!formData?.unitId || !formData?.paymentType)) ||
+              !formData?.paymentMethod ||
+              !formData.adviceTime ||
+              !formData.adviceDate ||
+              !formData?.amount ||
+              !formData.transactionNumber
+                ? "opacity-50"
+                : ""
+            }`}>
+            {loading ? <LoadingSpinner /> : "          إضافة"}
           </button>
-        ) : (
-          ""
-        )}
+          {isModal ? (
+            <button
+              onClick={() => {
+                (document.getElementById("body") as any).style.overflow =
+                  "scroll";
+                setShowModal(false);
+              }}
+              className='bg-THEME_PRIMARY_COLOR w-full md:w-[160px] text-white rounded-md h-[50px] min-h-[50px]'>
+              إلغاء
+            </button>
+          ) : (
+            ""
+          )}
+        </div>
       </div>
     </>
   );

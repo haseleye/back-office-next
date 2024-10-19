@@ -1,11 +1,10 @@
-"use client";
+"use client";;
 import { Modal } from "@/components/Modal";
 import { useAppContext } from "@/context";
 import { findCheck, updateCheckStatus } from "@/network/auth";
 import { useState } from "react";
 import Select from "react-select";
 import { bankNames } from "./constants";
-import { error } from "console";
 import { LoadingSpinner } from "./loading";
 
 const options = [
@@ -53,7 +52,7 @@ export default function UpdateCheckStatus({
             adviceDate: undefined,
             newStatus: undefined,
           });
-            (document.getElementById("body") as any).style.overflow = "scroll";
+          (document.getElementById("body") as any).style.overflow = "scroll";
           setShowModal(false);
         });
       })
@@ -71,6 +70,7 @@ export default function UpdateCheckStatus({
       zIndex: 1000, // Set your desired z-index value
     }),
   };
+  
   return (
     <Modal
       setShowModal={setShowModal}
@@ -172,12 +172,28 @@ export default function UpdateCheckStatus({
             ""
           )}
           <div
-            className={`flex flex-col mb-10 gap-y-2 md:flex-row w-full justify-around `}>
+            className={`flex flex-col mt-4 mb-6 gap-y-2 md:flex-row w-full justify-around `}>
             <button
               onClick={updateCheck}
-              disabled={!formData?.newStatus}
+              disabled={
+                !formData?.newStatus ||
+                (
+                  checks?.[0]?.statusText ==
+                  options?.filter?.(
+                    (item) => item.value == formData?.newStatus
+                  )?.[0]?.label
+                )
+              }
               className={`bg-THEME_PRIMARY_COLOR  flex items-center justify-center w-full md:w-[160px] text-white rounded-md h-[50px] min-h-[50px] ${
-                !formData?.newStatus ? "opacity-50" : ""
+                !formData?.newStatus ||
+                (
+                  checks?.[0]?.statusText ==
+                  options?.filter?.(
+                    (item) => item.value == formData?.newStatus
+                  )?.[0]?.label
+                )
+                  ? "opacity-50"
+                  : ""
               }`}>
               {loading ? <LoadingSpinner /> : " تأكيد"}
             </button>

@@ -26,7 +26,7 @@ export default function FindPaymentType() {
                   (item) => item?.label == findPayment.paymentMethod
                 )?.[0]?.value,
                 paymentMethodText: findPayment?.paymentMethod,
-                id: findPayment?.transactionNumber,
+                id: findPayment?.id,
               } as any
             }
             key={`FindPayment`}

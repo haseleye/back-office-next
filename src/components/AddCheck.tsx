@@ -22,6 +22,7 @@ export default function AddCheckContent({
   const { currentUser, setCurrentUser } = useAppContext();
   const [loading, setLoading] = useState(false);
   const [errorText, setErrorText] = useState("");
+  const [typeError, setTypeError] = useState("");
   useEffect(() => {
     if (!isLoggedIn) {
       router.push("/login");
@@ -132,6 +133,13 @@ export default function AddCheckContent({
     if (!unit?.[0]?.contractDate && form?.unitId) return true;
     else return false;
   }, [form]);
+
+  const paymentType = useMemo(() => {
+    let unit = currentUser?.units?.filter((item) => item.id == form?.unitId);
+    return unit?.[0]?.completionDate
+      ? "لا يمكن إضافة شيك بنكي لهذه الوحدة حيث أنها مستوفاة القيمة الإجمالية"
+      : null;
+  }, [form?.unitId]);
   return (
     <>
       <div className='bg-white   w-full p-6 pt-10  flex flex-col gap-5 md:gap-7 rounded-b-lg items-center px-3 md:px-10 '>
@@ -149,33 +157,42 @@ export default function AddCheckContent({
                 {currentUser?.info.mobile}
               </span>
             </p>
-            <div className='flex flex-row gap-1 items-center'>
-              <p className='text-xl font-medium'>كود الحجز : </p>
-              <div className='w-[230px]'>
-                <Select
-                  noOptionsMessage={() => "لا يوجد  "}
-                  className='basic-single  h-11 rounded-md  text-base border-none'
-                  classNamePrefix='select'
-                  placeholder=''
-                  value={{
-                    label: form?.unitId,
-                    value: form?.unitId,
-                  }}
-                  onChange={(value) => {
-                    setForm({
-                      ...form,
-                      unitId: value?.value as string,
-                    } as any);
-                  }}
-                  isDisabled={false}
-                  isLoading={false}
-                  isClearable={false}
-                  isRtl={true}
-                  isSearchable={false}
-                  name='Codes'
-                  options={bookingCodes}
-                />
+            <div className='flex flex-col gap-1'>
+              <div className='flex flex-row gap-1 items-center'>
+                <p className='text-xl font-medium'>كود الحجز : </p>
+                <div className='w-[230px]'>
+                  <Select
+                    noOptionsMessage={() => "لا يوجد  "}
+                    className='basic-single  h-11 rounded-md  text-base border-none'
+                    classNamePrefix='select'
+                    placeholder=''
+                    value={{
+                      label: form?.unitId,
+                      value: form?.unitId,
+                    }}
+                    onChange={(value) => {
+                      setForm({
+                        ...form,
+                        unitId: value?.value as string,
+                      } as any);
+                    }}
+                    isDisabled={false}
+                    isLoading={false}
+                    isClearable={false}
+                    isRtl={true}
+                    isSearchable={false}
+                    name='Codes'
+                    options={bookingCodes}
+                  />
+                </div>
               </div>
+              <p className='text-red-600  h-4'>
+                {paymentType
+                  ? paymentType
+                  : unitIdIsWrong
+                  ? "لا يمكن إضافة شيك بنكي إلا بعد توقيع العقد وتحديث بيانات العميل بذلك"
+                  : ""}
+              </p>
             </div>
             <div className='flex flex-row gap-1 items-center'>
               <p className='text-xl font-medium'>اسم البنك : </p>
@@ -222,23 +239,25 @@ export default function AddCheckContent({
                 {currentUser?.info.mobile}
               </span>
             </p>
-            <div className='flex flex-row gap-2 items-center'>
-              <p className='text-xl font-medium'> القيمة : </p>
+            <div className='flex flex-col gap-1'>
+              <div className='flex flex-row gap-2 items-center'>
+                <p className='text-xl font-medium'> القيمة : </p>
 
-              <input
-                className='bg-[#F2F0EF] h-11  rounded-[10px] w-[105px] px-2 text-base'
-                type='tel'
-                
-                value={form.amount}
-                onChange={(e) => {
-                  
-                 if (/^[0-9]*$/.test(e.target.value)) {
-                   setForm({ ...form, amount: e.target.value } as any);
-                 }
-                }}
-              />
-              <p className='text-xl '> جنيه </p>
+                <input
+                  className='bg-[#F2F0EF] h-11  rounded-[10px] w-[105px] px-2 text-base'
+                  type='tel'
+                  value={form.amount}
+                  onChange={(e) => {
+                    if (/^[0-9]*$/.test(e.target.value)) {
+                      setForm({ ...form, amount: e.target.value } as any);
+                    }
+                  }}
+                />
+                <p className='text-xl '> جنيه </p>
+              </div>
+              <p className='text-red-600  h-4'></p>
             </div>
+
             <div className='flex flex-row gap-2 items-center'>
               <p className='text-xl font-medium'> رقم الشيك : </p>
 
@@ -261,8 +280,6 @@ export default function AddCheckContent({
             ? "الحد الأقصى لحجم الملف هو 1 ميجابايت"
             : errorText
             ? errorText
-            : unitIdIsWrong
-            ? "لا يمكن إضافة شيك بنكي إلا بعد توقيع العقد وتحديث بيانات العميل بذلك"
             : ""}
         </p>
 
@@ -278,7 +295,8 @@ export default function AddCheckContent({
               !form?.dueDate ||
               fileSizeError ||
               !currentUser ||
-              unitIdIsWrong
+              unitIdIsWrong ||
+              paymentType
                 ? true
                 : false
             }
@@ -297,7 +315,8 @@ export default function AddCheckContent({
               !form.dueDate ||
               fileSizeError ||
               !currentUser ||
-              unitIdIsWrong
+              unitIdIsWrong ||
+              paymentType
                 ? " opacity-50"
                 : ""
             }`}>

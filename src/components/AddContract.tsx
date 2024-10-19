@@ -180,7 +180,7 @@ export default function AddContractModal({
             />
             <span>
               {form?.pdfFile
-                ? (form.pdfFile as any)?.name?.split('.')?.[0]
+                ? (form.pdfFile as any)?.name
                 : "تحميل ملف ال PDF الخاص بالعقد "}
             </span>
             <img src='/assets/upload_pdf.svg' width={30} alt='Upload Icon' />

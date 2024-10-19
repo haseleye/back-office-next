@@ -77,6 +77,7 @@ export interface FindPaymentType {
   date: string;
   transactionNumber: string;
   comments: string;
+  id:string
 }
 export interface Unit {
   id: string;

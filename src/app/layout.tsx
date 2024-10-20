@@ -52,14 +52,29 @@ export default function RootLayout({
         <AppWrapper>
           <div id='alert-container' className='alert-container'></div>
 
-          {path?.includes("login") ? "" : <SideMenu />}
+          {path?.includes("login")  ? (
+            ""
+          ) : (
+            <SideMenu />
+          )}
 
           <div
             className={`${
-              path.includes?.("login") ? "" : "pt-0  p-4 sm:mr-64"
+              path?.includes("login") 
+                ? ""
+                : "pt-0  p-4 sm:mr-64"
             } min-h-screen`}>
-            <div className={`w-full  ${path.includes("login") ? "" : "pe-0 "}`}>
-              {path?.includes("login") ? "" : <TopMenu />}
+            <div
+              className={`w-full  ${
+                path?.includes("login") || path.includes("profile")
+                  ? ""
+                  : "pe-0 "
+              }`}>
+              {path?.includes("login") || path.includes("profile") ? (
+                ""
+              ) : (
+                <TopMenu />
+              )}
               {children}
             </div>
           </div>

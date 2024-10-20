@@ -30,7 +30,7 @@ export const ForgetPassword = ({
       setLoading(false);
       return;
     } else {
-      forgotPassword(mobileNumber, pathname?.includes("/ar") ? "ar" : "en")
+      forgotPassword(mobileNumber)
         .then((response) => {
           setCheckUserData({
             ...checkUserData,

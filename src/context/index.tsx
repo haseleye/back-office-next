@@ -6,6 +6,7 @@ import {
   Payment,
   UserDetails,
 } from "@/types";
+import { usePathname, useRouter } from "next/navigation";
 import { createContext, useContext, useState } from "react";
 
 const APPContext = createContext<{
@@ -63,6 +64,8 @@ const APPContext = createContext<{
 });
 
 export function AppWrapper({ children }: { children: React.ReactNode }) {
+  const router = useRouter()
+  const pathName=usePathname()
   const [state, setState] = useState<{
     currentUser: UserDetails | undefined;
     selectedType: {
@@ -130,6 +133,8 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         findPayment: undefined,
       });
     }
+    if (pathName.includes('profile'))
+      router.push('/')
   };
   const setChecks = (check: FindCheckType | null) => {
     setState({ ...state, checks: check ? [check] : [] });

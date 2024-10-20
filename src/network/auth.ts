@@ -1,6 +1,6 @@
 import axiosInstance from "./axiosInstance";
 
-export const checkUser = (number: string, lang: string) =>
+export const checkUser = (number: string) =>
   axiosInstance.post(
     `staff/check-user
 `,
@@ -36,7 +36,7 @@ export const verifyOtp = (
       },
     }
   );
-export const resendOtpApi = (mobileNumber: string, lang: string) =>
+export const resendOtpApi = (mobileNumber: string) =>
   axiosInstance.post(
     `staff/resend-otp
 `,
@@ -49,7 +49,7 @@ export const resendOtpApi = (mobileNumber: string, lang: string) =>
       },
     }
   );
-export const resendOtpApiEmail = (email: string, lang: string) =>
+export const resendOtpApiEmail = (email: string) =>
   axiosInstance.post(
     `staff/resend-otp
 `,
@@ -174,7 +174,7 @@ export const linkPayment = (
     }
   );
 
-export const forgotPassword = (number: string, lang: string) =>
+export const forgotPassword = (number: string) =>
   axiosInstance.post(
     `staff/forgot-password
 `,
@@ -190,7 +190,7 @@ export const forgotPassword = (number: string, lang: string) =>
       },
     }
   );
-export const resetPassword = (data: any, lang: string) =>
+export const resetPassword = (data: any) =>
   axiosInstance.post(
     `staff/change-password
 `,
@@ -202,7 +202,7 @@ export const resetPassword = (data: any, lang: string) =>
     }
   );
 
-export const updatePhoto = (data: any, lang: string) =>
+export const updatePhoto = (data: any) =>
   axiosInstance.post(
     `staff/update-photo
 `,
@@ -226,7 +226,7 @@ export const deletePhoto = (lang: string) =>
     }
   );
 
-export const getUserInfo = (lang: string) =>
+export const getUserInfo = () =>
   axiosInstance.post(
     `staff/get-profile-info`,
     {},
@@ -237,7 +237,7 @@ export const getUserInfo = (lang: string) =>
     }
   );
 
-export const updateNationalId = (data: any, lang: string) =>
+export const updateNationalId = (data: any) =>
   axiosInstance.post(
     `staff/update-national-id
 `,
@@ -250,7 +250,7 @@ export const updateNationalId = (data: any, lang: string) =>
     }
   );
 
-export const updateMobile = (number: string, lang: string) =>
+export const updateMobile = (number: string) =>
   axiosInstance.post(
     `staff/update-mobile
 `,
@@ -266,7 +266,7 @@ export const updateMobile = (number: string, lang: string) =>
       },
     }
   );
-export const updateEmail = (email: string, lang: string) =>
+export const updateEmail = (email: string) =>
   axiosInstance.post(
     `staff/update-email
 `,
@@ -305,3 +305,25 @@ export const updateCheckStatus = ({
       },
     }
   );
+
+  export const verifyOtpEmail = (
+    data: {
+      email: string;
+      otp: string;
+    },
+    lang: string
+  ) => {
+    return axiosInstance.post(
+      `staff/verify-otp
+`,
+      {
+        ...data,
+        email: data.email,
+      },
+      {
+        headers: {
+          "accept-language": lang ?? "ar",
+        },
+      }
+    );
+  };

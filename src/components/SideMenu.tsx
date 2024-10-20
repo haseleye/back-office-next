@@ -82,9 +82,9 @@ export const SideMenu = () => {
                     height={50}
                     className='rounded-full'
                   />
-                  <p className='text-white font-medium text-base md:text-lg '>
+                  <a href="/profile" className='text-white font-medium text-base md:text-lg '>
                     {userData?.firstName} {userData?.lastName}
-                  </p>
+                  </a>
                 </div>
                 <div className='flex flex-col  mt-1 gap-[6px] px-3'>
                   <div

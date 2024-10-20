@@ -7,6 +7,7 @@ import FindCheckContent from "@/components/FindCheckContent";
 import FindPaymentType from "@/components/FindPaymentContent";
 import { LoadingSpinner } from "@/components/loading";
 import { useAppContext } from "@/context";
+import { linkPayment } from "@/network/auth";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -19,18 +20,20 @@ interface FormTypes {
 export default function Home() {
   const isLoggedIn = getCookie("authToken");
   const router = useRouter();
-  const { currentUser, selectedType, checks } = useAppContext();
+  const {
+    currentUser,
+    selectedType,
+    linkPaymentDetails,
+    setPaymentLink,
+    setCurrentUser,
+  } = useAppContext();
   const [formData, setFormData] = useState<FormTypes>({
     paymentType: undefined,
     unitId: undefined,
   });
   const [loading, setLoading] = useState(false);
   const [typeError, setTypeError] = useState("");
-  useEffect(() => {
-    if (!isLoggedIn) {
-      router.push("/login");
-    }
-  }, [isLoggedIn]);
+  const [error, setError] = useState("");
 
   const paymentType = useMemo(() => {
     setTypeError("");
@@ -86,95 +89,163 @@ export default function Home() {
     return [{ value: "حجز جديد", label: "حجز جديد" }, ...newArray];
   }, [currentUser]);
 
+  const linkPaymentSubmit = () => {
+    setLoading(true);
+    linkPayment(
+      currentUser?.info.id as string,
+      (formData?.unitId == "حجز جديد" ? "" : formData?.unitId) as string,
+      formData?.paymentType as string,
+      linkPaymentDetails?.paymentType,
+      linkPaymentDetails.transactionNumber
+    )
+      .then((response) => {
+        showAlert("تم ربط عملية الدفع بنجاح", "success");
+        setFormData({ paymentType: "", unitId: "" });
+
+        setPaymentLink({
+          amount: "",
+          date: "",
+          id: "",
+          paymentType: "",
+          transactionNumber: "",
+          isFlush: true,
+        });
+      })
+      .catch((error) => {
+        setError(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  function showAlert(message: string, type = "error", timeout = 3000) {
+    const alertContainer = document.getElementById("alert-container");
+    // Create the alert element
+    const alert = document.createElement("div");
+    alert.className = `alert alert.success`;
+    alert.textContent = message;
+
+    // Add the alert to the container
+    alertContainer?.appendChild(alert);
+
+    // Automatically remove the alert after the specified timeout
+    setTimeout(() => {
+      alertContainer?.removeChild(alert);
+    }, timeout);
+  }
   return (
-    <div className=' mt-4 mb-3 '>
-      {currentUser && selectedType.cat == 0 ? (
-        <Customers />
-      ) : selectedType.cat == 1 ? (
-        <>
-          {selectedType.subCat == 0 ? (
-            <div className='bg-white mb-[80px] md:mb-0 md:h-auto max-h-auto  w-full p-6 pt-10  flex flex-col gap-5 rounded-b-lg items-center px-3 md:px-10 '>
-              <AddPaymentContent isModal={false} setShowModal={() => {}} />
-            </div>
-          ) : selectedType?.subCat == 1 ? (
-            <FindPaymentType />
-          ) : selectedType?.subCat == 2 ? (
-            <div className='flex  items-center flex-col gap-4'>
-              <div className='flex flex-row justify-around items-center w-full mt-8'>
-                <div>
-                  <div className='flex flex-row gap-1 items-center'>
-                    <p className='text-xl font-medium'>كود الحجز : </p>
-                    {currentUser ? (
-                      <div className='w-[230px]'>
-                        <Select
-                          noOptionsMessage={() => "لا يوجد  "}
-                          className={`basic-single  h-11 rounded-md  text-base border-none`}
-                          classNamePrefix='select'
-                          placeholder=''
-                          value={{
-                            label: formData?.unitId,
-                            value: formData?.unitId,
-                          }}
-                          onChange={(value) => {
-                            setFormData({
-                              ...formData,
-                              unitId: value?.value as string,
-                            } as any);
-                          }}
-                          isDisabled={false}
-                          isLoading={false}
-                          isClearable={false}
-                          isRtl={true}
-                          isSearchable={false}
-                          name='color'
-                          options={bookingCodes}
-                        />
-                      </div>
-                    ) : (
-                      <p className='text-lg font-normal'>{"غير معلوم"}</p>
-                    )}
-                  </div>
-                 
-                </div>
-                <div className='flex flex-row gap-1 items-center h-11'>
-                  <p className='text-xl font-medium'>توجيه الدفع : </p>
-                  <p className='text-lg font-normal'>
-                    {currentUser ? (
-                      paymentType == "غير متاح" ? (
-                        <p className='text-red-600 text-base'>{paymentType}</p>
-                      ) : (
-                        paymentType
-                      )
-                    ) : (
-                      "غير معلوم"
-                    )}
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => {}}
-                disabled={
-                  !currentUser || !formData?.paymentType || !formData.unitId
-                }
-                className={`bg-THEME_PRIMARY_COLOR w-full flex items-center justify-center md:w-[160px] text-white rounded-md h-[50px] min-h-[50px] ${
-                  !currentUser || !formData?.paymentType || !formData.unitId
-                    ? "opacity-50"
-                    : ""
-                }`}>
-                {loading ? <LoadingSpinner /> : "إضافة"}
-              </button>
-            </div>
-          ) : selectedType.subCat == 3 ? (
-            <AddCheckContent />
-          ) : selectedType.subCat == 4 ? (
-            <FindCheckContent />
-          ) : (
-            ""
-          )}
-        </>
-      ) : (
+    <>
+      {!isLoggedIn ? (
         ""
+      ) : (
+        <>
+          <div className=' mt-4 mb-3 '>
+            {currentUser && selectedType.cat == 0 ? (
+              <Customers />
+            ) : selectedType.cat == 1 ? (
+              <>
+                {selectedType.subCat == 0 ? (
+                  <div className='bg-white mb-[80px] md:mb-0 md:h-auto max-h-auto  w-full p-6 pt-10  flex flex-col gap-5 rounded-b-lg items-center px-3 md:px-10 '>
+                    <AddPaymentContent
+                      isModal={false}
+                      setShowModal={() => {}}
+                    />
+                  </div>
+                ) : selectedType?.subCat == 1 ? (
+                  <FindPaymentType />
+                ) : selectedType?.subCat == 2 ? (
+                  <div className='flex  items-center flex-col gap-4'>
+                    <div className='flex flex-row justify-around items-center w-full mt-8'>
+                      <div>
+                        <div className='flex flex-row gap-1 items-center'>
+                          <p className='text-xl font-medium'>كود الحجز : </p>
+                          {currentUser ? (
+                            <div className='w-[230px]'>
+                              <Select
+                                noOptionsMessage={() => "لا يوجد  "}
+                                className={`basic-single  h-11 rounded-md  text-base border-none`}
+                                classNamePrefix='select'
+                                placeholder=''
+                                value={{
+                                  label: formData?.unitId,
+                                  value: formData?.unitId,
+                                }}
+                                onChange={(value) => {
+                                  setFormData({
+                                    ...formData,
+                                    unitId: value?.value as string,
+                                  } as any);
+                                }}
+                                isDisabled={false}
+                                isLoading={false}
+                                isClearable={false}
+                                isRtl={true}
+                                isSearchable={false}
+                                name='color'
+                                options={bookingCodes}
+                              />
+                            </div>
+                          ) : (
+                            <p className='text-lg font-normal'>{"غير معلوم"}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className='flex flex-row gap-1 items-center h-11'>
+                        <p className='text-xl font-medium'>توجيه الدفع : </p>
+                        <p className='text-lg font-normal'>
+                          {currentUser ? (
+                            paymentType == "غير متاح" ? (
+                              <p className='text-red-600 text-base'>
+                                {paymentType}
+                              </p>
+                            ) : (
+                              paymentType
+                            )
+                          ) : (
+                            "غير معلوم"
+                          )}
+                        </p>
+                      </div>
+                    </div>
+
+                    <p className='text-base  text-red-600 mt-1 px-5 h-auto   md:h-6 ps-5 md:ps-[170px] text-center md:text-start'>
+                      {typeError ? typeError : error ? error : ""}
+                    </p>
+                    <button
+                      disabled={
+                        !currentUser?.info?.id ||
+                        paymentType == "غير متاح" ||
+                        !formData.unitId ||
+                        linkPaymentDetails.transactionNumber == "" ||
+                        linkPaymentDetails.paymentType == ""
+                      }
+                      onClick={linkPaymentSubmit}
+                      className={`bg-THEME_PRIMARY_COLOR w-full flex items-center justify-center md:w-[160px] text-white rounded-md h-[50px] min-h-[50px] ${
+                        !currentUser?.info?.id ||
+                        paymentType == "غير متاح" ||
+                        !formData.unitId ||
+                        linkPaymentDetails.transactionNumber == "" ||
+                        linkPaymentDetails.paymentType == ""
+                          ? "opacity-50"
+                          : ""
+                      }`}>
+                      {loading ? <LoadingSpinner /> : "إضافة"}
+                    </button>
+                  </div>
+                ) : selectedType.subCat == 3 ? (
+                  <AddCheckContent />
+                ) : selectedType.subCat == 4 ? (
+                  <FindCheckContent />
+                ) : (
+                  ""
+                )}
+              </>
+            ) : (
+              ""
+            )}
+          </div>
+        </>
       )}
-    </div>
+    </>
   );
 }

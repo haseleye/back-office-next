@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LoadingSpinner } from "./loading";
 import Select from "react-select";
 import { paymentMethods } from "./constants";
+import { findTransaction } from "@/network/auth";
+import { useAppContext } from "@/context";
 
 export default function LinkPayment() {
   const [error, setError] = useState(false);
@@ -9,13 +11,38 @@ export default function LinkPayment() {
   const [errorText, setErrorText] = useState("");
   const [transactionNumber, setTransactionNumber] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
- 
-    
-    
-    const onSubmit = () => {
-        
-      
+  const { setPaymentLink, linkPaymentDetails } = useAppContext();
+  const onSubmit = () => {
+    setLoading(true);
+    setError(false), setErrorText("");
+    findTransaction(transactionNumber, paymentMethod)
+      .then((response) => {
+        setPaymentLink({
+          ...response?.data?.message,
+          paymentType: paymentMethod,
+          transactionNumber: transactionNumber,
+        });
+      })
+      .catch((error) => {
+        setErrorText(error.response.data.error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
+  useEffect(() => {
+    console.log("LINKKK",linkPaymentDetails)
+    if (linkPaymentDetails?.isFlush) {
+      setPaymentMethod("");
+      setTransactionNumber("");
+      setPaymentLink({
+        ...linkPaymentDetails,
+        isFlush: false,
+        date: "",
+        amount: "",
+      });
+    }
+  }, [linkPaymentDetails]);
   return (
     <>
       <div className='bg-THEME_SECONDARY_COLOR p-3 md:px-10 md:py-6 gap-0 md:gap-3 flex flex-col rounded-lg  mt-2  w-full'>
@@ -72,29 +99,36 @@ export default function LinkPayment() {
                     onChange={(value) => {
                       setPaymentMethod(value?.value as any);
                     }}
+                    onKeyDown={(e) => {
+                      if (e.code == "Enter") onSubmit();
+                    }}
                   />
                 </div>
               </div>
               <button
                 onClick={onSubmit}
-                disabled={transactionNumber == ""||paymentMethod==""}
+                disabled={transactionNumber == "" || paymentMethod == ""}
                 className='bg-white disabled:opacity-70 rounded-lg px-4 py-1'>
                 {loading ? <LoadingSpinner /> : "ابحث"}
               </button>
             </div>
           </div>
         </div>
-        <p className='text-base  text-red-600 mt-1 px-5  ps-5 md:ps-[140px] text-center md:text-start'>
+        <p className='text-base  text-red-600 mt-1 px-5 h-auto   md:h-6 ps-5 md:ps-[170px] text-center md:text-start'>
           {errorText ? errorText : ""}
         </p>
         <div className='flex flex-col gap-3 '>
           <div className='flex gap-3 md:gap-0 flex-col md:flex-row w-full'>
             <div className='flex flex-col  gap-3 md:gap-3 flex-1'>
-              <p className='text-white text-lg md:text-lg '>القيمة : {""}</p>
+              <p className='text-white text-lg md:text-lg '>
+                القيمة : {linkPaymentDetails?.amount ?? ""}
+              </p>
             </div>
             <div className='flex flex-col  gap-3 md:gap-3 flex-1'>
               <p className='text-white text-lg md:text-lg  flex  gap-1'>
-                تاريخ المعاملة  : </p>
+                تاريخ المعاملة :{" "}
+                {linkPaymentDetails?.date?.split("T")?.[0] ?? ""}
+              </p>
             </div>
           </div>
         </div>

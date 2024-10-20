@@ -111,6 +111,20 @@ export const findCheck = (bankName: string, number: string) =>
       },
     }
   );
+
+  export const findTransaction = (refNumber: string, paymentMethod:string) =>
+    axiosInstance.post(
+      `staff/find-transaction`,
+      {
+        transactionNumber: refNumber,
+        paymentMethod: paymentMethod,
+      },
+      {
+        headers: {
+          "accept-language": "ar",
+        },
+      }
+    );
 export const findPaymentApi = (refNumber: string) =>
   axiosInstance.post(
     `staff/find-payment`,

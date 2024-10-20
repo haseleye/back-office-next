@@ -5,6 +5,8 @@ import { Fragment, useCallback, useEffect, useState } from "react";
 
 export const SideMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
+    const isLoggedIn = getCookie("authToken");
+
   const { selectedType, setSelectedType } = useAppContext();
   const router = useRouter();
   const userData = getCookie("user")
@@ -32,116 +34,137 @@ export const SideMenu = () => {
 
   return (
     <>
-      <button
-        onClick={() => {
-          setIsOpen(!isOpen);
-        }}
-        type='button'
-        className={`inline-flex items-center ${
-          isOpen ? "" : "bg-THEME_SECONDARY_COLOR"
-        } sticky top-0  z-[100] md:relative md:bg-transparent w-full md:w-auto p-2 m-0 md:mt-2 md:ms-3 text-sm text-gray-500 pb-2 md:pb-[50px] rounded-none md:rounded-lg sm:hidden  focus:outline-none `}>
-        <span className='sr-only'>Open sidebar</span>
-        <svg
-          className='w-6 h-6'
-          aria-hidden='true'
-          fill='white'
-          viewBox='0 0 20 20'
-          xmlns='http://www.w3.org/2000/svg'>
-          <path
-            clip-rule='evenodd'
-            fill-rule='evenodd'
-            d='M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z'></path>
-        </svg>
-      </button>
-      <aside
-        id='default-sidebar'
-        className={` z-[200] md:z-[40]  fixed top-0 right-0  w-64 h-screen transition-transform   md:flex md:translate-x-0  ${
-          !isOpen ? "hidden" : "visible"
-        }`}
-        aria-label='Sidebar'>
-        <div className='h-full px-3 pt-5 md:pt-4 py-4 pb-[50px] relative  flex flex-col  justify-between  bg-THEME_SECONDARY_COLOR w-full'>
-          <img
-            src='/assets/close.png'
-            className='absolute top-3 left-5 w-5 h-5  md:hidden'
-          />
-          <div className='flex flex-col  '>
-            <div className='flex flex-col gap-2 items-center'>
-              <img src='/assets/logo.svg' className='w-[100px] md:w-[150px]' />
-              <img
-                src={userData?.profilePhoto}
-                width={50}
-                height={50}
-                className='rounded-full'
-              />
-              <p className='text-white font-medium text-base md:text-lg '>
-                {userData?.firstName} {userData?.lastName}
-              </p>
-            </div>
-            <div className='flex flex-col  mt-1 gap-[6px] px-3'>
-              <div
-                className='flex flex-row gap-3 items-center cursor-pointer'
-                onClick={() => {
-                  setSelectedType({ cat: 0, subCat: 0 });
-                }}>
-                <MenuImage isSelected={selectedType.cat == 0} />
-                <p className='text-white font-medium text-base md:text-lg'> العملاء</p>
-              </div>
-
-              {selectedType.cat == 0 ? (
-                <CustomerSubmenu
-                  onChange={(index) =>
-                    setSelectedType({ ...selectedType, subCat: index })
-                  }
-                  selectedIndex={selectedType.subCat}
-                  key={"customers"}
-                />
-              ) : (
-                ""
-              )}
-
-              <div
-                className='flex flex-row gap-3 ps-[6px] items-center cursor-pointer'
-                onClick={() => {
-                  setSelectedType({ cat: 1, subCat: 0 });
-                }}>
-                <MenuImage isSelected={selectedType.cat == 1} />
-
-                <p className='text-white font-medium text-base md:text-lg'> المدفوعات</p>
-              </div>
-              {selectedType.cat == 1 ? (
-                <PaymentsSubMenu
-                  onChange={(index) =>
-                    setSelectedType({ ...selectedType, subCat: index })
-                  }
-                  selectedIndex={selectedType.subCat}
-                  key={"customers"}
-                />
-              ) : (
-                ""
-              )}
-              <div
-                className='flex flex-row gap-3 ps-[6px] items-center cursor-pointer'
-                onClick={() => {
-                  setSelectedType({ cat: 2, subCat: 0 });
-                }}>
-                <MenuImage isSelected={selectedType.cat == 2} />
-                <p className='text-white font-medium text-base md:text-lg'> التقارير</p>
-              </div>
-            </div>
-          </div>
-          <div
-            className='flex flex-row gap-3 mt-2 ps-[6px] items-center cursor-pointer'
+      {!isLoggedIn ? (
+        ""
+      ) : (
+        <>
+          <button
             onClick={() => {
-              deleteCookie("user");
-              deleteCookie("authToken");
-              localStorage.removeItem("authToken");
-              router.push("/login");
-            }}>
-            <img src='/assets/logout.svg' width={30} height={30} />
-            <p className='text-white font-medium text-base md:text-lg'> تسجيل الخروج</p>
-          </div>
-        </div>
-      </aside>
+              setIsOpen(!isOpen);
+            }}
+            type='button'
+            className={`inline-flex items-center ${
+              isOpen ? "" : "bg-THEME_SECONDARY_COLOR"
+            } sticky top-0  z-[100] md:relative md:bg-transparent w-full md:w-auto p-2 m-0 md:mt-2 md:ms-3 text-sm text-gray-500 pb-2 md:pb-[50px] rounded-none md:rounded-lg sm:hidden  focus:outline-none `}>
+            <span className='sr-only'>Open sidebar</span>
+            <svg
+              className='w-6 h-6'
+              aria-hidden='true'
+              fill='white'
+              viewBox='0 0 20 20'
+              xmlns='http://www.w3.org/2000/svg'>
+              <path
+                clip-rule='evenodd'
+                fill-rule='evenodd'
+                d='M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z'></path>
+            </svg>
+          </button>
+          <aside
+            id='default-sidebar'
+            className={` z-[200] md:z-[40]  fixed top-0 right-0  w-64 h-screen transition-transform   md:flex md:translate-x-0  ${
+              !isOpen ? "hidden" : "visible"
+            }`}
+            aria-label='Sidebar'>
+            <div className='h-full px-3 pt-5 md:pt-4 py-4 pb-[50px] relative  flex flex-col  justify-between  bg-THEME_SECONDARY_COLOR w-full'>
+              <img
+                src='/assets/close.png'
+                className='absolute top-3 left-5 w-5 h-5  md:hidden'
+              />
+              <div className='flex flex-col  '>
+                <div className='flex flex-col gap-2 items-center'>
+                  <img
+                    src='/assets/logo.svg'
+                    className='w-[100px] md:w-[150px]'
+                  />
+                  <img
+                    src={userData?.profilePhoto}
+                    width={50}
+                    height={50}
+                    className='rounded-full'
+                  />
+                  <p className='text-white font-medium text-base md:text-lg '>
+                    {userData?.firstName} {userData?.lastName}
+                  </p>
+                </div>
+                <div className='flex flex-col  mt-1 gap-[6px] px-3'>
+                  <div
+                    className='flex flex-row gap-3 items-center cursor-pointer'
+                    onClick={() => {
+                      setSelectedType({ cat: 0, subCat: 0 });
+                    }}>
+                    <MenuImage isSelected={selectedType.cat == 0} />
+                    <p className='text-white font-medium text-base md:text-lg'>
+                      {" "}
+                      العملاء
+                    </p>
+                  </div>
+
+                  {selectedType.cat == 0 ? (
+                    <CustomerSubmenu
+                      onChange={(index) =>
+                        setSelectedType({ ...selectedType, subCat: index })
+                      }
+                      selectedIndex={selectedType.subCat}
+                      key={"customers"}
+                    />
+                  ) : (
+                    ""
+                  )}
+
+                  <div
+                    className='flex flex-row gap-3 ps-[6px] items-center cursor-pointer'
+                    onClick={() => {
+                      setSelectedType({ cat: 1, subCat: 0 });
+                    }}>
+                    <MenuImage isSelected={selectedType.cat == 1} />
+
+                    <p className='text-white font-medium text-base md:text-lg'>
+                      {" "}
+                      المدفوعات
+                    </p>
+                  </div>
+                  {selectedType.cat == 1 ? (
+                    <PaymentsSubMenu
+                      onChange={(index) =>
+                        setSelectedType({ ...selectedType, subCat: index })
+                      }
+                      selectedIndex={selectedType.subCat}
+                      key={"customers"}
+                    />
+                  ) : (
+                    ""
+                  )}
+                  <div
+                    className='flex flex-row gap-3 ps-[6px] items-center cursor-pointer'
+                    onClick={() => {
+                      setSelectedType({ cat: 2, subCat: 0 });
+                    }}>
+                    <MenuImage isSelected={selectedType.cat == 2} />
+                    <p className='text-white font-medium text-base md:text-lg'>
+                      {" "}
+                      التقارير
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                className='flex flex-row gap-3 mt-2 ps-[6px] items-center cursor-pointer'
+                onClick={() => {
+                  deleteCookie("user");
+                  deleteCookie("authToken");
+                  localStorage.removeItem("authToken");
+                  router.push("/login");
+                }}>
+                <img src='/assets/logout.svg' width={30} height={30} />
+                <p className='text-white font-medium text-base md:text-lg'>
+                  {" "}
+                  تسجيل الخروج
+                </p>
+              </div>
+            </div>
+          </aside>
+        </>
+      )}
     </>
   );
 };

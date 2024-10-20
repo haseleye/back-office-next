@@ -1,15 +1,14 @@
 "use client";
 import type { Metadata } from "next";
 import "./globals.css";
-import { Footer } from "@/components/footer";
 
 import { Inter } from "next/font/google";
-import { usePathname } from "next/navigation";
-import { getCookie } from "cookies-next";
-import React, { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 import { SideMenu } from "@/components/SideMenu";
 import TopMenu from "@/components/TopMenu";
-import { AppWrapper, useAppContext } from "@/context";
+import { AppWrapper } from "@/context";
+import { getCookie } from "cookies-next";
 
 const metadata: Metadata = {
   title: "Coptic Office Back office",
@@ -23,22 +22,27 @@ export default function RootLayout({
   children: React.ReactElement;
 }>) {
   const path = usePathname();
- useEffect(() => {
-   // Push current page state to history
-   window.history.pushState(null, "", window.location.href);
+  const router = useRouter();
+  useEffect(() => {
+    // Push current page state to history
+    const isLoggedIn = getCookie("authToken");
+    if (!isLoggedIn) {
+      router.push("/login");
+    }
+    window.history.pushState(null, "", window.location.href);
 
-   // Event listener to handle back button
-   const handlePopState = () => {
-     // Redirect to the current URL (effectively reloading the page)
-     window.location.href = location.pathname;
-   };
+    // Event listener to handle back button
+    const handlePopState = () => {
+      // Redirect to the current URL (effectively reloading the page)
+      window.location.href = location.pathname;
+    };
 
-   window.addEventListener("popstate", handlePopState);
+    window.addEventListener("popstate", handlePopState);
 
-   return () => {
-     window.removeEventListener("popstate", handlePopState);
-   };
- }, [location]);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [location]);
   return (
     <html lang='ar'>
       <body
@@ -52,12 +56,9 @@ export default function RootLayout({
 
           <div
             className={`${
-              path.includes?.("login") ? "" : "pt-0 md:pt-4 p-4 sm:mr-64"
+              path.includes?.("login") ? "" : "pt-0  p-4 sm:mr-64"
             } min-h-screen`}>
-            <div
-              className={`w-full  ${
-                path.includes("login") ? "" : "pe-0 md:pe-10"
-              }`}>
+            <div className={`w-full  ${path.includes("login") ? "" : "pe-0 "}`}>
               {path?.includes("login") ? "" : <TopMenu />}
               {children}
             </div>

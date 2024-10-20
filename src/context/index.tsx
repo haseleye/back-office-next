@@ -1,13 +1,11 @@
 "use client";
 import {
-  bankChecks,
   FindCheckType,
   FindPaymentType,
   MobilePhone,
   Payment,
   UserDetails,
 } from "@/types";
-import { getCookie } from "cookies-next";
 import { createContext, useContext, useState } from "react";
 
 const APPContext = createContext<{
@@ -24,7 +22,26 @@ const APPContext = createContext<{
   ) => void;
   setSelectedType: (type: { cat: number; subCat: number }) => void;
   setChecks: (check: FindCheckType | null) => void;
-  setFindPayment: (payment: FindPaymentType|undefined, user?: UserDetails) => void;
+  setFindPayment: (
+    payment: FindPaymentType | undefined,
+    user?: UserDetails
+  ) => void;
+  linkPaymentDetails: {
+    amount: string;
+    date: string;
+    id: string;
+    paymentType: string;
+    transactionNumber: string;
+    isFlush?: boolean;
+  };
+  setPaymentLink: (data: {
+    id: string;
+    amount: string;
+    date: string;
+    paymentType: string;
+    transactionNumber: string;
+    isFlush?: boolean;
+  }) => void;
 }>({
   currentUser: undefined,
   selectedType: { cat: 0, subCat: 0 },
@@ -34,6 +51,15 @@ const APPContext = createContext<{
   setChecks: (check) => {},
   setFindPayment: (payment, user) => {},
   findPayment: undefined,
+  linkPaymentDetails: {
+    amount: "",
+    date: "",
+    id: "",
+    paymentType: "",
+    transactionNumber: "",
+    isFlush: false,
+  },
+  setPaymentLink: (check) => {},
 });
 
 export function AppWrapper({ children }: { children: React.ReactNode }) {
@@ -42,6 +68,14 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
     selectedType: {
       cat: number;
       subCat: number;
+    };
+    linkPaymentDetails: {
+      amount: string;
+      date: string;
+      id: string;
+      paymentType: string;
+      transactionNumber: string;
+      isFlush?: boolean;
     };
     checks: FindCheckType[];
     payments: Payment[];
@@ -60,6 +94,14 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
       country: "Egypt",
       number: "",
     },
+    linkPaymentDetails: {
+      amount: "",
+      date: "",
+      id: "",
+      paymentType: "",
+      transactionNumber: "",
+      isFlush:false
+    },
   });
   const setCurrentUser = (
     user: UserDetails | undefined,
@@ -72,17 +114,14 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
     });
   };
   const setSelectedType = (type: { cat: number; subCat: number }) => {
-    
     if (type.cat != state.selectedType.cat) {
       setState({
         ...state,
         selectedType: type,
         checks: [],
         currentUser: undefined,
-        findPayment:undefined
-        
+        findPayment: undefined,
       });
-  
     } else {
       setState({
         ...state,
@@ -96,8 +135,27 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
     setState({ ...state, checks: check ? [check] : [] });
   };
 
-  const setFindPayment = (payment: FindPaymentType|undefined, user?: any) => {
-    setState({ ...state, findPayment: payment, currentUser: user??undefined });
+  const setFindPayment = (payment: FindPaymentType | undefined, user?: any) => {
+    setState({
+      ...state,
+      findPayment: payment,
+      currentUser: user ?? undefined,
+    });
+  };
+  const setPaymentLink = (data: {
+    id: string;
+    amount: string;
+    date: string;
+    paymentType: string;
+    transactionNumber: string;
+    isFlush?:boolean
+  }) => {
+    if (data.isFlush)
+    { setState({ ...state, linkPaymentDetails: { ...data } ,currentUser:undefined});
+      
+    }
+    else
+    setState({ ...state, linkPaymentDetails: { ...data } });
   };
 
   return (
@@ -107,10 +165,12 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         selectedType: state.selectedType,
         checks: state.checks,
         findPayment: state.findPayment,
+        linkPaymentDetails: state.linkPaymentDetails,
         setFindPayment,
         setCurrentUser,
         setSelectedType,
         setChecks,
+        setPaymentLink,
       }}>
       {children}
     </APPContext.Provider>

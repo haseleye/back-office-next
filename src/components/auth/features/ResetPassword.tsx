@@ -50,7 +50,6 @@ export const ResetPassword = ({
         verificationCode: checkUserData?.verificationCode,
         newPassword: password,
       },
-      pathname?.includes("/ar") ? "ar" : "en"
     )
       .then((response) => {
         setLoading(false);

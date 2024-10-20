@@ -73,7 +73,6 @@ export const OtpStep = ({
       setLoading({ ...loading, resendLoading: true });
       resendOtpApi(
         checkUserData.mobileNumber,
-        pathname?.includes("/ar") ? "ar" : "en"
       )
         .then((response) => {
           setCheckUserData({

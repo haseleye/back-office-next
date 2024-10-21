@@ -113,6 +113,7 @@ export default function TopMenu() {
       setDownloadLoading(false);
     }, 1000);
   };
+  console.log("selectedtype",selectedType)
   return (
     <>
       {!isLoggedIn ? (

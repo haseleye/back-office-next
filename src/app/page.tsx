@@ -186,7 +186,9 @@ export default function Home() {
                               />
                             </div>
                           ) : (
-                            <p className='text-lg font-normal'>{"غير معلوم"}</p>
+                            <p className='text-lg font-normal w-[230px]'>
+                              {"غير معلوم"}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -198,8 +200,10 @@ export default function Home() {
                               <p className='text-red-600 text-base'>
                                 {paymentType}
                               </p>
-                            ) : (
+                            ) : paymentType != "" ? (
                               paymentType
+                            ) : (
+                              "غير معلوم"
                             )
                           ) : (
                             "غير معلوم"

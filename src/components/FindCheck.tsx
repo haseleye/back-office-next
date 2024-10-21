@@ -40,7 +40,7 @@ export default function FindCheck() {
   };
   return (
     <>
-      <div className='bg-THEME_SECONDARY_COLOR p-3 md:px-10 md:py-6 gap-0 md:gap-3 flex flex-col rounded-lg  mt-2  w-full'>
+      <div className='bg-THEME_SECONDARY_COLOR p-3 md:px-10 md:py-6 gap-0 md:gap-3 flex flex-col rounded-lg    w-full'>
         <div className=' p-3 flex flex-col md:flex-row  items-center gap-3 md:gap-[0px]  w-full h-auto md:h-[47px] rounded-[10px]'>
           <div className='flex  items-center gap-3 md:gap-[20px]'>
             <img

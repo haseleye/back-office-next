@@ -13,7 +13,6 @@ export default function PersonalProfile() {
   const [userData, setUserData] = useState<UserInfo | null>();
   const router = useRouter();
   const { currentUser } = useAppContext();
-  console.log("currentUser", currentUser);
   useEffect(() => {
     if (!isLoggedIn) router.push("/");
     else {
@@ -58,6 +57,7 @@ export default function PersonalProfile() {
             isVerified={userData?.email?.isVerified}
             label='البريد الإلكتروني'
             refreshData={refreshData}
+            itemDisabled={true}
           />
           <Input
             isRtl={true}

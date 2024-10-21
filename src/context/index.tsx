@@ -64,8 +64,8 @@ const APPContext = createContext<{
 });
 
 export function AppWrapper({ children }: { children: React.ReactNode }) {
-  const router = useRouter()
-  const pathName=usePathname()
+  const router = useRouter();
+  const pathName = usePathname();
   const [state, setState] = useState<{
     currentUser: UserDetails | undefined;
     selectedType: {
@@ -103,7 +103,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
       id: "",
       paymentType: "",
       transactionNumber: "",
-      isFlush:false
+      isFlush: false,
     },
   });
   const setCurrentUser = (
@@ -124,6 +124,14 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         checks: [],
         currentUser: undefined,
         findPayment: undefined,
+        linkPaymentDetails: {
+          amount: "",
+          date: "",
+          id: "",
+          paymentType: "",
+          transactionNumber: "",
+          isFlush: true,
+        },
       });
     } else {
       setState({
@@ -131,10 +139,17 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         selectedType: type,
         checks: [],
         findPayment: undefined,
+        linkPaymentDetails: {
+          amount: "",
+          date: "",
+          id: "",
+          paymentType: "",
+          transactionNumber: "",
+          isFlush: true,
+        },
       });
     }
-    if (pathName.includes('profile'))
-      router.push('/')
+    if (pathName.includes("profile")) router.push("/");
   };
   const setChecks = (check: FindCheckType | null) => {
     setState({ ...state, checks: check ? [check] : [] });
@@ -153,14 +168,15 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
     date: string;
     paymentType: string;
     transactionNumber: string;
-    isFlush?:boolean
+    isFlush?: boolean;
   }) => {
-    if (data.isFlush)
-    { setState({ ...state, linkPaymentDetails: { ...data } ,currentUser:undefined});
-      
-    }
-    else
-    setState({ ...state, linkPaymentDetails: { ...data } });
+    if (data.isFlush) {
+      setState({
+        ...state,
+        linkPaymentDetails: { ...data },
+        currentUser: undefined,
+      });
+    } else setState({ ...state, linkPaymentDetails: { ...data } });
   };
 
   return (

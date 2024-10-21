@@ -31,7 +31,6 @@ export default function LinkPayment() {
       });
   };
   useEffect(() => {
-    console.log("LINKKK",linkPaymentDetails)
     if (linkPaymentDetails?.isFlush) {
       setPaymentMethod("");
       setTransactionNumber("");
@@ -121,7 +120,10 @@ export default function LinkPayment() {
           <div className='flex gap-3 md:gap-0 flex-col md:flex-row w-full'>
             <div className='flex flex-col  gap-3 md:gap-3 flex-1'>
               <p className='text-white text-lg md:text-lg '>
-                القيمة : {linkPaymentDetails?.amount ?? ""}
+                القيمة :{" "}
+                {linkPaymentDetails
+                  ?.amount!=''?Number(linkPaymentDetails?.amount)
+                  ?.toLocaleString() : ""}
               </p>
             </div>
             <div className='flex flex-col  gap-3 md:gap-3 flex-1'>

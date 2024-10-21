@@ -327,3 +327,19 @@ export const updateCheckStatus = ({
       }
     );
   };
+
+   export const createPaymentsReport = (fromDate:string, toDate:string) => {
+     return axiosInstance.post(
+       `staff/create-payments-report`,
+       {
+         fromDate: fromDate,
+         toDate: toDate,
+       },
+       {
+         headers: {
+           "accept-language": "ar",
+         },
+       }
+     );
+   };
+  

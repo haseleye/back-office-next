@@ -144,12 +144,15 @@ input:focus {
 .css-1nmdiq5-menu {
   z-index: 10000 !important;
 }
-.select--is-disabled{
+
+.select--is-disabled {
   border-radius: 6px !important;
 }
-.select__control--is-disabled{
+
+.select__control--is-disabled {
   border-radius: 6px !important;
 }
+
 ::-webkit-scrollbar {
   width: 8px;
   /* Set the width for vertical scrollbars */
@@ -167,4 +170,9 @@ input:focus {
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
   /* Color of the scrollbar track */
+}
+
+canvas {
+  width: 150px !important;
+  height: 150px !important;
 }

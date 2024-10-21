@@ -1,13 +1,14 @@
 import { useAppContext } from "@/context";
 import { deleteCookie, getCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Fragment, useCallback, useEffect, useState } from "react";
 
 export const SideMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
-    const isLoggedIn = getCookie("authToken");
+  const isLoggedIn = getCookie("authToken");
 
   const { selectedType, setSelectedType } = useAppContext();
+  const pathName = usePathname();
   const router = useRouter();
   const userData = getCookie("user")
     ? JSON.parse(getCookie("user") as string)
@@ -76,13 +77,19 @@ export const SideMenu = () => {
                     src='/assets/logo.svg'
                     className='w-[100px] md:w-[150px]'
                   />
-                  <img
-                    src={userData?.profilePhoto}
-                    width={50}
-                    height={50}
-                    className='rounded-full'
-                  />
-                  <a href="/profile" className='text-white font-medium text-base md:text-lg '>
+                  <a href='/profile'>
+                    <img
+                      src={userData?.profilePhoto}
+                      width={50}
+                      height={50}
+                      className='rounded-full'
+                    />
+                  </a>
+                  <a
+                    href='/profile'
+                    className={`text-white font-medium text-base md:text-lg ${
+                      pathName?.includes("profile") ? "bg-[#A9A9A9] px-2" : ""
+                    }`}>
                     {userData?.firstName} {userData?.lastName}
                   </a>
                 </div>
@@ -99,7 +106,7 @@ export const SideMenu = () => {
                     </p>
                   </div>
 
-                  {selectedType.cat == 0 ? (
+                  {selectedType.cat == 0 && !pathName?.includes("profile") ? (
                     <CustomerSubmenu
                       onChange={(index) =>
                         setSelectedType({ ...selectedType, subCat: index })
@@ -123,7 +130,7 @@ export const SideMenu = () => {
                       المدفوعات
                     </p>
                   </div>
-                  {selectedType.cat == 1 ? (
+                  {selectedType.cat == 1 && !pathName?.includes("profile") ? (
                     <PaymentsSubMenu
                       onChange={(index) =>
                         setSelectedType({ ...selectedType, subCat: index })
@@ -145,6 +152,17 @@ export const SideMenu = () => {
                       التقارير
                     </p>
                   </div>
+                  {selectedType.cat == 2 && !pathName?.includes("profile") ? (
+                    <ReportsSubMenu
+                      onChange={(index) =>
+                        setSelectedType({ ...selectedType, subCat: index })
+                      }
+                      selectedIndex={selectedType.subCat}
+                      key={"report"}
+                    />
+                  ) : (
+                    ""
+                  )}
                 </div>
               </div>
               <div
@@ -273,31 +291,36 @@ const ReportsSubMenu = ({
   onChange(index: number): void;
   selectedIndex: number;
 }) => {
-  return (
-    <Fragment>
-      <SubMenuItem
-        onChange={onChange}
-        imgSrc='cash.svg'
-        index={0}
-        isSelected={selectedIndex == 0}
-        label='المدفوعات النقدية'
-      />
-      <SubMenuItem
-        onChange={onChange}
-        imgSrc='check.svg'
-        index={1}
-        isSelected={selectedIndex == 1}
-        label='الشيكات'
-      />
-      <SubMenuItem
-        onChange={onChange}
-        imgSrc='unit.svg'
-        index={2}
-        isSelected={selectedIndex == 2}
-        label='الوحدات'
-      />
-    </Fragment>
-  );
+ return (
+   <Fragment>
+     <div className='w-full flex justify-center'>
+       <img src='/assets/report.svg' width={40} height={40} />
+     </div>
+     <SubMenuItem
+       onChange={onChange}
+       imgSrc='payments_report.svg'
+       index={0}
+       size={25}
+       isSelected={selectedIndex == 0}
+       label='تقرير المدفوعات'
+     />
+     <SubMenuItem
+       onChange={onChange}
+       imgSrc='checks_report.svg'
+       index={1}
+       isSelected={selectedIndex == 1}
+       label='تقرير الشيكات'
+     />
+     <SubMenuItem
+       onChange={onChange}
+       imgSrc='sales_report.svg'
+       size={25}
+       index={2}
+       isSelected={selectedIndex == 2}
+       label='تقرير المبيعات'
+     />
+   </Fragment>
+ );
 };
 
 const SubMenuItem = ({
@@ -325,7 +348,9 @@ const SubMenuItem = ({
       } py-[3px] px-[6px] rounded-md flex-row gap-2 items-end cursor-pointer`}>
       <img
         src={`/assets/${imgSrc}`}
-        className={`w-5 md:w-[28px]  ${size ? `!h-[${size}px]` : "h-5 md:h-[30px]"}`}
+        className={`w-5 md:w-[28px]  ${
+          size ? `!h-[${size}px]` : "h-5 md:h-[30px]"
+        }`}
       />
       <p className='text-white font-medium text-sm md:text-base'> {label}</p>
     </div>

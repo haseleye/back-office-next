@@ -1,11 +1,18 @@
 import { bankChecks } from "@/types";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { BankModal } from "./BankModal";
 
 export default function BankCard({ payment }: { payment: bankChecks }) {
+  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
   return (
     <>
-      <div className='border-[1px] border-[#E5EAF4] rounded-2xl py-3 md:py-[34px] px-3 md:px-6 md:pe-[20px]  w-full md:w-[49%]  '>
+      <div
+        onClick={() => {
+          setShowModal(true);
+        }}
+        className='border-[1px] cursor-pointer  border-[#E5EAF4] rounded-2xl py-3 md:py-[34px] px-3 md:px-6 md:pe-[20px]  w-full md:w-[49%]  '>
         <div className='flex pb-4 flex-row  gap-6   justify-between items-center border-b-[1px] border-[#D8D8D8] border-solid'>
           <p className='text-THEME_PRIMARY_COLOR text-sm md:text-lg font-semibold flex flex-col md:flex-row gap-1  w-[46%] md:w-[50%]'>
             {"القيمة"}{" "}
@@ -67,6 +74,11 @@ export default function BankCard({ payment }: { payment: bankChecks }) {
           </div>
         </div>
       </div>
+      {showModal ? (
+        <BankModal img={payment?.image} setShowModal={setShowModal} />
+      ) : (
+        ""
+      )}
     </>
   );
 }

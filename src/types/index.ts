@@ -53,6 +53,7 @@ export interface bankChecks {
   };
   statusText: string;
   unitId: string;
+  image?:string
 }
 export interface FindCheckType {
   number: string;

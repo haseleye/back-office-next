@@ -1,6 +1,10 @@
 import { useAppContext } from "@/context";
 import { useEffect, useState } from "react";
-import { createChecksReport, createPaymentsReport, createSalesReport } from "@/network/auth";
+import {
+  createChecksReport,
+  createPaymentsReport,
+  createSalesReport,
+} from "@/network/auth";
 import { LoadingSpinner } from "./loading";
 import Select from "react-select";
 import { Accordion } from "./utilsComponents";
@@ -40,18 +44,16 @@ export default function ReportsMenu() {
         .finally(() => {
           setReportLoading(false);
         });
-    } else if (selectedType?.subCat == 2)
-    {
-        createSalesReport(reportForm.from, reportForm.to)
-          .then((response) => {
-            setPaymentReport(response.data?.message?.report);
-          })
-          .catch((error) => {})
-          .finally(() => {
-            setReportLoading(false);
-          });
-    }
-    else {
+    } else if (selectedType?.subCat == 2) {
+      createSalesReport(reportForm.from, reportForm.to)
+        .then((response) => {
+          setPaymentReport(response.data?.message?.report);
+        })
+        .catch((error) => {})
+        .finally(() => {
+          setReportLoading(false);
+        });
+    } else {
       createPaymentsReport(reportForm.from, reportForm.to)
         .then((response) => {
           console.log("RESPONSE", response);
@@ -200,7 +202,11 @@ export default function ReportsMenu() {
       {paymentReport ? (
         <>
           {selectedType.subCat == 1 ? (
-            <ChecksReport paymentReport={paymentReport} download={downloadPDF} />
+            <ChecksReport
+              reportFrom={reportForm}
+              paymentReport={paymentReport}
+              download={downloadPDF}
+            />
           ) : selectedType.subCat == 2 ? (
             <div className='flex flex-col gap-12 mt-20 ps-20'>
               <p className='text-lg'>

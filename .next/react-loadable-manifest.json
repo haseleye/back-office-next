@@ -1,4 +1,16 @@
 {
+  "components/checksReport.tsx -> pdfmake/build/pdfmake": {
+    "id": "components/checksReport.tsx -> pdfmake/build/pdfmake",
+    "files": [
+      "static/chunks/_app-pages-browser_node_modules_pdfmake_build_pdfmake_js.js"
+    ]
+  },
+  "components/checksReport.tsx -> pdfmake/build/vfs_fonts": {
+    "id": "components/checksReport.tsx -> pdfmake/build/vfs_fonts",
+    "files": [
+      "static/chunks/_app-pages-browser_node_modules_pdfmake_build_vfs_fonts_js.js"
+    ]
+  },
   "components/font.jsx -> pdfmake/build/pdfmake": {
     "id": "components/font.jsx -> pdfmake/build/pdfmake",
     "files": [

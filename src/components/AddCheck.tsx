@@ -229,6 +229,7 @@ export default function AddCheckContent({
                 }}
                 className='bg-[#F2F0EF]  w-[200px] md:w-[270px]  h-11 rounded-[10px] px-2 text-base'
                 type='date'
+                onKeyDown={(e) => e.preventDefault()} // Disable typing
               />
             </div>
           </div>

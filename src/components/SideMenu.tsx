@@ -119,7 +119,7 @@ export const SideMenu = () => {
                   )}
 
                   <div
-                    className='flex flex-row gap-3 ps-[6px] items-center cursor-pointer'
+                    className='flex flex-row gap-3  items-center cursor-pointer'
                     onClick={() => {
                       setSelectedType({ cat: 1, subCat: 0 });
                     }}>
@@ -142,7 +142,7 @@ export const SideMenu = () => {
                     ""
                   )}
                   <div
-                    className='flex flex-row gap-3 ps-[6px] items-center cursor-pointer'
+                    className='flex flex-row gap-3  items-center cursor-pointer'
                     onClick={() => {
                       setSelectedType({ cat: 2, subCat: 0 });
                     }}>
@@ -188,9 +188,10 @@ export const SideMenu = () => {
 };
 
 const MenuImage = ({ isSelected }: { isSelected: boolean }) => {
+  const pathName=usePathname()
   return (
     <img
-      src={`/assets/${isSelected ? "down.png" : "left.png"}`}
+      src={`/assets/${isSelected && !pathName?.includes('profile') ? "down.png" : "left.png"}`}
       width={15}
       height={15}
     />

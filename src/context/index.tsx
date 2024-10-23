@@ -21,7 +21,10 @@ const APPContext = createContext<{
     user: UserDetails | undefined,
     changeSelected?: boolean
   ) => void;
-  setSelectedType: (type: { cat: number; subCat: number }) => void;
+  setSelectedType: (
+    type: { cat: number; subCat: number },
+    noFlush?: boolean
+  ) => void;
   setChecks: (check: FindCheckType | null) => void;
   setFindPayment: (
     payment: FindPaymentType | undefined,
@@ -48,7 +51,7 @@ const APPContext = createContext<{
   selectedType: { cat: 0, subCat: 0 },
   checks: [],
   setCurrentUser: (user) => {},
-  setSelectedType(type) {},
+  setSelectedType(type, noFlush) {},
   setChecks: (check) => {},
   setFindPayment: (payment, user) => {},
   findPayment: undefined,
@@ -116,13 +119,13 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
       selectedType: changeSelected ? { cat: 0, subCat: 0 } : state.selectedType,
     });
   };
-  const setSelectedType = (type: { cat: number; subCat: number }) => {
+  const setSelectedType = (type: { cat: number; subCat: number }, noFlush?:boolean) => {
     if (type.cat != state.selectedType.cat) {
       setState({
         ...state,
         selectedType: type,
         checks: [],
-        currentUser: undefined,
+        currentUser:noFlush?state.currentUser: undefined,
         findPayment: undefined,
         linkPaymentDetails: {
           amount: "",

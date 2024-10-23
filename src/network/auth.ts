@@ -342,4 +342,36 @@ export const updateCheckStatus = ({
        }
      );
    };
-  
+      export const createChecksReport = (
+        fromDate: string,
+        toDate: string
+      ) => {
+        return axiosInstance.post(
+          `staff/create-checks-report`,
+          {
+            fromDate: fromDate,
+            toDate: toDate,
+          },
+          {
+            headers: {
+              "accept-language": "ar",
+            },
+          }
+        );
+      };
+     export const createSalesReport = (fromDate: string, toDate: string) => {
+       return axiosInstance.post(
+         `staff/create-sales-report`,
+         {
+           fromDate: fromDate,
+           toDate: toDate,
+         },
+         {
+           headers: {
+             "accept-language": "ar",
+           },
+         }
+       );
+     };
+
+   

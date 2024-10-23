@@ -11,7 +11,7 @@ export default function FindPaymentType() {
   const [ModalOpen, setModalOpen] = useState(false);
   const customerClick = () => {
     setLoading(true);
-    setSelectedType({ cat: 0, subCat: 0 });
+    setSelectedType({ cat: 0, subCat: 0 },true);
   };
   return (
     <>

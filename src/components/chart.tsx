@@ -5,7 +5,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 // Register the components in ChartJS
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const PieChart = ({ percents, isTotal }: any) => {
+const PieChart = ({ percents, isTotal, isLarge }: any) => {
   // Data for the Pie chart
   const data = {
     datasets: [
@@ -20,9 +20,14 @@ const PieChart = ({ percents, isTotal }: any) => {
   };
 
   return (
-    <div className=' '>
+    <>
+      <style>
+        {`  canvas{
+             ${isLarge ? "width:250px !important; height:250px !important" : ""}
+        }`}
+      </style>
       <Pie width={"350px"} height={"350px"} data={data} />
-    </div>
+    </>
   );
 };
 

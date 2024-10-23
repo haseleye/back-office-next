@@ -137,7 +137,8 @@ export default function AddContractModal({
                   }}
                   className='bg-[#F2F0EF]  w-[200px] md:w-[270px]  h-11 rounded-[10px] px-2 text-base'
                   type='date'
-                  max={new Date().toISOString()?.split('T')?.[0]}
+                  onKeyDown={(e) => e.preventDefault()} // Disable typing
+                  max={new Date().toISOString()?.split("T")?.[0]}
                 />
               </div>
             </div>

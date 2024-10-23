@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { Modal } from "@/components/Modal";
 import { useAppContext } from "@/context";
 import { findCheck, updateCheckStatus } from "@/network/auth";
@@ -70,7 +70,7 @@ export default function UpdateCheckStatus({
       zIndex: 1000, // Set your desired z-index value
     }),
   };
-  
+
   return (
     <Modal
       setShowModal={setShowModal}
@@ -163,6 +163,7 @@ export default function UpdateCheckStatus({
               }}
               className='bg-[#F2F0EF] w-[230px]  h-11 rounded-[10px] px-2 text-base'
               type='date'
+              onKeyDown={(e) => e.preventDefault()} // Disable typing
               max={new Date().toISOString()?.split("T")?.[0]}
             />
           </div>
@@ -177,21 +178,17 @@ export default function UpdateCheckStatus({
               onClick={updateCheck}
               disabled={
                 !formData?.newStatus ||
-                (
-                  checks?.[0]?.statusText ==
+                checks?.[0]?.statusText ==
                   options?.filter?.(
                     (item) => item.value == formData?.newStatus
                   )?.[0]?.label
-                )
               }
               className={`bg-THEME_PRIMARY_COLOR  flex items-center justify-center w-full md:w-[160px] text-white rounded-md h-[50px] min-h-[50px] ${
                 !formData?.newStatus ||
-                (
-                  checks?.[0]?.statusText ==
+                checks?.[0]?.statusText ==
                   options?.filter?.(
                     (item) => item.value == formData?.newStatus
                   )?.[0]?.label
-                )
                   ? "opacity-50"
                   : ""
               }`}>

@@ -45,6 +45,8 @@ export default function RootLayout({
   }, [location]);
   return (
     <html lang='ar'>
+      <meta charSet='UTF-8' />
+
       <body
         dir='rtl'
         id='body'
@@ -52,17 +54,11 @@ export default function RootLayout({
         <AppWrapper>
           <div id='alert-container' className='alert-container'></div>
 
-          {path?.includes("login")  ? (
-            ""
-          ) : (
-            <SideMenu />
-          )}
+          {path?.includes("login") ? "" : <SideMenu />}
 
           <div
             className={`${
-              path?.includes("login") 
-                ? ""
-                : "pt-0  p-4 sm:mr-64"
+              path?.includes("login") ? "" : "pt-0  p-4 sm:mr-64"
             } min-h-screen`}>
             <div
               className={`w-full  ${

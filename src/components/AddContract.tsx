@@ -158,7 +158,7 @@ export default function AddContractModal({
                   type='text'
                   value={form.unitNumber}
                   onChange={(e) => {
-                    if (/^[0-9]*$/.test(e.target.value))
+                    // if (/^[0-9]*$/.test(e.target.value))
                       setForm({ ...form, unitNumber: e.target.value } as any);
                   }}
                 />

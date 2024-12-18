@@ -151,6 +151,13 @@ export const addContract = (form: FormData) =>
       "Content-Type": "multipart/form-data", // Set the content type
     },
   });
+export const updateContract = (form: FormData) =>
+    axiosInstance.post(`staff/update-contract`, form, {
+        headers: {
+            "accept-language": "ar",
+            "Content-Type": "multipart/form-data", // Set the content type
+        },
+    });
 export const linkPayment = (
   id: string,
   unitId: string,

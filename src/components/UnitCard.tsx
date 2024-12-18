@@ -9,10 +9,11 @@ import { getUserDetails } from "@/network/home";
 
 export default function UnitCard({
   item,
-  setShowUnitModal,
+  setShowUnitModal, setUpdateContractModal
 }: {
   item: Unit;
   setShowUnitModal: Dispatch<SetStateAction<boolean>>;
+  setUpdateContractModal: Dispatch<SetStateAction<boolean>>;
 }) {
   const [showModal, setShowModal] = useState(false);
 
@@ -99,7 +100,11 @@ export default function UnitCard({
               <p className=' text-xs md:text-base  text-[#555F71]'>
                 {"تاريخ العقد"}
               </p>
-              <p className=' text-xs md:text-base font-semibold  text-[#555F71]'>
+              <p className={` text-xs md:text-base font-semibold  text-[#555F71] 
+              ${item.contractDate ? "cursor-pointer" : ""}`}
+                 onClick={() => {
+                   item.contractDate ? setUpdateContractModal(true): "";
+                 }}>
                 {item.contractDate
                   ? new Date(item.contractDate)
                       ?.toLocaleDateString("en-AE", {

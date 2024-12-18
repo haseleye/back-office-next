@@ -6,12 +6,15 @@ import UnitCard from "@/components/UnitCard";
 import { useAppContext } from "@/context";
 import { useState } from "react";
 import AddContractModal from "./AddContract";
+import UpdateContractModal from "@/components/UpdateContract";
 
 export default function Customers() {
   const [showUnitModal, setShowUnitModal] = useState(false);
+  const [updateContractModal, setUpdateContractModal] = useState(false);
   const { currentUser, selectedType } = useAppContext();
   const [showModal, setShowModal] = useState(false);
-  const [selectedUnit,setSelectedUnit]=useState('')
+  const [selectedUnit,setSelectedUnit]=useState('');
+  const [unitIndex,setUnitIndex]=useState(0);
   return (
     <>
       {currentUser && selectedType.cat == 0 ? (
@@ -49,6 +52,11 @@ export default function Customers() {
                         setShowUnitModal(true);
                         setSelectedUnit(item.id);
                       }}
+                      setUpdateContractModal = {() => {
+                        setUpdateContractModal(true);
+                        setSelectedUnit(item.id);
+                        setUnitIndex(index);
+                      }}
                       key={`unit_${index}`}
                     />
                   ))}
@@ -59,6 +67,15 @@ export default function Customers() {
                     />
                   ) : (
                     ""
+                  )}
+                  {updateContractModal ? (
+                      <UpdateContractModal
+                          selectedUnit={selectedUnit}
+                          unitIndex={unitIndex}
+                          setUpdateContractModal={setUpdateContractModal}
+                      />
+                  ) : (
+                      ""
                   )}
                 </>
               ) : (

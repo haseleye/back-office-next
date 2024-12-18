@@ -1,4 +1,4 @@
-// File: /Users/ahmed.galal/back-office/back-office-next/src/app/page.tsx
+// File: D:\back-office-next\src\app\page.tsx
 import * as entry from '../../../src/app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

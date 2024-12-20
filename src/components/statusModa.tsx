@@ -1,7 +1,31 @@
+"use client";
 import { useAppContext } from "@/context";
 import { Modal } from "./Modal";
+import { unlockAccount } from "@/network/auth";
+import {useState} from "react";
+import {getUserDetails} from "@/network/home";
+import {LoadingSpinner} from "@/components/loading";
+
+function showAlert(message: string, type = "error", timeout = 3000) {
+  const alertContainer = document.getElementById("alert-container");
+  // Create the alert element
+  const alert = document.createElement("div");
+  alert.className = `alert alert.success`;
+  alert.textContent = message;
+
+  // Add the alert to the container
+  alertContainer?.appendChild(alert);
+
+  // Automatically remove the alert after the specified timeout
+  setTimeout(() => {
+    alertContainer?.removeChild(alert);
+  }, timeout);
+}
+
 export default function StatusModal({ setShowStatus }: any) {
-  const { currentUser } = useAppContext();
+  const {currentUser, setCurrentUser} = useAppContext();
+  const [loading, setLoading] = useState(false);
+  const [errorText, setErrorText] = useState("");
 
   return (
     <Modal setShowModal={setShowStatus} isTopCentered={false}>
@@ -55,15 +79,44 @@ export default function StatusModal({ setShowStatus }: any) {
                 })}`}
             </p>
           </div>
-          <button
-            onClick={() => {
-              (document.getElementById("body") as any).style.overflow =
-                "scroll";
-              setShowStatus(false);
-            }}
-            className='bg-THEME_PRIMARY_COLOR w-full md:w-[160px] text-white rounded-md h-[50px] min-h-[50px]'>
-            إغلاق
-          </button>
+          <div className='flex flex-col gap-3 md:gap-10 md:flex-row w-full justify-center'>
+            <button
+              onClick={() => {
+                setLoading(true);
+                unlockAccount(currentUser?.info.id as string)
+                  .then(() => {
+                    getUserDetails(currentUser?.info.mobile as string)
+                      .then((response) => {
+                        if (currentUser?.info.mobile) {
+                          setCurrentUser((response.data as any)?.message);
+                          showAlert("تم إزالة التعليق بنجاح", "success");
+                          (document.getElementById("body") as any).style.overflow = "scroll";
+                          setLoading(false);
+                          setShowStatus(false);
+                        }
+                      })
+                      .catch((err) => {
+                      });
+                  })
+                  .catch((err) => {
+                    setErrorText(err?.response?.data?.error);
+                  })
+              }}
+              className={`bg-THEME_PRIMARY_COLOR w-full md:w-[160px] text-white rounded-md h-[50px] min-h-[50px] flex items-center justify-center 
+                ${currentUser?.info.status.login.nextTrial !== undefined &&
+              currentUser?.info.status.login.nextTrial < new Date().toISOString() ? "hidden" : ""}`}>
+              {loading ? <LoadingSpinner/> : " إزالة التعليق"}
+            </button>
+            <button
+              onClick={() => {
+                (document.getElementById("body") as any).style.overflow =
+                  "scroll";
+                setShowStatus(false);
+              }}
+              className='bg-THEME_PRIMARY_COLOR w-full md:w-[160px] text-white rounded-md h-[50px] min-h-[50px]'>
+              إغلاق
+            </button>
+          </div>
         </div>
       </div>
     </Modal>

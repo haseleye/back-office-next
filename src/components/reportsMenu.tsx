@@ -131,8 +131,8 @@ export default function ReportsMenu() {
                     <Select
                       noOptionsMessage={() => "لا يوجد  "}
                       className={`basic-single  h-11 rounded-md  text-base border-none`}
-                      classNamePrefix='select'
-                      placeholder=''
+                      classNamePrefix=''
+                      placeholder='قيمة مؤقتة'
                       value={
                         [
                           { label: "الكل", value: "all" },

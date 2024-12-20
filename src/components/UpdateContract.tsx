@@ -208,8 +208,7 @@ export default function UpdateContractModal({
             </button>
             <button
               onClick={() => {
-                (document.getElementById("body") as any).style.overflow =
-                  "scroll";
+                (document.getElementById("body") as any).style.overflow = "scroll";
                 setUpdateContractModal(false);
               }}
               className='bg-THEME_PRIMARY_COLOR w-full md:w-[160px] text-white rounded-md h-[50px] min-h-[50px]'>

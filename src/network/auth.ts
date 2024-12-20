@@ -137,6 +137,18 @@ export const findPaymentApi = (refNumber: string) =>
       },
     }
   );
+export const unlockAccount = (id: string) =>
+    axiosInstance.post(
+        `staff/unlock-account`,
+        {
+            id,
+        },
+        {
+            headers: {
+                "accept-language": "ar",
+            },
+        }
+    );
 export const addCheck = (form: FormData) =>
   axiosInstance.post(`staff/add-bank-check`, form, {
     headers: {

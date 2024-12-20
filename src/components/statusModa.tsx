@@ -59,7 +59,7 @@ export default function StatusModal({ setShowStatus }: any) {
               </span>
             </p>
           </div>
-          <div className='w-full flex    '>
+          <div className='w-full flex  flex-col'>
             <p className=' text-base md:text-lg text-center '>
               {(currentUser?.info.status.message
                 ? currentUser?.info.status.message
@@ -78,12 +78,16 @@ export default function StatusModal({ setShowStatus }: any) {
                   minute: "2-digit",
                 })}`}
             </p>
+            <p className='text-red-600 text-base text-center '>
+              {errorText ? errorText : ""}
+            </p>
           </div>
           <div className='flex flex-col gap-3 md:gap-10 md:flex-row w-full justify-center'>
             <button
               onClick={() => {
                 setLoading(true);
-                unlockAccount(currentUser?.info.id as string)
+                setErrorText("");
+                unlockAccount('123456')
                   .then(() => {
                     getUserDetails(currentUser?.info.mobile as string)
                       .then((response) => {
@@ -100,6 +104,7 @@ export default function StatusModal({ setShowStatus }: any) {
                   })
                   .catch((err) => {
                     setErrorText(err?.response?.data?.error);
+                    setLoading(false);
                   })
               }}
               className={`bg-THEME_PRIMARY_COLOR w-full md:w-[160px] text-white rounded-md h-[50px] min-h-[50px] flex items-center justify-center 

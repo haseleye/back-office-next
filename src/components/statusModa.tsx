@@ -87,7 +87,7 @@ export default function StatusModal({ setShowStatus }: any) {
               onClick={() => {
                 setLoading(true);
                 setErrorText("");
-                unlockAccount('123456')
+                unlockAccount(currentUser?.info.id as string)
                   .then(() => {
                     getUserDetails(currentUser?.info.mobile as string)
                       .then((response) => {
